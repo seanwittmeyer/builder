@@ -1,0 +1,35 @@
+*/config/development
+*/logs/log-*.php
+!*/logs/index.html
+*/cache/*
+!*/cache/index.html
+!*/cache/.htaccess
+.nova/*
+design/*
+.DS_Store
+.DS_Store?
+
+#codeigniter 3
+application/logs/*
+!application/logs/index.html
+!application/logs/.htaccess
+application/views/app/archive/*
+application/views/app/ski/*
+application/views/app/ski/*
+application/views/app/vr/*
+composer.phar
+composer.lock
+/vendor/
+sources/*
+
+#pylos content
+upload/img/*
+upload/vr/*
+store/*
+!store/.htaccess
+includes/app/de/design_explorer_data/*
+
+#pylos config
+.env.production
+.env.development
+application/config/development/*
