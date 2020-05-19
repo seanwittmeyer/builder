@@ -1,0 +1,31 @@
+{
+  "name": "builder",
+  "version": "1.0.0",
+  "description": "personal website for sean wittmeyer",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/seanwittmeyer/builder.git"
+  },
+  "keywords": [
+    "ski",
+    "personal"
+  ],
+  "author": "Sean Wittmeyer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/seanwittmeyer/builder/issues"
+  },
+  "homepage": "https://github.com/seanwittmeyer/builder#readme",
+  "dependencies": {
+    "bootstrap": "^4.5.0",
+    "jquery": "^1.9.1",
+    "popper.js": "^1.16.1"
+  }
+}
