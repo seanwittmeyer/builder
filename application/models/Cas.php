@@ -1,17 +1,17 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /* 
- * Shared Model
+ * CAS Model
  *
  * This model contains functions that are used in multiple parts of the site allowing
  * a single spot for them instead of having duplicate functions all over.
  *
  * Version 1.0 (2012.10.18.0017)
- * Edited by Sean Wittmeyer (theseanwitt@gmail.com)
+ * Edited by Sean Wittmeyer (sean@zilifone.net)
  * 
  */
 
-class shared extends CI_Model {
+class Cas extends CI_Model {
 
 	public function __construct()
 	{
@@ -222,7 +222,7 @@ class shared extends CI_Model {
 		return $return;
 	}
 
-	public function get_related_parents($hosttype,$hostid,$combined=true)
+	public function get_related_parents($hosttype,$hostid,$combined=true,$returnrecord=true)
 	{
 		// Setup
 		//if ($where) $this->db->where($where);
@@ -234,13 +234,14 @@ class shared extends CI_Model {
 		if (empty($result)) return false;
 		$return = array();
 		foreach ($result as $single) {
-			$return[] = $this->get_data($single['type'],$single['primary'],false,true,false);
+			$return[] = ($returnrecord) ? $this->get_data($single['type'],$single['primary'],false,true,false) : array($i[0],$i[1]);
+			//$return[] = $this->get_data($single['type'],$single['primary'],false,true,false);
 			
 		}
 		return $return;
 	}
 
-	public function get_related($hosttype,$hostid,$combined=true)
+	public function get_related($hosttype,$hostid,$combined=true,$returnrecord=true)
 	{
 		// Setup
 		//if ($where) $this->db->where($where);
@@ -258,7 +259,11 @@ class shared extends CI_Model {
 			elseif ($single['paper'] != "0") { $i = array('paper',$single['paper']); }
 			else return false;
 				
-			$return[] = $this->get_data($i[0],$i[1],false,true,false);
+			if ($returnrecord) {
+				$return[] = $this->get_data($i[0],$i[1],false,true,false);
+			} else {
+				$return[$i[0]][] = $i[1];
+			}
 			
 		}
 		return $return;
@@ -291,6 +296,47 @@ class shared extends CI_Model {
 		}
 		// couldn't find any matching content
 		return false;
+	}
+
+	// Cartograph Content
+	/* This will pull all of the content so that we minimize redundant database calls and have a 
+		cleaner way to access the cartograph data. It is primarily here for the cartograph menu.
+	
+	Terms		$return[terms]		List of all glossary definitions
+	Concepts	$return[concepts]	List of special definitions with hero layout
+	Principles	$return[principles]	List of 6 taxonomy at center of the site
+	Fields		$return[fields]		List of fields with hero layout
+	People		$return[people]		List of people definitions
+	
+	*/
+	public function cartograph_content($hostid=false,$settings=false) {
+		// Set defaults and get content for each type. This default array should be replaced with page user data.
+		if (!is_array($settings)) $settings = $this->settings();
+		$return = array();
+		$defaults = array(
+			array('terms',$settings['terms']['title'],$settings['terms']['value'],false),
+			array('concepts',$settings['concepts']['title'],$settings['concepts']['value'],true),
+			array('principles',$settings['principles']['title'],$settings['principles']['value'],true),
+			array('fields',$settings['fields']['title'],$settings['fields']['value'],true),
+			array('people',$settings['people']['title'],$settings['people']['value'],false),
+		); 
+		// Make an array of content with hosts included for each type.
+		foreach ($defaults as $d) {
+			$_title = (isset($payload[$d[0]]['title'])) ? $payload[$d[0]]['title'] : $d[1];
+			$_parentid = (isset($payload[$d[0]]['id'])) ? $payload[$d[0]]['id'] : $d[2];
+			$_parent = $this->shared->get_data2('taxonomy', $_parentid);
+			$_parent['img'] = unserialize($_parent['img']);
+			$_childrensource = $this->shared->get_related('taxonomy',$_parentid);
+			$_children = array();
+			foreach ($_childrensource as $c) {
+				if (isset($c['img'])) $c['img'] = unserialize($c['img']);
+				if (isset($c['payload'])) $c['payload'] = unserialize($c['payload']);
+				//if ($d[3]) $c['related'] = $this->shared->get_related('taxonomy',$c['id']);
+				$_children[$c['id']] = $c;
+			}
+			$return[$d[0]] = array('title'=>$_title,'parent'=>$_parent,'children'=>$_children);
+		}
+		return $return;
 	}
 
 	public function is_child($type, $primary, $child, $childid) {
@@ -558,6 +604,7 @@ class shared extends CI_Model {
 					'unique' => sha1('cas-'.microtime()),
 					'body' => $post['body'],
 					'title' => $post['title'],
+					'subtitle' => $post['subtitle'],
 					'excerpt' => $post['excerpt'],
 					'user' => $user->id,
 				);
@@ -592,6 +639,7 @@ class shared extends CI_Model {
 					'body' => $post['body'],
 					'excerpt' => $post['excerpt'],
 					'title' => $post['title'],
+					'subtitle' => $post['subtitle'],
 					'unique' => sha1('cas-'.microtime()),
 					'timestamp' => time(),
 					'payload' => serialize($post['payload']),
@@ -792,42 +840,70 @@ class shared extends CI_Model {
 		// Set up
 		$user = $this->ion_auth->user()->row();
 		$post = $this->input->post('payload');
+		$p = ($this->input->get('passive') == 'true') ? true : false; // passive mode for update() only makes changes to fields that are supplied. 
 		//$post = $preload;
-
+		$relationships_skip = $p;
+		
 		// Cases
 		switch ($type) {
 			case "definition":
-				
-				$this->form_validation->set_rules('payload[body]', 'body', 'required');
-				$this->form_validation->set_rules('payload[title]', 'title', 'required');
-				$this->form_validation->set_rules('payload[excerpt]', 'excerpt', 'required');
-
-				$update = array(
-					//'slug' => $this->slug($post['title'],$type,'slug'),
-					'timestamp' => time(),
-					'body' => $post['body'],
-					'title' => $post['title'],
-					'excerpt' => $post['excerpt'],
-					'payload' => (isset($post['payload'])) ? serialize($post['payload']) : '',
-				);
-				if (isset($post['relationships'])) {
-					$relationships_insert = array();
-					foreach ($post['relationships'] as $rel_type => $rel_array) {
-						if (!empty($rel_array)) {
-							foreach ($rel_array as $rel_id) $relationships_insert[] = array(
-								'primary' => $id,
-								'type' => 'definition',
-								'definition' => '',
-								'link' => '',
-								'page' => '',
-								'paper' => '',
-								'synonym' => '',
-								'taxonomy' => '',
-								$rel_type => $rel_id,
-							);
+				if ($file !== false) {
+					$this->form_validation->set_rules('payload[img]['.$file.']', 'title', 'required');
+					$update = array(
+						'img' => serialize(array($file=>$post['img'][$file])),
+						'timestamp' => time(),
+					);
+					
+					break;
+				}
+				if ($p) {
+					// passive save mode is on (using content tools inline editor likely)
+					$this->form_validation->set_rules('payload[body]', 'body', 'trim'); // https://stackoverflow.com/questions/23163697/this-form-validation-run-returns-false-without-validation-rules
+					$pool = array('body','title','subtitle','excerpt','payload');
+					$update = array(
+						'timestamp' => time(),
+					);
+					foreach ($pool as $var) {
+						if (isset($post[$var])) $update[$var] = $this->parse_bytype_helper($post[$var],$var);
+					}
+					
+					
+				} else {
+					// revert to old method, validate input
+					$this->form_validation->set_rules('payload[body]', 'body', 'required');
+					$this->form_validation->set_rules('payload[title]', 'title', 'required');
+					$this->form_validation->set_rules('payload[excerpt]', 'excerpt', 'required');
+					// add variables to table
+					$update = array(
+						//'slug' => $this->slug($post['title'],$type,'slug'),
+						'timestamp' => time(),
+						'body' => $post['body'],
+						'title' => $post['title'],
+						'subtitle' => $post['subtitle'],
+						'excerpt' => $post['excerpt'],
+						'payload' => (isset($post['payload'])) ? serialize($post['payload']) : '',
+					);
+					if (isset($post['relationships'])) {
+						$relationships_insert = array();
+						foreach ($post['relationships'] as $rel_type => $rel_array) {
+							if (!empty($rel_array)) {
+								foreach ($rel_array as $rel_id) $relationships_insert[] = array(
+									'primary' => $id,
+									'type' => 'definition',
+									'definition' => '',
+									'link' => '',
+									'page' => '',
+									'paper' => '',
+									'synonym' => '',
+									'taxonomy' => '',
+									$rel_type => $rel_id,
+								);
+							}
 						}
 					}
+
 				}
+
 
 				break;
 			case "taxonomy":
@@ -841,33 +917,47 @@ class shared extends CI_Model {
 					break;
 				}
 				
-				//$this->form_validation->set_rules('payload[body]', 'body', 'required');
-				$this->form_validation->set_rules('payload[title]', 'title', 'required');
-				$this->form_validation->set_rules('payload[excerpt]', 'excerpt', 'required');
-
-				$update = array(
-					//'slug' => $this->slug($post['title'],$type,'slug'),
-					'body' => $post['body'],
-					'excerpt' => $post['excerpt'],
-					'title' => $post['title'],
-					'timestamp' => time(),
-					'payload' => (isset($post['payload'])) ? serialize($post['payload']) : '',
-				);
-				if (isset($post['relationships'])) {
-					$relationships_insert = array();
-					foreach ($post['relationships'] as $rel_type => $rel_array) {
-						if (!empty($rel_array)) {
-							foreach ($rel_array as $rel_id) $relationships_insert[] = array(
-								'primary' => $id,
-								'type' => 'taxonomy',
-								'definition' => '',
-								'link' => '',
-								'page' => '',
-								'paper' => '',
-								'synonym' => '',
-								'taxonomy' => '',
-								$rel_type => $rel_id,
-							);
+				if ($p) {
+					// passive save mode is on (using content tools inline editor likely)
+					$this->form_validation->set_rules('payload[body]', 'body', 'trim'); // https://stackoverflow.com/questions/23163697/this-form-validation-run-returns-false-without-validation-rules
+					$pool = array('body','title','subtitle','excerpt','payload');
+					$update = array(
+						'timestamp' => time(),
+					);
+					foreach ($pool as $var) {
+						if (isset($post[$var])) $update[$var] = $this->parse_bytype_helper($post[$var],$var);
+					}
+					
+				} else {
+					//$this->form_validation->set_rules('payload[body]', 'body', 'required');
+					$this->form_validation->set_rules('payload[title]', 'title', 'required');
+					$this->form_validation->set_rules('payload[excerpt]', 'excerpt', 'required');
+	
+					$update = array(
+						//'slug' => $this->slug($post['title'],$type,'slug'),
+						'body' => $post['body'],
+						'excerpt' => $post['excerpt'],
+						'title' => $post['title'],
+						'subtitle' => $post['subtitle'],
+						'timestamp' => time(),
+						'payload' => (isset($post['payload'])) ? serialize($post['payload']) : '',
+					);
+					if (isset($post['relationships'])) {
+						$relationships_insert = array();
+						foreach ($post['relationships'] as $rel_type => $rel_array) {
+							if (!empty($rel_array)) {
+								foreach ($rel_array as $rel_id) $relationships_insert[] = array(
+									'primary' => $id,
+									'type' => 'taxonomy',
+									'definition' => '',
+									'link' => '',
+									'page' => '',
+									'paper' => '',
+									'synonym' => '',
+									'taxonomy' => '',
+									$rel_type => $rel_id,
+								);
+							}
 						}
 					}
 				}
@@ -883,35 +973,47 @@ class shared extends CI_Model {
 					
 					break;
 				}
-				//$this->form_validation->set_rules('payload[body]', 'body', 'required');
-				$this->form_validation->set_rules('payload[title]', 'title', 'required');
-				$this->form_validation->set_rules('payload[body]', 'body', 'required');
-				
-				$update = array(
-					//'slug' => $this->slug($post['title'],$type,'slug'),
-					'body' => $post['body'],
-					'excerpt' => $post['excerpt'],
-					'title' => $post['title'],
-					'template' => $post['template'],
-					'timestamp' => time(),
-					'author' => (isset($post['author'])) ? $post['author']:'Sharon',
-				);
-				if (!empty($post['payload'])) $update['payload'] = serialize($post['payload']);
-				if (isset($post['relationships'])) {
-					$relationships_insert = array();
-					foreach ($post['relationships'] as $rel_type => $rel_array) {
-						if (!empty($rel_array)) {
-							foreach ($rel_array as $rel_id) $relationships_insert[] = array(
-								'primary' => $id,
-								'type' => 'taxonomy',
-								'definition' => '',
-								'link' => '',
-								'page' => '',
-								'paper' => '',
-								'synonym' => '',
-								'taxonomy' => '',
-								$rel_type => $rel_id,
-							);
+				if ($p) {
+					// passive save mode is on (using content tools inline editor likely)
+					$this->form_validation->set_rules('payload[body]', 'body', 'trim'); // https://stackoverflow.com/questions/23163697/this-form-validation-run-returns-false-without-validation-rules
+					$pool = array('body','title','excerpt','payload');
+					$update = array(
+						'timestamp' => time(),
+					);
+					foreach ($pool as $var) {
+						if (isset($post[$var])) $update[$var] = $this->parse_bytype_helper($post[$var],$var);
+					}
+					
+				} else {
+					//$this->form_validation->set_rules('payload[body]', 'body', 'required');
+					$this->form_validation->set_rules('payload[title]', 'title', 'required');
+					$this->form_validation->set_rules('payload[body]', 'body', 'required');
+					
+					$update = array(
+						//'slug' => $this->slug($post['title'],$type,'slug'),
+						'body' => $post['body'],
+						'excerpt' => $post['excerpt'],
+						'title' => $post['title'],
+						'template' => $post['template'],
+						'timestamp' => time(),
+						'author' => (isset($post['author'])) ? $post['author']:'Sharon',);
+					if (!empty($post['payload'])) $update['payload'] = serialize($post['payload']);
+					if (isset($post['relationships'])) {
+						$relationships_insert = array();
+						foreach ($post['relationships'] as $rel_type => $rel_array) {
+							if (!empty($rel_array)) {
+								foreach ($rel_array as $rel_id) $relationships_insert[] = array(
+									'primary' => $id,
+									'type' => 'taxonomy',
+									'definition' => '',
+									'link' => '',
+									'page' => '',
+									'paper' => '',
+									'synonym' => '',
+									'taxonomy' => '',
+									$rel_type => $rel_id,
+								);
+							}
 						}
 					}
 				}
@@ -987,7 +1089,9 @@ class shared extends CI_Model {
 				//'url' => (isset($insert['slug'])) ? site_url($type.'/'.$insert['slug']) : $insert['uri'],
 				'message' => "Your $type has been updated!",
 			);
-			if ($file === false) {
+			
+			// we are handling the realtionships update part poorly right now, just leaving this out while we set up new mechanisms.
+			if ($file === false && $p === false) {
 				$this->db->where(array('primary'=>$id,'type'=>$type));
 				$this->db->delete("build_relationship"); 
 				if (isset($relationships_insert)) {
@@ -1059,11 +1163,37 @@ class shared extends CI_Model {
 		}
 		// check and process based on successful status 
 		if ($success === true) {
-			$output = array('filename' => $path);
+			$output = array('filename' => $path, 'size' => array($data['image_width'],$data['image_height']), 'status' => 'temporary', 'expires' => time()+3600);
 		} elseif ($success === false) {
 			$output = array('error'=>'Crap. Make sure your image is less than 10mb and is a jpg/png/gif no bigger than 4000px.');
 		} else {
 			$output = array('error'=>'Well shoot, no files were processed.');
+		}
+		if ($return == 'url') {
+			return (isset($output['error'])) ? 'poop!' : $path;
+		} else {
+			echo json_encode($output);
+		}
+	}
+
+	// Image Upload
+	public function returnimage($return=false)
+	{
+
+		// fetch form data
+		$image = pathinfo($this->input->post('url'));
+		$check = array('jpg','png','jpeg','gif');
+		if (in_array($image['extension'], $check)) {
+			$path = 'upload/img/'.$image['filename'].'.'.$image['extension'];
+			// get image from directory
+			$path = 'upload/img/'.$image['filename'].'.'.$image['extension'];
+			list($width, $height, $type, $attr) = getimagesize($path);
+		
+			$output = array('filename' => '/'.$path, 'size' => array($width,$height), 'status' => 'saved', 'expires' => 0);
+
+		} else {
+			$output = array('error'=>'Doesn\'t look like we have the file you are looking for.');
+			$this->output->set_status_header('404');
 		}
 		if ($return == 'url') {
 			return (isset($output['error'])) ? 'poop!' : $path;
@@ -1206,16 +1336,22 @@ class shared extends CI_Model {
 		return ($decode) ? json_decode($resp,true) : $resp;
 	}
 
+	// make handlebars
+	public function handlebar_make_helper($slug) {
+		//
+		return "{{$slug}}";
+	}
+
 	// escape double quotes
 	public function handlebar_links_helper($match) {
 		//var_dump($match);die;
 		$slug = str_replace(array('{','}'), '', $match[0]);
 		$content = $this->get_byslug_notype($match[1]);
 		if (is_array($content)) {
-			$excerpt = $this->handlebar_links($content[1]['excerpt'],false);
-			return '<a href="/'.$content[0].'/'.$content[1]['slug'].'" data-toggle="tooltip" data-title="'.$excerpt.'">'.$content[1]['title'].'</a>';
+			$subtitle = (isset($content[1]['subtitle'])) ? $this->handlebar_links($content[1]['subtitle'],false) : $this->handlebar_links($content[1]['excerpt'],false);
+			return '<a handlebar href="/'.$content[0].'/'.$content[1]['slug'].'" data-toggle="tooltip" data-title="'.$subtitle.'">'.$content[1]['title'].'</a><!-- end handlebar-->';
 		} else {
-			return($match[0].' HANDLEBAR FAIL');
+			return($match[0]);
 		}
 	}
 
@@ -1240,6 +1376,28 @@ class shared extends CI_Model {
 		}
 	}
 
+	// parse form values by type
+	public function parse_bytype_helper($value,$type) {
+		// definitions - make arrays of form input names for each process
+		$handlebarlinks = array('body','excerpt','subtitle'); // for contenttools, replace site html links with handlebar slugs
+		$striphtml = array('title','slug','subtitle'); // for contenttools, remove extra html
+		$stripspaces = array('title','slug','subtitle'); // for contenttools, remove trailing and extra spaces and new lines
+		
+		// handlebar links
+		if (in_array($type, $handlebarlinks)) {
+			$expression = '/<a handlebar href="\/(.*[^\/])[\/](.*[^\/])" data-toggle="tooltip" data-title="(.*)" data-original-title="" title="">(.*)<\/a><!-- end handlebar-->/';
+			$value = preg_replace($expression, '$2', $value);
+		}
+		// strip html
+		if (in_array($type, $striphtml)) {
+			$value = strip_tags($value);
+		}
+		// strip spaces and new lines
+		if (in_array($type, $stripspaces)) {
+			$value = trim(str_replace(array("\r\n", "\r", "\n", "\t"), ' ', preg_replace(" {2,}", ' ',$value)));
+		}
+		return $value;
+	}
 	// Send an email, send in an id or the user object
 	public function send_email($to,$subject,$message) {
 		$this->load->library('email');
@@ -1258,7 +1416,7 @@ class shared extends CI_Model {
 		$this->email->clear();
 	
 		$this->email->to($to->email);
-		$this->email->from('theseanwitt@gmail.com');
+		$this->email->from('sean@zilifone.net');
 		$this->email->subject($defaults['site'].$subject);
 		$this->email->message("Hi {$to->first_name},<br>{$message}{$defaults['footer']}");
 		$this->email->send();
@@ -1269,6 +1427,55 @@ class shared extends CI_Model {
 
 	}
 
+	// Get the settings for the site and return array with slugs as keys
+	public function settings() {
+		$a = $this->get_data2('settings',false,false,true);
+		$settings = array();
+		foreach ($a as $i) {
+			$settings[$i['setting']] = $i;
+			$settings[$i['setting']]['host'] = $this->get_data2('taxonomy',$i['value']);
+		}
+		return $settings;
+	}
+
+	// Get related content for sidebar of pages and return as raw html for api calls.
+	public function related_html($type,$id) {
+		$links = $this->get_data('link',false,array('hosttype'=>$type,'hostid'=>$id)); 
+		$host = $this->get_data($type,$id);
+
+		$return = '';
+		if ($links === false) {
+			$return .= '<blockquote>Nothing in the feed...yet.<br /><button class="btn btn-success" data-toggle="modal" data-target="#createlink">Create a Link</button></blockquote>';
+		} else {
+			$return .=  '<!-- CAS Embed --><div class="cas-embed">';
+			foreach ($links as $link) { 
+				$__host = $this->get_data($link['hosttype'],$link['hostid']);
+				$return .= '<blockquote class="embedly-card" data-card-key="74435e49e8fa468eb2602ea062017ceb" data-card-controls="0"><h4><a href="'.$link['uri'].'">'.$link['title'].'</a></h4><p>'.$link['excerpt'].'</p></blockquote><div class="feed-footer"><address data-toggle="tooltip" data-title="'.$link['excerpt'].'">Description</address> | This is linked to <a href="/'.$link['hosttype'].'/'.$__host['slug'].'">'.$__host['title'].'</a>.';
+				//if ($this->ion_auth->is_admin()) $return .= ' | <a href="/api/remove/link/'.$link['id'].'/refresh" data-toggle="tooltip" data-title="Are you sure?">Delete</a>';
+				$return .= '</div>';
+			}
+			$return .= '</div><!-- /CAS Embed --> ';
+		}
+		return $return;
+	}
+	
+	public function footer_photocitation($id,$img,$timestamp,$slug,$title,$includeheader=true) {
+		$citation = 'Wohl, S. ('.date('Y, j F', $timestamp)."). $title. Retrieved from ".current_url();
+		$js_citation = "$(this).attr('title', 'citation copied!').tooltip('fixTitle').tooltip('show'); copyStringToClipboard('$citation');";
+		$js_handlebars = "$(this).attr('title', '{{".$slug."}} copied!').tooltip('fixTitle').tooltip('show'); copyStringToClipboard('{{".$slug."}}');";
+		echo '<div style="padding-bottom:30px;"><p>&nbsp;</p><hr />';
+		if ($includeheader) {
+			echo '<p><span class="photocreditpreview" style="background-image: url(';
+			echo (isset($img['header']) && !empty($img['header'])) ? $img['header']['url']: '/includes/test/assets/Moofushi_Kandu_fish.jpg'; 
+			echo ');"></span><strong style="display: block;">Photo Credit and Caption: </strong> ';
+			echo (isset($img['header']) && !empty($img['header'])) ? $img['header']['caption']: ' Underwater image of fish in Moofushi Kandu, Maldives, by Bruno de Giusti (via Wikimedia Commons)'; 
+			if ($this->ion_auth->logged_in()) echo ' <a href="#pageupload" data-toggle="modal" data-target="#pageupload">(Modify Photo/Caption &rarr;)</a>';
+			echo '</p>';
+		}
+		echo '<p style="clear: both;"><strong>Cite this page:</strong><br><pre onclick="'.$js_citation.'" style="cursor: pointer;" data-toggle="tooltip" data-placement="top" title="click to copy citation">'.$citation.'</pre></p>';
+		echo '<p><span onclick="'.$js_handlebars.'" style="text-decoration: underline; cursor: pointer;" data-toggle="tooltip" data-placement="top" title="click to copy handlebar link">'.$title.'</span> was updated '.date('F jS, Y', $timestamp).'.</p></div>';
+	}
+	
 	// Get the weather for a location (string or array of lat/lon) of source default or ski location and echo or return the result
 	public function weather($location=false,$source='ip',$formatted='navbar') {
 		if ($source == 'ip') {
