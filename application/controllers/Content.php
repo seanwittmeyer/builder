@@ -6,8 +6,8 @@
  *
  * This script is the controller for the static pages on the site. Based on the CI tutorial.
  *
- * Version 1.4.5 (2014 04 23 1530)
- * Edited by Sean Wittmeyer (theseanwitt@gmail.com)
+ * Version 1.4.5 (2019 09 10 1940)
+ * Edited by Sean Wittmeyer (sean@zilifone.net)
  * 
  */
 
@@ -22,15 +22,21 @@ class Content extends CI_Controller {
 	{
 		$data = $this->shared->get_byslug('definition',$slug);
 		if (!isset($data['title'])) show_404();
+		$data['settings'] = $this->shared->settings();
+		$data['cartograph'] = $this->shared->cartograph_content(false,$data['settings']);
 		$data['related'] = $this->shared->get_related('definition',$data['id']);
+		if ($data['img'] != '') $data['img'] = unserialize($data['img']);
 		if ($data['payload'] != '') $data['payload'] = unserialize($data['payload']);
 		$data['type'] = 'definition';
 		$data['pagetitle'] = $data['title'];
 		$data['section'] = 'musings';
 		$data['loadjs'][] = 'blank';
+		$data['loadjs']['contenttools'] = true;
 		//print_r($data);die;
 		$this->load->view('app/builder/templates/header', $data);
-		$this->load->view('app/cas/definition', $data);
+		$this->load->view('app/cas/helpers/menu', $data);
+		$path = ($data['template'] == 'default') ? 'app/cas/definition': "app/cas/definition/{$data['template']}";
+		$this->load->view($path, $data);
 		$this->load->view('app/builder/templates/footer', $data);
 	
 	}
@@ -39,14 +45,18 @@ class Content extends CI_Controller {
 		$data = $this->shared->get_byslug('taxonomy',$slug);
 		if (!isset($data['title'])) show_404();
 		$data['related'] = $this->shared->get_related('taxonomy',$data['id']);
+		$data['settings'] = $this->shared->settings();
+		$data['cartograph'] = $this->shared->cartograph_content(false,$data['settings']);
 		$data['type'] = 'taxonomy';
 		if ($data['img'] != '') $data['img'] = unserialize($data['img']);
 		if ($data['payload'] != '') $data['payload'] = unserialize($data['payload']);
 		$data['pagetitle'] = $data['title'];
 		$data['section'] = 'musings';
 		$data['loadjs'][] = 'blank';
+		$data['loadjs']['contenttools'] = true;
 		//print_r($data);die;
 		$this->load->view('app/builder/templates/header', $data);
+		$this->load->view('app/cas/helpers/menu', $data);
 		$path = ($data['template'] == 'default') ? 'app/cas/taxonomy': "app/cas/taxonomy/{$data['template']}";
 		$this->load->view($path, $data);
 		$this->load->view('app/builder/templates/footer', $data);
@@ -57,6 +67,8 @@ class Content extends CI_Controller {
 		$data = $this->shared->get_byslug('paper',$slug);
 		if (!isset($data['title'])) show_404();
 		$data['related'] = $this->shared->get_related('paper',$data['id']);
+		$data['settings'] = $this->shared->settings();
+		$data['cartograph'] = $this->shared->cartograph_content(false,$data['settings']);
 		$data['type'] = 'paper';
 		$data['pagetitle'] = $data['title'];
 		$data['section'] = 'musings';
@@ -64,6 +76,7 @@ class Content extends CI_Controller {
 
 		//print_r($data);die;
 		$this->load->view('app/builder/templates/header', $data);
+		$this->load->view('app/cas/helpers/menu', $data);
 		$this->load->view('app/cas/paper', $data);
 		$this->load->view('app/builder/templates/footer', $data);
 	
@@ -71,11 +84,19 @@ class Content extends CI_Controller {
 	public function feed($type)
 	{
 		$data['type'] = $type;
-		$data['pagetitle'] = ucfirst($type).' Feed';
+		$data['pagetitle'] = ($type == 'html') ? 'Websites': ucfirst($type).'s';
 		$data['section'] = 'musings';
-		$data['loadjs'][] = 'masonry';
+		$data['loadjs']['masonry'] = true;
+		$data['loadjs']['livesearch'] = true;
+		$data['settings'] = $this->shared->settings();
+		$data['cartograph'] = $this->shared->cartograph_content(false,$data['settings']);
+		$data['path'] = array(
+			'title'=>'The Feed',
+			'url'=> current_url()
+		);
 		//print_r($data);die;
 		$this->load->view('app/builder/templates/header', $data);
+		$this->load->view('app/cas/helpers/menu', $data);
 		$this->load->view('app/cas/feed', $data);
 		$this->load->view('app/builder/templates/footer', $data);
 	

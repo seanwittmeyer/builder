@@ -1,7 +1,4 @@
 <?php 
-	foreach (array('principles','fields','people','terms','concepts') as $a) {
-		$is[$a] = false;
-	}
 	$attributes = $this->shared->get_attributes();
 	if ($this->ion_auth->logged_in()) {
 		$user = $this->ion_auth->user()->row(); 
@@ -15,12 +12,36 @@
 			$icon = $diagram;
 			break;
 		}
-	} ?>
+	}
+	$relatedprinciples = array(
+			$settings['principles']['value'],
+			'taxonomy',
+			'Related '.$settings['principles']['title'], 
+			'This is a list of '.$settings['principles']['title'].' that '.$title.' is related to.');
+	$p__type = 'taxonomy';
+	$p__list = $this->shared->get_related($relatedprinciples[1],$relatedprinciples[0]);
+	if (!empty($p__list)) { 
+	$p__host = $this->shared->get_data($relatedprinciples[1],$relatedprinciples[0]);  ?>
+	<!-- Nav -->
+	<div class="principle-container-nav">
+		<!-- Nav tabs -->
+		<span class="app-section-title"><a href="/taxonomy/<?php echo $settings['principles']['host']['slug']; ?>" ><?php echo $settings['principles']['title']; ?></a></span>
+		<ul class="nav app-section-nav" role="tablist">
+			<!--<li role="presentation" class="active"><a href="#principle-home" aria-controls="principle-home" role="tab" data-toggle="tab">Home</a></li>-->
+			<?php foreach ($cartograph['principles']['children'] as $d) { 
+				// Prep titles and acronyms
+					$thispage = ($d['type'] == $type && $d['id'] == $id) ? true : false; ?> 
+			<li role="presentation" class="<?php if ($thispage || $this->shared->is_parent($d['type'], $d['id'], $type, $id)) echo 'active'; ?>"><a href="/<?php echo "{$d['type']}/{$d['slug']}"; ?>" style="background-image: url('<?php echo (isset($d['img']['header']) && !empty($d['img']['header'])) ? $d['img']['header']['url']: '/includes/test/assets/Moofushi_Kandu_fish.jpg'; ?>');" ><?php echo $d['title']; ?></a></li>
+			<?php } ?> 
+		</ul>
+		<div class="clear"></div>
+	</div>
+	<?php } ?>
 
 	<div class="principle-wrapper concepts-wrapper">
 	<!-- Hero Background -->
 		<div class="container-fluid build-wrapper home-hero">
-			<div id="imgheader" class="hero-wrapper" style="background: #ccc;">
+			<div id="imgheader" class="hero-wrapper" style="background-image: url(<?php echo (isset($img['header']) && !empty($img['header'])) ? $img['header']['url']: '/includes/test/assets/terms_background.jpg'; ?>);">
 				<div class="hero"></div>
 			</div>
 		</div>
@@ -47,9 +68,8 @@
 					<div data-editable="" data-name="payload[title]">
 						<h1><?php echo $title; ?></h1>
 					</div>
-					<?php if ($is['people']) { ?><h2 style="display: inline-block;">Associated with </h2><?php } ?>
-					<div data-editable="" data-name="payload[subtitle]"<?php if ($is['people']) { ?> style="display: inline-block;"<?php } ?>>
-						<h2 style="display: inline-block;"><?php echo $this->shared->handlebar_links($subtitle); ?></h2>
+					<div data-editable="" data-name="payload[subtitle]">
+						<h2><?php echo $this->shared->handlebar_links($subtitle); ?></h2>
 					</div>
 				</div>
 				<!-- /title -->
@@ -62,6 +82,7 @@
 								'taxonomy' => array(),
 								'definition' => array(),
 							);
+								
 						?>
 						<div class="">
 							<span class="subnav-title">Explore</span>
@@ -108,10 +129,13 @@
 						<div data-editable="" data-name="payload[excerpt]">
 							<p><?php echo $this->shared->handlebar_links($excerpt); ?></p>
 						</div>
-						<div id="fulltext">
-							<hr class="" />
+						<div>
+							<a href="#fulltext" onclick="$('#fulltext').toggle('100'); $(this).hide(); return false;" style="display: block; padding-bottom: 40px;">Keep reading →</a>
+						</div>
+						<div id="fulltext" style="display: none;">
+							<hr />
 							<div data-editable="" data-name="payload[body]"><?php echo $this->shared->handlebar_links($body); ?></div>
-							<?php $this->shared->footer_photocitation($id,$img,$timestamp,$slug,$title,false); ?>
+							<?php $this->shared->footer_photocitation($id,$img,$timestamp,$slug,$title); ?>
 						</div>
 					</div>
 					<!-- /body -->
@@ -171,6 +195,7 @@
 								<li role="presentation" class="active"><a href="#feed" aria-controls="home" role="tab" data-toggle="tab">Feed</a></li>
 								<li role="presentation"><a href="#people" aria-controls="profile" role="tab" data-toggle="tab">People</a></li>
 								<li role="presentation"><a href="#terms" aria-controls="messages" role="tab" data-toggle="tab">Terms</a></li>
+								<li role="presentation"><a href="#thoughts" aria-controls="settings" role="tab" data-toggle="tab">Thought Experiments</a></li>
 							</ul>
 							
 							<!-- Tab panes -->

@@ -307,7 +307,7 @@
 		</div>
 	</footer>-->
 	<!-- Javascript -->
-	<script src="/includes/js/bootstrap.min.js"></script>
+	<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="/includes/js/bootstrap-select.min.js"></script>
 	<script src="/includes/js/sortable.js"></script>
 	<script src="/includes/js/summernote.min.js"></script>

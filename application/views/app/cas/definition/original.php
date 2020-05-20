@@ -1,7 +1,4 @@
 <?php 
-	foreach (array('principles','fields','people','terms','concepts') as $a) {
-		$is[$a] = false;
-	}
 	$attributes = $this->shared->get_attributes();
 	if ($this->ion_auth->logged_in()) {
 		$user = $this->ion_auth->user()->row(); 
@@ -15,258 +12,285 @@
 			$icon = $diagram;
 			break;
 		}
-	} ?>
-
-	<div class="principle-wrapper concepts-wrapper">
-	<!-- Hero Background -->
-		<div class="container-fluid build-wrapper home-hero">
-			<div id="imgheader" class="hero-wrapper" style="background: #ccc;">
-				<div class="hero"></div>
+	}
+?><!-- General Content Block -->
+	<div class="container top-nospace">
+		<div class="row topbottom-space">
+			<div class="col-md-3">
+				<img class="cas-def-diagram-preview" data-toggle="modal" data-target="#<?php echo (empty($diagrams['sorted'])) ? 'diagramnew':'diagramrate'; ?>" src="<?php echo (isset($icon['url'])) ? $icon['url']: '/upload/img/defdefault.png'; ?>" width="200px" height="200px" alt="Diagram: <?php echo $title; ?>" />
+				<?php if ($this->ion_auth->logged_in()) { ?><div style="position: absolute; left: 130px; top: 159px; width: 75px;">
+					<button type="button" class="btn btn-fail btn-sm" data-toggle="modal" data-target="#diagramnew"><span class="glyphicon glyphicon-plus" data-toggle="tooltip" title="Suggest new image/diagram" aria-hidden="true"></span></button>
+					<button type="button" class="btn btn-fail btn-sm" data-toggle="modal" data-target="#diagramrate"><span class="glyphicon glyphicon-th-list" data-toggle="tooltip" title="Rate <?php echo lcfirst(str_replace('"',"'",$title)); ?> diagrams" aria-hidden="true"></span></button>
+				</div><?php } ?>
+			</div>
+			<div class="col-md-9">
+				<div data-editable data-name="payload[title]"><h1><?php echo $title; ?></h1></div>
+				<div data-editable data-name="payload[subtitle]"><p class="lead"><?php echo $this->shared->handlebar_links($subtitle); ?></p></div>
 			</div>
 		</div>
-		<!-- /background -->
-		<!-- Content Wrapper -->
-		<div class="container-fluid build-wrapper top-nospace">
-			<!-- Hero -->
-			<div class="row">
-				<!-- Hero Title  -->
-				<div class="col-lg-7 col-md-9 hero-heading">
-					<?php 
-						if ($this->shared->is_parent($type, $id, 'taxonomy', $settings['terms']['value'])) { ?><a class="subnav-heading" href="/taxonomy/<?php echo $this->shared->get_data('taxonomy',$settings['terms']['value'])['slug']; ?>"><?php echo $settings['terms']['title']; ?></a><?php } 
-						elseif ($this->shared->is_parent($type, $id, 'taxonomy', $settings['people']['value'])) { ?><a class="subnav-heading" href="/taxonomy/<?php echo $this->shared->get_data('taxonomy',$settings['people']['value'])['slug']; ?>"><?php echo $settings['people']['title']; ?></a><?php } 
-						elseif ($this->shared->is_parent($type, $id, 'taxonomy', $settings['concepts']['value'])) { ?><a class="subnav-heading" href="/taxonomy/<?php echo $this->shared->get_data('taxonomy',$settings['concepts']['value'])['slug']; ?>"><?php echo $settings['concepts']['title']; ?></a><?php } 
-						?>
-					<div class="hero-diagram">
-						<img class="cas-def-diagram-preview" data-toggle="modal" data-target="#<?php echo (empty($diagrams['sorted'])) ? 'diagramnew':'diagramrate'; ?>" src="<?php echo (isset($icon['url'])) ? $icon['url']: '/upload/img/defdefault.png'; ?>" width="200px" height="200px" alt="Diagram: <?php echo $title; ?>" />
-						<?php if ($this->ion_auth->logged_in()) { ?><div style="position: absolute; left: 140px; top: 49px; width: 75px;">
-							<button type="button" class="btn btn-fail btn-sm" data-toggle="modal" data-target="#diagramnew"><span class="glyphicon glyphicon-plus" data-toggle="tooltip" title="Suggest new image/diagram" aria-hidden="true"></span></button>
-							<button type="button" class="btn btn-fail btn-sm" data-toggle="modal" data-target="#diagramrate"><span class="glyphicon glyphicon-th-list" data-toggle="tooltip" title="Rate <?php echo lcfirst(str_replace('"',"'",$title)); ?> diagrams" aria-hidden="true"></span></button>
-						</div><?php } ?>
+	</div>
+	<!-- /General Content Block -->
+	<!-- Panels -->
+	<div class="container top-nospace">
+		<div class="row">
+			<div class="col-sm-7">
+				<div class="bodytext">
+					<div data-editable data-name="payload[excerpt]"><p style="font-weight: bold;"><?php echo $this->shared->handlebar_links($excerpt); ?></p></div>
+					<hr />
+					<div data-editable data-name="payload[body]">
+						<?php echo $this->shared->handlebar_links($body); ?>
 					</div>
+					<p>&nbsp;</p>
+				</div>
+				<?php // exclude the following for these taxonomy IDs
+					$excludearray = array(
+						'taxonomy' => array(),
+						'definition' => array(),
+					);						
+				?>
 
-					<div data-editable="" data-name="payload[title]">
-						<h1><?php echo $title; ?></h1>
-					</div>
-					<?php if ($is['people']) { ?><h2 style="display: inline-block;">Associated with </h2><?php } ?>
-					<div data-editable="" data-name="payload[subtitle]"<?php if ($is['people']) { ?> style="display: inline-block;"<?php } ?>>
-						<h2 style="display: inline-block;"><?php echo $this->shared->handlebar_links($subtitle); ?></h2>
-					</div>
-				</div>
-				<!-- /title -->
-				<!-- Hero Next -->
-				<div class="col-lg-offset-2 col-lg-3 hero-heading hero-related visible-lg">
-					<!-- Related -->
-					<div class="row related">
-						<?php // exclude the following for these taxonomy IDs
-							$excludearray = array(
-								'taxonomy' => array(),
-								'definition' => array(),
-							);
-						?>
-						<div class="">
-							<span class="subnav-title">Explore</span>
-						<?php // setup for the related dropdown module something
-							$relatedsetup = array();
-							if (!$this->shared->is_parent($type, $id, 'taxonomy', $settings['concepts']['value'])) $relatedsetup['concepts'] = array(
-									$settings['concepts']['value'],
-									'taxonomy',
-									'Related '.$settings['concepts']['title'], 
-									'This is a list of '.$settings['concepts']['title'].' that '.$title.' is related to.');
-							if (!$this->shared->is_parent($type, $id, 'taxonomy', $settings['principles']['value'])) $relatedsetup['principles'] = array(
-									$settings['principles']['value'],
-									'taxonomy',
-									'Related '.$settings['principles']['title'], 
-									'This is a list of '.$settings['principles']['title'].' that '.$title.' is related to.');
-							if (!$this->shared->is_parent($type, $id, 'taxonomy', $settings['fields']['value'])) $relatedsetup['fields'] = array(
-									$settings['fields']['value'],
-									'taxonomy',
-									'Related '.$settings['fields']['title'], 
-									'This is a list of '.$settings['fields']['title'].' that '.$title.' is related to.');
-							foreach ($relatedsetup as $__k => $__i) {
-								$__type = 'taxonomy';
-								$__list = $this->shared->get_related($__i[1],$__i[0]);
-								if (!empty($__list)) { 
-								$__host = $this->shared->get_data($__i[1],$__i[0]); ?>
-							<p><strong><a href="/<?php echo $__host['type']; ?>/<?php echo $__host['slug']; ?>"><?php echo $__i[2]; ?></a></strong></p>
-							<?php foreach ($__list as $__child) { 
-								if ($this->shared->is_parent($type, $id, $__child['type'], $__child['id'])) { 
-									$excludearray[$__child['type']][] = $__child['id']; 
-									?><li><a href="/<?php echo $__child['type']; ?>/<?php echo $__child['slug']; ?>"><?php echo $__child['title']; ?></a></li><?php }} // end is_child and foreach ?>
-						<?php }} ?>
-					</div>
-					<!-- /related -->
 
-				</div>
-			</div>
-			<!-- /Hero -->
-			<!-- Content -->
-			<div class="row" style="margin: 0;">
-				<!-- Left -->
-				<div class="col-lg-7 col-md-9">
-					<!-- Body -->
-					<div class="topno-space bodytext">
-						<div data-editable="" data-name="payload[excerpt]">
-							<p><?php echo $this->shared->handlebar_links($excerpt); ?></p>
-						</div>
-						<div id="fulltext">
-							<hr class="" />
-							<div data-editable="" data-name="payload[body]"><?php echo $this->shared->handlebar_links($body); ?></div>
-							<?php $this->shared->footer_photocitation($id,$img,$timestamp,$slug,$title,false); ?>
-						</div>
-					</div>
-					<!-- /body -->
-					<!-- Related -->
-					<div class="row related hidden-lg">
-						<?php // exclude the following for these taxonomy IDs
-							$excludearray = array(
-								'taxonomy' => array(),
-								'definition' => array(),
-							);
-								
-						?>
-						<div class="col-sm-12">
-							<span class="subnav-title">Applying <?php echo $title; ?></span>
-						</div>
-						<?php // setup for the related dropdown module 
-							$relatedsetup = array(
-								'concepts' => array(
-									$settings['concepts']['value'],
-									'taxonomy',
-									'Related '.$settings['concepts']['title'], 
-									'This is a list of '.$settings['concepts']['title'].' that '.$title.' is related to.'),
-								'principles' => array(
-									$settings['principles']['value'],
-									'taxonomy',
-									'Related '.$settings['principles']['title'], 
-									'This is a list of '.$settings['principles']['title'].' that '.$title.' is related to.'),
-								'fields' => array(
-									$settings['fields']['value'],
-									'taxonomy',
-									'Related '.$settings['fields']['title'], 
-									'This is a list of '.$settings['fields']['title'].' that '.$title.' is related to.'),
-							);
-							foreach ($relatedsetup as $__k => $__i) {
-								$__type = 'taxonomy';
-								$__list = $this->shared->get_related($__i[1],$__i[0]);
-								if (!empty($__list)) { 
-								$__host = $this->shared->get_data($__i[1],$__i[0]);
-						?><div class="col-md-5">
-							<p><strong><?php echo $__i[2]; ?></strong></p>
-							<p><?php echo $__i[3]; ?></p>
-							<?php foreach ($__list as $__child) { if ($this->shared->is_parent($type, $id, $__child['type'], $__child['id'])) { $excludearray[$__child['type']][] = $__child['id']; ?><li><a href="/<?php echo $__child['type']; ?>/<?php echo $__child['slug']; ?>"><?php echo $__child['title']; ?></a></li><?php }} // end is_child and foreach ?><li><a href="/<?php echo $__host['type']; ?>/<?php echo $__host['slug']; ?>">See all <em><?php echo $__host['title']; ?></em> &rarr;</a></li>
-						</div><?php }} ?>
-					</div>
-					<!-- /related -->
-				</div>
-				<!-- /left -->
-				<!-- Right -->
-				<div class="col-lg-5 col-md-9">
-					<!-- Dive in Tabs -->
-					<div class="feed">
-						<span class="subnav-title">Dive In</span>
-						<div class="divein">
-						
-							<!-- Nav tabs -->
-							<ul class="nav nav-tabs" role="tablist">
-								<li role="presentation" class="active"><a href="#feed" aria-controls="home" role="tab" data-toggle="tab">Feed</a></li>
-								<li role="presentation"><a href="#people" aria-controls="profile" role="tab" data-toggle="tab">People</a></li>
-								<li role="presentation"><a href="#terms" aria-controls="messages" role="tab" data-toggle="tab">Terms</a></li>
-							</ul>
-							
-							<!-- Tab panes -->
-							<div class="tab-content">
-								<div role="tabpanel" class="tab-pane fade in active" id="feed">
-									<p>This is the feed, a series of related links and resources. <a data-toggle="modal" data-target="#createlink">Add a link to the feed →</a></p>
-									<?php echo $this->shared->related_html($type,$id); ?>
-								</div>
-								<div role="tabpanel" class="tab-pane fade" id="people">
-									<?php // setup for the related dropdown module 
-										$relatedsetup = array(
-											'people' => array(
-												$settings['people']['value'],
-												'taxonomy',
-												'Related '.$settings['people']['title'], 
-												'This is a list of '.$settings['people']['title'].' that '.$title.' is related to.'),
-										); $i=1; ?>
-									<div class="panel-group" id="accordion-people" role="tablist" aria-multiselectable="true"><?php
-										foreach ($relatedsetup as $__k => $__i) {
-											$__type = 'taxonomy';
-											$__list = $this->shared->get_related($__i[1],$__i[0]);
-											if (!empty($__list)) { 
-											$__host = $this->shared->get_data($__i[1],$__i[0]); ?>
-										<p><?php echo $__i[3]; ?></p>
-										<?php foreach ($__list as $__child) { if ($this->shared->is_parent($type, $id, $__child['type'], $__child['id'])) { $excludearray[$__child['type']][] = $__child['id']; ?>
-										<div class="panel panel-default">
-											<div class="panel-heading" role="tab" id="headingTwo">
-												<a <?php if ($i>1) echo 'class="collapsed" ';?>role="button" data-toggle="collapse" data-parent="#accordion-people" href="#<?php echo $__k.$__child['id']; ?>" aria-expanded="<?php echo ($i === 1) ? 'true':'false';?>" aria-controls="<?php echo $__k.$__child['id']; ?>">
-													<?php echo $__child['title']; ?>
-													</a>
-											</div>
-											<div id="<?php echo $__k.$__child['id']; ?>" class="panel-collapse collapse<?php if ($i === 1) echo ' in';?>" role="tabpanel" aria-labelledby="headingOne">
-												<div class="panel-body">
-													<p><?php echo $__child['subtitle']; ?></p>
-													<?php echo $__child['excerpt']; ?>
-												<a href="/<?php echo $__child['type']; ?>/<?php echo $__child['slug']; ?>">Read more and see related content for <?php echo $__child['title']; ?> &rarr;</a>
-												</div>
-											</div>
-										</div>
-										<?php $i++; }} // end is_child and foreach ?>
-										<li><a href="/<?php echo $__host['type']; ?>/<?php echo $__host['slug']; ?>">See all <em><?php echo $__host['title']; ?></em> &rarr;</a></li>
-									<?php }} ?>
-									</div>
-						
-								</div>
-								<div role="tabpanel" class="tab-pane fade" id="terms">
-									<?php // setup for the related dropdown module 
-										$relatedsetup = array(
-											'terms' => array(
-												$settings['terms']['value'],
-												'taxonomy',
-												'Related '.$settings['terms']['title'], 
-												'This is a list of '.$settings['terms']['title'].' that '.$title.' is related to.'),
-										); $i=1; ?>
-									<div class="panel-group" id="accordion-terms" role="tablist" aria-multiselectable="true"><?php
-										foreach ($relatedsetup as $__k => $__i) {
-											$__type = 'taxonomy';
-											$__list = $this->shared->get_related($__i[1],$__i[0]);
-											if (!empty($__list)) { 
-											$__host = $this->shared->get_data($__i[1],$__i[0]); ?>
-										<p><?php echo $__i[3]; ?></p>
-										<?php foreach ($__list as $__child) { if ($this->shared->is_parent($type, $id, $__child['type'], $__child['id'])) { $excludearray[$__child['type']][] = $__child['id']; ?>
-										<div class="panel panel-default">
-											<div class="panel-heading" role="tab" id="headingTwo">
-												<a <?php if ($i>1) echo 'class="collapsed" ';?>role="button" data-toggle="collapse" data-parent="#accordion-terms" href="#<?php echo $__k.$__child['id']; ?>" aria-expanded="<?php echo ($i === 1) ? 'true':'false';?>" aria-controls="<?php echo $__k.$__child['id']; ?>">
-												<?php echo $__child['title']; ?>
-												</a>
-											</div>
-											<div id="<?php echo $__k.$__child['id']; ?>" class="panel-collapse collapse<?php if ($i === 1) echo ' in';?>" role="tabpanel" aria-labelledby="headingOne">
-												<div class="panel-body">
-													<p><?php echo $__child['subtitle']; ?></p>
-													<?php echo $__child['excerpt']; ?>
-												<a href="/<?php echo $__child['type']; ?>/<?php echo $__child['slug']; ?>">Read more and see related content for <?php echo $__child['title']; ?> &rarr;</a>
-												</div>
-											</div>
-										</div>
-										<?php $i++; }} // end is_child and foreach ?>
-										<li><a href="/<?php echo $__host['type']; ?>/<?php echo $__host['slug']; ?>">See all <em><?php echo $__host['title']; ?></em> &rarr;</a></li>
-									<?php }} ?>
-									</div>
-						
-								</div>
-								<div role="tabpanel" class="tab-pane fade" id="thoughts">There would be some thought experiments here.</div>
+				<?php if (isset($payload['footer']) && in_array('parentchild', $payload['footer'])) : ?>
+				<!-- Footer parentchild -->
+						<div class="row">
+							<div class="col-md-6">
+								<h3>Continue Exploring</h3>
+								<p>Explore <?php echo $title; ?> further in the topics and collections below.</p>
+								<?php $set = $this->shared->get_related($type,$id,true); ?>
+								<?php if ($set !== false) : ?>
+								<?php foreach ($set as $single) { 
+									if (in_array($single['id'], $excludearray[$single['type']])) continue; ?>
+									<h4><a class="t_list_<?php echo $single['id']; ?>" href="/<?php echo $single['type']; ?>/<?php echo $single['slug']; ?>"><?php echo $single['title']; ?></a></h4>
+									<!--<p><?php echo $single['excerpt']; ?> <a href="/<?php echo $single['type']; ?>/<?php echo $single['slug']; ?>">Learn More about <?php echo $single['title']; ?> &rarr;</a></p>-->
+								<?php } ?> 
+								<?php elseif ($this->ion_auth->is_admin()): ?><blockquote>No connected topics...yet.<br /><button class="btn btn-success" data-toggle="modal" data-target="#pageeditor">Add Relationships</button></blockquote><?php endif; ?>
 							</div>
-						
+							<div class="col-md-6">
+								<h3>Parents</h3>
+								<p><?php echo $title; ?> is part of the following collections.</p>
+								<?php $set = $this->shared->get_related_parents($type,$id,true); ?>
+								<?php /* */ ?>
+								<?php if ($set !== false) : ?>
+								<?php foreach ($set as $single) { 
+									if (!isset($single['id'])) continue; 
+									if (in_array($single['id'], $excludearray[$single['type']])) continue; ?>
+									<h4><a class="t_list_<?php echo $single['id']; ?>" href="/<?php echo $single['type']; ?>/<?php echo $single['slug']; ?>"><?php echo $single['title']; ?></a></h4>
+									<!--<p><?php echo $single['excerpt']; ?> <a href="/<?php echo $single['type']; ?>/<?php echo $single['slug']; ?>">Learn More about <?php echo $single['title']; ?> &rarr;</a></p>-->
+								<?php } ?> 
+								<?php elseif ($this->ion_auth->is_admin()): ?><blockquote>No connected topics...yet.<br /><button class="btn btn-success" data-toggle="modal" data-target="#pageeditor">Add Relationships</button></blockquote><?php endif; ?>
+								<?php /**/ ?>
+							</div>
 						</div>
-	    			</div>
-	    		</div>
-	
+				<!-- /Footer List -->
+				<?php endif; ?>
+				<?php if (isset($payload['footer']) && in_array('excerpts', $payload['footer'])) : ?>
+				<!-- Footer List -->
+					<?php $set = $this->shared->get_related($type,$id,true); ?>
+					<?php if ($set !== false) : ?>
+						<h4><strong>Explore Further</strong></h4>
+						<p>These are elements and topics related to <?php echo $title; ?>. <?php if ($this->ion_auth->is_admin()) { ?>You can also <a data-toggle="modal" data-target="#pageeditor">modify relationships &rarr;</a><?php } ?></p>
+						<?php foreach ($set as $single) { 
+							if (in_array($single['id'], $excludearray[$single['type']])) continue;
+						?>
+							<h4><a class="t_list_<?php echo $single['id']; ?>" href="/<?php echo $single['type']; ?>/<?php echo $single['slug']; ?>"><?php echo $single['title']; ?></a></h4>
+							<p><?php echo $single['excerpt']; ?> <a href="/<?php echo $single['type']; ?>/<?php echo $single['slug']; ?>">Learn More about <?php echo $single['title']; ?> &rarr;</a></p>
+							<hr>
+						<?php } ?> <?php elseif ($this->ion_auth->is_admin()): ?><blockquote>No connected topics...yet.<br /><button class="btn btn-success" data-toggle="modal" data-target="#pageeditor">Add Relationships</button></blockquote><?php endif; ?>
+				<!-- /Footer List -->
+				<?php endif; ?>
+				<?php if (isset($payload['footer']) && in_array('list', $payload['footer'])) : ?>
+				<!-- Footer List -->
+				<div class="page-header">
+					<h4><strong>Explore Further</strong></h4>
+					<p>These are elements and topics related to <?php echo $title; ?>. <?php if ($this->ion_auth->is_admin()) { ?>You can also <a data-toggle="modal" data-target="#pageeditor">modify relationships &rarr;</a><?php } ?></p>
+					<?php $set = $this->shared->get_related($type,$id,true); ?>
+					<?php if ($set !== false) : ?>
+					<!--
+					<hr />
+					<h3>Related elements and topics</h3>
+					<p>These are elements and topics related to <?php echo $title; ?>. You can also <a data-toggle="modal" data-target="#pageeditor">modify relationships &rarr;</a></p>
+					-->
+					<?php foreach ($set as $single) { 
+						if (in_array($single['id'], $excludearray[$single['type']])) continue;
+					?>
+						<h4><a class="t_list_<?php echo $single['id']; ?>" href="/<?php echo $single['type']; ?>/<?php echo $single['slug']; ?>"><?php echo $single['title']; ?></a></h4>
+					<?php } ?> <?php elseif ($this->ion_auth->is_admin()): ?><blockquote>No connected topics...yet.<br /><button class="btn btn-success" data-toggle="modal" data-target="#pageeditor">Add Relationships</button></blockquote><?php endif; ?>
+
+				</div>
+				<!-- /Footer List -->
+				<?php endif; ?>
+				<?php if (isset($payload['footer']) && in_array('networkdiagram', $payload['footer'])) : ?>
+				<!-- Footer Visualization -->
+				<h4>Connections</h4>
+				<div class="clear"></div>
+				<div id="viz-test">
+					<!-- https://bl.ocks.org/mbostock/1153292 sticky network diagram --
+					<!-- http://bl.ocks.org/mbostock/4063550 radial network diagram -->
+					<style>
+					
+					.link {
+					  fill: none;
+					  stroke: #666;
+					  stroke-width: 1.5px;
+					}
+					
+					#licensing {
+					  fill: green;
+					}
+					
+					.link.taxonomy {
+					  stroke: green;
+					}
+					
+					.link.definiton {
+					  stroke-dasharray: 0,2 1;
+					}
+					
+					circle {
+					  fill: #ccc;
+					  stroke: #333;
+					  stroke-width: 1.5px;
+					}
+					
+					text {
+					  font: 10px sans-serif;
+					  pointer-events: none;
+					  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+					}
+					
+					</style><script src="//d3js.org/d3.v3.min.js"></script>
+					<script>
+					
+					// http://blog.thomsonreuters.com/index.php/mobile-patent-suits-graphic-of-the-day/
+					var links = <?php
+						
+						$__diagramlinks = array();
+						$set = $this->shared->get_related($type,$id,true);
+						if ($set !== false) : 
+							foreach ($set as $__diagrami) { 
+								$__diagramlinks[] = array(
+									'source' => $title,
+									'target' => $__diagrami['title'],
+									'type' => $__diagrami['type']
+								);
+							}
+						print json_encode($__diagramlinks);
+						//{source: "Nokia", target: "Qualcomm", type: "suit"}
+						?>;
+					
+					var nodes = {};
+					
+					// Compute the distinct nodes from the links.
+					links.forEach(function(link) {
+					  link.source = nodes[link.source] || (nodes[link.source] = {name: link.source});
+					  link.target = nodes[link.target] || (nodes[link.target] = {name: link.target});
+					});
+					
+					var width = $('#viz-test').width(),
+					    height = 210;
+					
+					var force = d3.layout.force()
+					    .nodes(d3.values(nodes))
+					    .links(links)
+					    .size([width, height])
+					    .linkDistance(70)
+					    .charge(-200)
+					    .on("tick", tick)
+					    .start();
+					
+					var svg = d3.select("#viz-test").append("svg")
+					    .attr("width", width)
+					    .attr("height", height);
+					
+					// Per-type markers, as they don't inherit styles.
+					svg.append("defs").selectAll("marker")
+					    .data(["suit", "licensing", "resolved"])
+					  .enter().append("marker")
+					    .attr("id", function(d) { return d; })
+					    .attr("viewBox", "0 -5 10 10")
+					    .attr("refX", 15)
+					    .attr("refY", -1.5)
+					    .attr("markerWidth", 6)
+					    .attr("markerHeight", 6)
+					    .attr("orient", "auto")
+					  .append("path")
+					    .attr("d", "M0,-5L10,0L0,5");
+					
+					var path = svg.append("g").selectAll("path")
+					    .data(force.links())
+					  .enter().append("path")
+					    .attr("class", function(d) { return "link " + d.type; })
+					    .attr("marker-end", function(d) { return "url(#" + d.type + ")"; });
+					
+					var circle = svg.append("g").selectAll("circle")
+					    .data(force.nodes())
+					  .enter().append("circle")
+					    .attr("r", 6)
+					    .call(force.drag);
+					
+					var text = svg.append("g").selectAll("text")
+					    .data(force.nodes())
+					  .enter().append("text")
+					    .attr("x", 8)
+					    .attr("y", ".31em")
+					    .text(function(d) { return d.name; });
+					
+					// Use elliptical arc path segments to doubly-encode directionality.
+					function tick() {
+					  path.attr("d", linkArc);
+					  circle.attr("transform", transform);
+					  text.attr("transform", transform);
+					}
+					
+					function linkArc(d) {
+					  var dx = d.target.x - d.source.x,
+					      dy = d.target.y - d.source.y,
+					      dr = Math.sqrt(dx * dx + dy * dy);
+					  return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+					}
+					
+					function transform(d) {
+					  return "translate(" + d.x + "," + d.y + ")";
+					}
+					<?php endif; ?>
+					</script>
+
+				</div>
+			<!-- /Visualization -->
+			<?php endif; ?>
+
+
+
+
+
+
+				<div class="row">
+					<ul class="breadcrumb">
+						<li class="active"><?php echo $title; ?> {{<?php echo $slug; ?>}} was updated <?php echo date('F jS, Y', $timestamp); ?>.</li>
+					</ul>		
+				</div>	
 			</div>
-			<!-- /content -->
+
+
+			<div class="col-sm-5">
+				<h3>Feed </h3>
+				<p>This is the feed, a series of things related to <?php echo $title; ?>. <a data-toggle="modal" data-target="#createlink">Add a link to the feed &rarr;</a></p>
+				<?php $links = $this->shared->get_data('link',false,array('hosttype'=>$type,'hostid'=>$id)); 
+					if ($links === false) { ?> 
+						<blockquote>Nothing in the feed...yet.<?php if ($this->ion_auth->logged_in()) { ?><br /><button class="btn btn-success" data-toggle="modal" data-target="#createlink">Create a Link</button><?php } ?></blockquote>
+				<?php } else { ?> 
+				<!-- CAS Embed -->
+				<div class="cas-embed">
+					<?php foreach ($links as $link) { ?><blockquote class="embedly-card" data-card-key="74435e49e8fa468eb2602ea062017ceb" data-card-controls="0"><h4><a href="<?php echo $link['uri']; ?>"><?php echo $link['title']; ?></a></h4><p><?php echo $link['excerpt']; ?></p></blockquote><div class="feed-footer"><address data-toggle="tooltip" data-title="<?php echo $link['excerpt']; ?>">Description</address> | This is linked to <a href="/<?php echo $link['hosttype']; ?>/<?php $__host = $this->shared->get_data($link['hosttype'],$link['hostid']); echo $__host['slug']; ?>"><?php echo $__host['title']; ?></a>.<?php if ($this->ion_auth->is_admin()) { ?> | <a href="/api/remove/link/<?php echo $link['id']; ?>/refresh" data-toggle="tooltip" data-title="Are you sure?">Delete</a><?php } ?></div><?php } ?> 
+				</div><!-- /CAS Embed -->
+				<?php } ?>
+			</div>
+
 		</div>
-	</div>	
-	
+	</div>
 	
 	<!-- /Panels -->
+	<!-- Edit page modal -->
 	<div class="modal fade" id="pageeditor" tabindex="-1" role="dialog" aria-labelledby="pageeditor" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -279,23 +303,23 @@
 				<div class="modal-body">
 					<div class="form-group">
 						<label for="payload[title]" class="">Title</label>
-						<div class=""><input type="text" class="form-control" id="cas-def-title" name="payload[title]" value="<?php echo $title; ?>"></div>
+						<div class=""><input type="text" class="form-control" id="cas-def-edit-title" name="payload[title]" value="<?php echo $title; ?>"></div>
 					</div>
 					<div class="form-group">
-						<label for="payload[subtitle]" class="">Subtitle - Single sentence description</label>
-						<div class=""><textarea class="form-control" id="cas-def-edit-subtitle" name="payload[subtitle]"><?php echo $subtitle; ?></textarea></div>
+						<label for="payload[subtitle]" class="">Subtitle - Short, single sentence description</label>
+						<div class=""><textarea type="text" class="form-control" id="cas-def-edit-subtitle" name="payload[subtitle]"><?php echo $subtitle; ?></textarea></div>
 					</div>
 					
 					<div class="form-group">
 						<label for="payload[excerpt]" class="">Excerpt</label>
-						<div class=""><textarea class="form-control" id="cas-def-excerpt" name="payload[excerpt]"><?php echo $excerpt; ?></textarea></div>
+						<div class=""><textarea type="text" class="form-control" id="cas-def-edit-excerpt" name="payload[excerpt]"><?php echo $excerpt; ?></textarea></div>
 					</div>
 					
 					<div class="form-group">
 						<label for="payload[body]" class="">Body</label>
 						<p class="small"><span class="glyphicon glyphicon-exclamation-sign" style="color:red;" aria-hidden="true"></span> This has issues when copying-and-pasting from websites and Microsoft Word. It is best if you write the content here in this text-box.<br>Make links by using {{handlebars}} in your text!</p>
 						<!--<div class="cas-summernote">Hello Summernote</div>-->
-						<div class=""><textarea class="cas-summernote" id="cas-def-body" name="payload[body]"><?php echo $body; ?></textarea></div>
+						<div class=""><textarea type="text" class="cas-summernote" id="cas-def-body" name="payload[body]"><?php echo $body; ?></textarea></div>
 					</div>
 					<h4><strong>Children</strong> of <?php echo $title; ?></h4>
 					<?php $set = $this->shared->get_related($type,$id,true); ?>
@@ -348,9 +372,9 @@
 				<div class="modal-footer">
 					<div id="editorfail" class="alert alert-danger " style="display: none;" role="alert">Uh oh, the <?php echo $type; ?> didn't save, make sure everything above is filled and try again.</div>
 					<div id="editorsuccess" class="alert alert-success " style="display: none;" role="alert">Great success, content posted.</div>
-					<div id="editorloading" class="alert alert-info progress-bar progress-bar-striped active" style="display: block; width: 100%; display: none;" role="alert">working...</div>
+					<div id="editorloading" class="alert alert-info progress-bar progress-bar-striped active" style="display: block; width: 100%; display: none;" role="alert">climbing...</div>
 					<div id="editorbuttons">
-						<a class="btn btn-danger pull-left" href="/api/remove/taxonomy/<?php echo $id; ?>/home" data-toggle="tooltip" data-title="Are you sure? No undo...">Delete this Page</a>
+						<a class="btn btn-danger pull-left" href="/api/remove/definition/<?php echo $id; ?>/home" data-toggle="tooltip" data-title="Are you sure? No undo...">Delete this Definition</a>
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 						<button type="reset" class="btn btn-default" >Reset</button>
 						<button type="button" class="btn btn-primary tt" id="submiteditor">Save changes</button>
@@ -360,45 +384,7 @@
 			</div>
 		</div>
 	</div>
-	
-	<!-- /Page Editor -->
-	<!-- Header Image File Uploader -->
-	<div class="modal fade" id="pageupload" tabindex="-1" role="dialog" aria-labelledby="pageupload" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">Edit <?php echo $title; ?></h4>
-					<p>Fill in all boxes here, each piece of information has a role in making pages, links, and visualizations in the site work well.</p>
-				</div>
-				<form id="formupload" enctype="multipart/form-data">
-				<div class="modal-body">
-					<div class="form-group">
-						<label for="upload" class="">Header Image</label>
-						<div class=""><input type="file" id="cas-tax-file" name="userfile" value=""></div>
-						<input type="hidden" id="cas-tax-fileurl" name="payload[img][header][url]" value="<?php echo (isset($img['header']) && !empty($img['header'])) ? $img['header']['url']: ''; ?>">
-					</div>
-					<div class="form-group">
-						<label for="payload[title]" class="">Caption</label>
-						<p style="font-size: .7em;"><strong>Example:</strong> Underwater image of fish in Moofushi Kandu, Maldives, by Bruno de Giusti (via Wikimedia Commons)</p>
-						<div class=""><input type="text" class="form-control" id="cas-img-title" name="payload[img][header][caption]" value="<?php echo (isset($img['header']['caption'])) ? $img['header']['caption']: $title; ?>"></div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<div id="uploadfail" class="alert alert-danger " style="display: none;" role="alert">Uh oh, the <?php echo $type; ?> didn't save, make sure everything above is filled and try again.</div>
-					<div id="uploadsuccess" class="alert alert-success " style="display: none;" role="alert">Great success, content posted.</div>
-					<div id="uploadloading" class="alert alert-info progress-bar progress-bar-striped active" style="display: block; width: 100%; display: none;" role="alert">working...</div>
-					<div id="uploadbuttons">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="reset" class="btn btn-default" >Reset</button>
-						<button type="button" class="btn btn-primary tt" id="submitupload">Save changes</button>
-					</div>
-				</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	<!-- /File Uploader -->
+	<!-- /Edit page modal -->
 	<!-- New diagram modal -->
 	<div class="modal fade" id="diagramnew" tabindex="-1" role="dialog" aria-labelledby="diagramnew" aria-hidden="true">
 		<div class="modal-dialog">
@@ -702,41 +688,6 @@
 			});
 		});
 
-
-
-
-		$('#pageupload').on('shown.bs.modal', function () {
-		    $("#cas-tax-file").fileinput({
-		        uploadAsync: false,
-				url: "/api/uploadimage", // remove X or it wont work...
-		        uploadExtraData: function() {
-		            return {
-		                id: '<?php echo $id; ?>',
-		                type: 'definition'
-		            };
-		        }
-		    });
-		});
-
-		$('#cas-tax-file').fileinput({
-		    uploadUrl: "/api/uploadimage", // server upload action
-		    uploadAsync: true,
-		    showUpload: false, // hide upload button
-		    showRemove: false, // hide remove button
-		    minFileCount: 1,
-		    maxFileCount: 1
-		}).on("filebatchselected", function(event, files) {
-		    // trigger upload method immediately after files are selected
-		    $('#cas-tax-file').fileinput("upload");
-		}).on('fileuploaded', function(event, data, previewId, index) {
-		    var form = data.form, files = data.files, extra = data.extra,
-		        response = data.response, reader = data.reader;
-		    console.log(response.filename + ' has been uploaded');
-		    $('#imgheader').css('background-image','url('+response.filename+')');
-		    $('#cas-tax-fileurl').val(response.filename);
-		});
-
-
 		$('#submiteditor').click(function() {
 			$.ajax({
 				type: "POST",
@@ -753,7 +704,6 @@
 						$('#editorsuccess').show();
 						var response = JSON.parse(data); 
 						$('#editorbuttons').show(); 
-						//alert('updated 202');
 						window.location.reload();
 					},
 					403: function(data) {
@@ -771,40 +721,6 @@
 				}
 			});
 		});
-		$('#submitupload').click(function() {
-			$.ajax({
-				type: "POST",
-				beforeSend: function() {
-					$('#uploadbuttons').hide(); 
-					$('#uploadfail').hide(); 
-					$('#uploadloading').show();
-				},
-				url: "/api/update/definition/<?php echo $id; ?>/header", 
-				data: $("#formupload").serialize(),
-				statusCode: {
-					200: function(data) {
-						$('#uploadloading').hide(); 
-						$('#uploadsuccess').show();
-						var response = JSON.parse(data); 
-						$('#uploadbuttons').show(); 
-						window.location.reload();
-					},
-					403: function(data) {
-						//var response = JSON.parse(data);
-						$('#uploadloading').hide(); 
-						$('#uploadfail').show();
-						$('#uploadbuttons').show(); 
-					},
-					404: function(data) {
-						//var response = JSON.parse(data);
-						$('#uploadloading').hide(); 
-						$('#uploadfail').show();
-						$('#uploadbuttons').show(); 
-					}
-				}
-			});
-		});
-
 	</script>
 	<!-- Javascript -->
 	<?php if ($this->ion_auth->logged_in() && isset($loadjs['contenttools'])) { ?> 
@@ -947,7 +863,7 @@
 	        // Make the request
 	        xhr = new XMLHttpRequest();
 	        xhr.addEventListener('readystatechange', xhrComplete);
-	        xhr.open('POST', '/api/rotate-image', true);
+	        xhr.open('POST', '/rotate-image', true);
 	        xhr.send(formData);
 	    }
 	
@@ -1022,7 +938,6 @@
 	
 	}
 	/* End Image Save */
-
 		/* Content Tools Content Save */
 		window.addEventListener('load', function() {
 		    var editor;
@@ -1112,7 +1027,7 @@
 
 			});
 		});
-		
-		
 	</script>
 	<?php } ?> 
+
+

@@ -1,26 +1,33 @@
-<?php 
-	foreach (array('principles','fields','people','terms','concepts') as $a) {
-		$is[$a] = false;
-	}
-	$attributes = $this->shared->get_attributes();
-	if ($this->ion_auth->logged_in()) {
-		$user = $this->ion_auth->user()->row(); 
-		$d_ratings = $this->shared->get_ratings($user->id,'diagram','');
-		$a_ratings = $this->shared->get_ratings($user->id,'diagram','attribute');
-	}
-	$diagrams = $this->shared->get_diagrams('diagram','definition',$id);
-	$k = 1;
-	foreach ($diagrams['sorted'] as $diagram) {
-		if (isset($diagram['url'])) {
-			$icon = $diagram;
-			break;
-		}
-	} ?>
+<?php // setup for the related dropdown module something
+	$relatedprinciples = array(
+			$settings['principles']['value'],
+			'taxonomy',
+			'Related '.$settings['principles']['title'], 
+			'This is a list of '.$settings['principles']['title'].' that '.$title.' is related to.');
+	$p__type = 'taxonomy';
+	$p__list = $this->shared->get_related($relatedprinciples[1],$relatedprinciples[0]);
+	if (!empty($p__list)) { 
+	$p__host = $this->shared->get_data($relatedprinciples[1],$relatedprinciples[0]);  ?>
+	<!-- Nav --> 
+	<div class="principle-container-nav">
+		<!-- Nav tabs -->
+		<span class="app-section-title"><a href="/taxonomy/<?php echo $settings['principles']['host']['slug']; ?>" ><?php echo $settings['principles']['title']; ?></a></span>
+		<ul class="nav app-section-nav" role="tablist">
+			<!--<li role="presentation" class="active"><a href="#principle-home" aria-controls="principle-home" role="tab" data-toggle="tab">Home</a></li>-->
+			<?php foreach ($cartograph['principles']['children'] as $d) { 
+				// Prep titles and acronyms
+					$thispage = ($d['type'] == $type && $d['id'] == $id) ? true : false; ?> 
+			<li role="presentation" class="<?php if ($thispage || $this->shared->is_parent($d['type'], $d['id'], $type, $id)) echo 'active'; ?>"><a href="/<?php echo "{$d['type']}/{$d['slug']}"; ?>" style="background-image: url('<?php echo (isset($d['img']['header']) && !empty($d['img']['header'])) ? $d['img']['header']['url']: '/includes/test/assets/Moofushi_Kandu_fish.jpg'; ?>');" ><?php echo $d['title']; ?></a></li>
+			<?php } ?> 
+		</ul>
+		<div class="clear"></div>
+	</div>
+	<?php } ?>
 
-	<div class="principle-wrapper concepts-wrapper">
+	<div class="principle-wrapper">
 	<!-- Hero Background -->
 		<div class="container-fluid build-wrapper home-hero">
-			<div id="imgheader" class="hero-wrapper" style="background: #ccc;">
+			<div id="imgheader" class="hero-wrapper" style="background-image: url(<?php echo (isset($img['header']) && !empty($img['header'])) ? $img['header']['url']: '/includes/test/assets/Moofushi_Kandu_fish.jpg'; ?>);">
 				<div class="hero"></div>
 			</div>
 		</div>
@@ -32,24 +39,14 @@
 				<!-- Hero Title  -->
 				<div class="col-lg-7 col-md-9 hero-heading">
 					<?php 
-						if ($this->shared->is_parent($type, $id, 'taxonomy', $settings['terms']['value'])) { ?><a class="subnav-heading" href="/taxonomy/<?php echo $this->shared->get_data('taxonomy',$settings['terms']['value'])['slug']; ?>"><?php echo $settings['terms']['title']; ?></a><?php } 
-						elseif ($this->shared->is_parent($type, $id, 'taxonomy', $settings['people']['value'])) { ?><a class="subnav-heading" href="/taxonomy/<?php echo $this->shared->get_data('taxonomy',$settings['people']['value'])['slug']; ?>"><?php echo $settings['people']['title']; ?></a><?php } 
+						if ($this->shared->is_parent($type, $id, 'taxonomy', $settings['fields']['value'])) { ?><a class="subnav-heading" href="/taxonomy/<?php echo $this->shared->get_data('taxonomy',$settings['fields']['value'])['slug']; ?>"><?php echo $settings['fields']['title']; ?></a><?php } 
 						elseif ($this->shared->is_parent($type, $id, 'taxonomy', $settings['concepts']['value'])) { ?><a class="subnav-heading" href="/taxonomy/<?php echo $this->shared->get_data('taxonomy',$settings['concepts']['value'])['slug']; ?>"><?php echo $settings['concepts']['title']; ?></a><?php } 
 						?>
-					<div class="hero-diagram">
-						<img class="cas-def-diagram-preview" data-toggle="modal" data-target="#<?php echo (empty($diagrams['sorted'])) ? 'diagramnew':'diagramrate'; ?>" src="<?php echo (isset($icon['url'])) ? $icon['url']: '/upload/img/defdefault.png'; ?>" width="200px" height="200px" alt="Diagram: <?php echo $title; ?>" />
-						<?php if ($this->ion_auth->logged_in()) { ?><div style="position: absolute; left: 140px; top: 49px; width: 75px;">
-							<button type="button" class="btn btn-fail btn-sm" data-toggle="modal" data-target="#diagramnew"><span class="glyphicon glyphicon-plus" data-toggle="tooltip" title="Suggest new image/diagram" aria-hidden="true"></span></button>
-							<button type="button" class="btn btn-fail btn-sm" data-toggle="modal" data-target="#diagramrate"><span class="glyphicon glyphicon-th-list" data-toggle="tooltip" title="Rate <?php echo lcfirst(str_replace('"',"'",$title)); ?> diagrams" aria-hidden="true"></span></button>
-						</div><?php } ?>
-					</div>
-
 					<div data-editable="" data-name="payload[title]">
 						<h1><?php echo $title; ?></h1>
 					</div>
-					<?php if ($is['people']) { ?><h2 style="display: inline-block;">Associated with </h2><?php } ?>
-					<div data-editable="" data-name="payload[subtitle]"<?php if ($is['people']) { ?> style="display: inline-block;"<?php } ?>>
-						<h2 style="display: inline-block;"><?php echo $this->shared->handlebar_links($subtitle); ?></h2>
+					<div data-editable="" data-name="payload[subtitle]">
+						<h2><?php echo $this->shared->handlebar_links($subtitle); ?></h2>
 					</div>
 				</div>
 				<!-- /title -->
@@ -62,6 +59,7 @@
 								'taxonomy' => array(),
 								'definition' => array(),
 							);
+								
 						?>
 						<div class="">
 							<span class="subnav-title">Explore</span>
@@ -108,15 +106,18 @@
 						<div data-editable="" data-name="payload[excerpt]">
 							<p><?php echo $this->shared->handlebar_links($excerpt); ?></p>
 						</div>
-						<div id="fulltext">
-							<hr class="" />
+						<div>
+							<a href="#fulltext" onclick="$('#fulltext').toggle('100'); $(this).hide(); return false;" style="display: block; padding-bottom: 40px;">Keep reading →</a>
+						</div>
+						<div id="fulltext" style="display: none;">
+							<hr />
 							<div data-editable="" data-name="payload[body]"><?php echo $this->shared->handlebar_links($body); ?></div>
-							<?php $this->shared->footer_photocitation($id,$img,$timestamp,$slug,$title,false); ?>
+							<?php $this->shared->footer_photocitation($id,$img,$timestamp,$slug,$title); ?>
 						</div>
 					</div>
 					<!-- /body -->
 					<!-- Related -->
-					<div class="row related hidden-lg">
+					<div class="row related hidden-lg" style="padding-bottom: 30px;">
 						<?php // exclude the following for these taxonomy IDs
 							$excludearray = array(
 								'taxonomy' => array(),
@@ -148,13 +149,14 @@
 							foreach ($relatedsetup as $__k => $__i) {
 								$__type = 'taxonomy';
 								$__list = $this->shared->get_related($__i[1],$__i[0]);
-								if (!empty($__list)) { 
+								if (!empty($__list) && !$this->shared->is_parent($type, $id, 'taxonomy', $settings[$__k]['value'])) { 
 								$__host = $this->shared->get_data($__i[1],$__i[0]);
 						?><div class="col-md-5">
 							<p><strong><?php echo $__i[2]; ?></strong></p>
 							<p><?php echo $__i[3]; ?></p>
 							<?php foreach ($__list as $__child) { if ($this->shared->is_parent($type, $id, $__child['type'], $__child['id'])) { $excludearray[$__child['type']][] = $__child['id']; ?><li><a href="/<?php echo $__child['type']; ?>/<?php echo $__child['slug']; ?>"><?php echo $__child['title']; ?></a></li><?php }} // end is_child and foreach ?><li><a href="/<?php echo $__host['type']; ?>/<?php echo $__host['slug']; ?>">See all <em><?php echo $__host['title']; ?></em> &rarr;</a></li>
 						</div><?php }} ?>
+						<div class="clear"></div>
 					</div>
 					<!-- /related -->
 				</div>
@@ -171,6 +173,7 @@
 								<li role="presentation" class="active"><a href="#feed" aria-controls="home" role="tab" data-toggle="tab">Feed</a></li>
 								<li role="presentation"><a href="#people" aria-controls="profile" role="tab" data-toggle="tab">People</a></li>
 								<li role="presentation"><a href="#terms" aria-controls="messages" role="tab" data-toggle="tab">Terms</a></li>
+								<li role="presentation"><a href="#thoughts" aria-controls="settings" role="tab" data-toggle="tab">Thought Experiments</a></li>
 							</ul>
 							
 							<!-- Tab panes -->
@@ -399,231 +402,7 @@
 		</div>
 	</div>
 	<!-- /File Uploader -->
-	<!-- New diagram modal -->
-	<div class="modal fade" id="diagramnew" tabindex="-1" role="dialog" aria-labelledby="diagramnew" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">Suggest a new diagram for <?php echo $title; ?></h4>
-				</div>
-				<div class="modal-body">
-				<form id="formdiagramnew" enctype="multipart/form-data">
-					<div class="form-group">
-						<label for="cas-diagram-file" class="">Step 1: Upload your diagram</label>
-						<div class=""><input type="file" id="cas-diagram-file" name="userfile" value=""></div>
-						<input type="hidden" id="cas-diagram-fileurl" name="payload[url]" value="">
-						<p><br /></p>
-						<label class="">Step 2: Rate your diagram</label>
-						<p>Awesome, now let's rate your diagram. User the slider to see how you feel it rates for each of the attributes. You can <a href="/diagrams/" target="_blank">rate attributes and suggest new ones over here (in a new window)</a>.</p>
-					</div>
-					<div class="form-horizontal">
-						<div class="form-group">
-							<label class="col-sm-4 control-label top-nospace">&nbsp;</label><div class="col-sm-8"><div class="pull-left">Low</div><div class="pull-right">High</div>&nbsp;</div>
-						</div>
-						<?php // list top 5 attributes for evaluation
-							$i = 1; 
-							//$attributes = $this->shared->get_attributes();
-							//$user = $this->ion_auth->user()->row(); 
-							//$ratings = $this->shared->get_ratings($user->id,'attribute');
-							foreach ($attributes['sorted'] as $attribute) { if ($i === 9) break; 
-							/* if (isset($ratings[$attribute['id']]) && is_array($ratings[$attribute['id']])) { ?><span class="label label-default pull-right">Rated as <?php echo ($ratings[$attribute['id']][0]['value'] == '.9') ? 'important': 'not important'; ?>.</span><?php } else { ?><button type="button" class="pull-right btn btn-danger btn-xs" data-toggle="tooltip" title="Set as NOT important?" onclick="rate('attribute',<?php echo $attribute['id']; ?>,.1);"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
-							*/ 
-							
-							?> 
-						<div class="form-group">
-							<label class="col-sm-4 control-label top-nospace" for="payload[rating][<?php echo $attribute['id']; ?>" ><?php echo $attribute['title']; ?></label><div class="col-sm-8"><input type="range" for="cas-attribute-<?php echo $attribute['id']; ?>" name="payload[rating][<?php echo $attribute['id']; ?>]" value=".5" min="0" max="1.0" step=".1"></div>
-						</div><?php $i++; } ?> 
-						<div class="form-group">
-							<input type="hidden" value="definition" name="payload[type]" id="cas-diagram-type" />
-							<input type="hidden" value="<?php echo $id; ?>" name="payload[typeid]" id="cas-diagram-id" />
-							<input type="hidden" value="attribute" name="payload[target]" id="cas-diagram-target" />
-							<input type="hidden" value="<?php echo md5(md5(microtime())); ?>" name="<?php echo md5(md5(microtime())); ?>" id="cas-diagram-validate-submit" />
-						</div>
-					</div>
-				</form>
-				</div>
-				<div class="modal-footer">
-					<div id="diagramnewfail" class="alert alert-danger " style="display: none;" role="alert">Uh oh, the <?php echo $type; ?> didn't save, make sure everything above is filled and try again.</div>
-					<div id="diagramnewsuccess" class="alert alert-success " style="display: none;" role="alert">Great success, content posted.</div>
-					<div id="diagramnewloading" class="alert alert-info progress-bar progress-bar-striped active" style="display: block; width: 100%; display: none;" role="alert">climbing...</div>
-					<div id="diagramnewbuttons">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="reset" class="btn btn-default" >Reset</button>
-						<button type="button" class="btn btn-primary tt" id="submitdiagramnew">Save changes</button>
-					</div>
-				</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- /New diagram modal -->
-	<!-- Rate diagrams modal -->
-	<div class="modal fade" id="diagramrate" tabindex="-1" role="dialog" aria-labelledby="diagramrate" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">Rate diagrams for <?php echo $title; ?></h4>
-				</div>
-				<div class="modal-body">
-					<div class="form-horizontal">
-						<div class="form-group">
-							<p class="col-sm-12">You can do two things here. First, you can influence the order of the diagrams for this topic by clicking on the (<span class="glyphicon glyphicon-plus"></span>) and (<span class="glyphicon glyphicon-minus"></span>) buttons. The diagrams with more plus votes will rise to the top. The second thing you can do here is rate the diagrams against the evolving set of attributes that you can <a href="/diagrams" target="_blank" >learn more about here</a>. You can only rate each thing once but as the attribute list changes, you can come back and update ratings.</p> 
-							<label class="col-sm-12">Curent <?php echo $title; ?> Diagram</label>
-						</div>
-						<?php 
-							//$attributes = $this->shared->get_attributes();
-							//$user = $this->ion_auth->user()->row(); 
-							//$d_ratings = $this->shared->get_ratings($user->id,'diagram','');
-							//$a_ratings = $this->shared->get_ratings($user->id,'diagram','attribute');
-							//$diagrams = $this->shared->get_diagrams('diagram','definition',$id);
-							$k = 1;
-							if (empty($diagrams['sorted'])) { ?><blockquote>No diagrams...yet.<!--<br /><button class="btn btn-success" data-toggle="modal" data-target="#diagramnew" onclick="$('#diagramrate').modal('hide'); return false;">Suggest the first diagram</button>--></blockquote><?php } 
-							foreach ($diagrams['sorted'] as $diagram) { 
-								$a_rated = array();
-								if (isset($a_ratings[$diagram['id']])) foreach ($a_ratings[$diagram['id']] as $ar) $a_rated[$ar['targetid']] = $ar;
-
-							?>
-						<?php if ($k==2) { ?><div class="form-group">
-							<label class="col-sm-12">Suggested <?php echo $title; ?> Diagrams</label>
-						</div><?php } ?>
-						<form id="formrate-<?php echo $diagram['id']; ?>">
-						<div class="form-group">
-							<img src="<?php echo $diagram['url']; ?>" class="col-xs-4" />
-							<div class="col-sm-8 ">
-								<div class="row raterow-<?php echo $diagram['id']; ?>">
-									<label class="col-sm-5 control-label top-nospace">&nbsp;</label>
-									<div class="col-sm-6"><small class="pull-left">Low</small><small class="pull-right">High</small>&nbsp;</div>
-								</div>
-								<?php 
-									$rating_average = $this->shared->get_rating_average('diagram',$diagram['id'],'attribute'); 
-									// list top 5 attributes for evaluation
-									$i = 1; $j = 1; 
-									foreach ($attributes['sorted'] as $attribute) { if ($i === 9) break; 
-										$flag = false;
-										if (isset($a_rated[$attribute['id']]) && is_array($a_rated[$attribute['id']])) { $flag = true; $j++; }
-
-
-									?> 
-								<div class="row raterow-<?php echo $diagram['id']; ?>"<?php if ($flag) { ?> style="background:#EEE;"<?php } ?>>
-									<label class="col-sm-5 control-label top-nospace small" for="payload[rating][<?php echo $attribute['id']; ?>]" ><?php echo $attribute['title']; ?></label>
-									<div class="col-sm-6"<?php if ($flag) { ?>data-toggle="tooltip" title="Feedback based on <?php echo $rating_average[$attribute['id']]['count']; ?> ratings"<?php } ?>><input type="range" <?php if (!$flag) { ?>name="payload[rating][<?php echo $attribute['id']; ?>]"<?php } ?> value="<?php echo ($flag) ? $rating_average[$attribute['id']]['value'].'" disabled="disabled' : '.5'; ?>" min="0" max="1.0" step=".1"></div>
-								</div><?php $i++; } ?> 
-								<?php if ($j > 1) { ?>
-								<div class="row raterow-<?php echo $diagram['id']; ?>">
-									<label class="col-sm-5 control-label top-nospace">&nbsp;</label>
-									<div class="col-sm-6"><small class="pull-left"><em>*Ratings in grey are averages of all ratings for this diagram.</em></small></div>
-								</div>
-								<?php }	?>
-								<hr />
-								<div class="row">
-									<div class="col-sm-6" id="formrateplusminus-<?php echo $diagram['id']; ?>">
-										<?php if (isset($d_ratings[$diagram['id']]) && is_array($d_ratings[$diagram['id']])) { ?><span class="label label-default pull-right" data-toggle="tooltip" title="You rated this <?php echo $this->shared->twitterdate($d_ratings[$diagram['id']][0]['timestamp']); ?>">Rated as <?php echo ($d_ratings[$diagram['id']][0]['value'] == '.9') ? 'important': 'not important'; ?></span><?php } else { ?> 
-										<div data-toggle="tooltip" title="Use these buttons to rate this diagram against the others">
-											<div class="btn-group pull-right" data-toggle="buttons">
-												<label class="btn btn-default btn-xs casradioplus" onclick="ratediagram('diagram',<?php echo $diagram['id']; ?>,.9,<?php echo $diagram['id']; ?>);"><input type="radio" autocomplete="off"><span class="glyphicon glyphicon-plus"></span></label> 
-												<label class="btn btn-default btn-xs casradiominus" onclick="ratediagram('diagram',<?php echo $diagram['id']; ?>,.1,<?php echo $diagram['id']; ?>);"><input type="radio" autocomplete="off"><span class="glyphicon glyphicon-minus"></span></label>
-											</div>
-										</div><?php } ?>
-									</div>
-									<div class="col-sm-6" id="formrateplusminussuccess-<?php echo $diagram['id']; ?>" style="display: none;">
-										<small>You've rated this diagram against the others, thanks!</small>
-									</div>
-									<div class="col-sm-6" id="formratebuttons-<?php echo $diagram['id']; ?>">
-										<?php if ($j > 8) { ?><span class="label label-default ">You rated this diagram already!</span><?php } else { ?>
-										<button type="button" class="btn btn-primary btn-xs tt" onclick="rate(<?php echo $diagram['id']; ?>);" id="submitrate-<?php echo $diagram['id']; ?>">Rate</button>
-										<button type="reset" class="btn btn-default btn-xs" >Reset</button>
-										<?php } ?>
-									</div>
-									<div class="col-sm-6" id="formratesuccess-<?php echo $diagram['id']; ?>" style="display: none;">
-										<small>You've evaluated this diagram, thanks!</small>
-									</div>
-								</div>
-							</div>
-						</div>
-						<input type="hidden" value="diagram" name="payload[type]" />
-						<input type="hidden" value="<?php echo $diagram['id']; ?>" name="payload[typeid]" />
-						<input type="hidden" value="attribute" name="payload[target]" />
-						<input type="hidden" value="<?php echo md5(microtime()); ?>" name="<?php echo md5(md5(microtime())); ?>" />
-						</form>
-						<hr />
-						<?php $k++; } ?>
-					</div>
-				</form>
-				</div>
-				<div class="modal-footer">
-					<div id="diagramnewfail" class="alert alert-danger " style="display: none;" role="alert">Crap. Make sure your jpg/png/gif image is a 2000px or less square, less than 10mb.</div>
-					<div id="diagramnewsuccess" class="alert alert-success " style="display: none;" role="alert">Great success, content posted.</div>
-					<div id="diagramnewloading" class="alert alert-info progress-bar progress-bar-striped active" style="display: block; width: 100%; display: none;" role="alert">dancing...</div>
-					<div id="diagramnewbuttons" style="display: none;">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="reset" class="btn btn-default" >Reset</button>
-						<button type="button" class="btn btn-primary tt" id="submitdiagramnew">Suggest Diagram</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- /Rate diagrams modal -->
-
 	<script>
-		function rate(diagram) {
-			$.ajax({
-				type: "POST",
-				beforeSend: function() {
-					$('#submitrate-'+diagram).text('thinking...'); 
-				},
-				url: "/api/rate", 
-				data: $("#formrate-"+diagram).serialize(),
-				statusCode: {
-					200: function(data) {
-						$('#formratebuttons-'+diagram).hide(); 
-						$('#formratesuccess-'+diagram).show(); 
-						$('.raterow-'+diagram).css('opacity',.3); 
-						///alert('ding ding ding!');
-						//window.location.reload();
-						
-					},
-					403: function(data) {
-						alert('403 fail');
-						//var response = JSON.parse(data);
-					},
-					404: function(data) {
-						alert('404 fail');
-						//var response = JSON.parse(data);
-					}
-				}
-			});
-			
-		}
-		function ratediagram(rt,ri,rr,di) {
-			$.ajax({
-				type: "POST",
-				beforeSend: function() {
-					$(this).prop("disabled",true).addClass('btn-fail'); 
-				},
-				url: "/api/rate",
-				data: {'payload[type]':rt, 'payload[typeid]':ri, 'payload[value]':rr},
-				statusCode: {
-					200: function(data) {
-						//alert('rated!');
-						//window.location.reload();
-						$('#formrateplusminus-'+di).hide(); 
-						$('#formrateplusminussuccess-'+di).show(); 
-					},
-					403: function(data) {
-						//var response = JSON.parse(data);
-						alert('crap! Rating failed. Um, talk to Sean.');
-					},
-					404: function(data) {
-						//var response = JSON.parse(data);
-						alert('shoot! I think you already rated this.');
-					}
-				}
-			});
-			
-		}
 		$('#pageeditor').on('shown.bs.modal', function () {
 			$('.cas-summernote').summernote({
 			  toolbar: [
@@ -634,75 +413,11 @@
 			    ['link', ['linkDialogShow']],
 			    ['code', ['codeview']],
 			    ['fullscreen', ['fullscreen']],
+			    
 			  ],
 			});
+			$('.note-editable.panel-body').attr("spellcheck","true");
 		})
-		$('#diagramnew').on('shown.bs.modal', function () {
-		    $("#cas-diagram-file").fileinput({
-		        uploadAsync: false,
-				url: "/api/uploadimage", // remove X or it wont work...
-		        uploadExtraData: function() {
-		            return {
-		                id: '<?php echo $id; ?>',
-		                type: 'definition'
-		            };
-		        }
-		    });
-		});
-
-		$('#cas-diagram-file').fileinput({
-		    uploadUrl: "/api/uploadimage", 
-		    uploadAsync: true,
-		    showUpload: false, // hide upload button
-		    showRemove: false, // hide remove button
-		    minFileCount: 1,
-		    maxFileCount: 1
-		}).on("filebatchselected", function(event, files) {
-		    // trigger upload method immediately after files are selected
-		    $('#cas-diagram-file').fileinput("upload");
-		}).on('fileuploaded', function(event, data, previewId, index) {
-		    var form = data.form, files = data.files, extra = data.extra,
-		        response = data.response, reader = data.reader;
-		    console.log(response.filename + ' has been uploaded');
-		    //$('#imgheader').css('background-image','url('+response.filename+')');
-		    $('#cas-diagram-fileurl').val(response.filename);
-		});
-
-		$('#submitdiagramnew').click(function() {
-			$.ajax({
-				type: "POST",
-				beforeSend: function() {
-					$('#diagramnewbuttons').hide(); 
-					$('#diagramnewfail').hide(); 
-					$('#diagramnewloading').show();
-				},
-				url: "/api/create/diagram", 
-				data: $("#formdiagramnew").serialize(),
-				statusCode: {
-					200: function(data) {
-						$('#diagramnewloading').hide(); 
-						$('#diagramnewsuccess').show();
-						var response = JSON.parse(data); 
-						$('#diagramnewbuttons').show(); 
-						window.location.reload();
-					},
-					403: function(data) {
-						//var response = JSON.parse(data);
-						$('#diagramnewloading').hide(); 
-						$('#diagramnewfail').show();
-						$('#diagramnewbuttons').show(); 
-					},
-					404: function(data) {
-						//var response = JSON.parse(data);
-						$('#diagramnewloading').hide(); 
-						$('#diagramnewfail').show();
-						$('#diagramnewbuttons').show(); 
-					}
-				}
-			});
-		});
-
-
 
 
 		$('#pageupload').on('shown.bs.modal', function () {
@@ -712,7 +427,7 @@
 		        uploadExtraData: function() {
 		            return {
 		                id: '<?php echo $id; ?>',
-		                type: 'definition'
+		                type: 'taxonomy'
 		            };
 		        }
 		    });
@@ -745,7 +460,7 @@
 					$('#editorfail').hide(); 
 					$('#editorloading').show();
 				},
-				url: "/api/update/definition/<?php echo $id; ?>",
+				url: "/api/update/taxonomy/<?php echo $id; ?>",
 				data: $("#formeditor").serialize(),
 				statusCode: {
 					200: function(data) {
@@ -779,7 +494,7 @@
 					$('#uploadfail').hide(); 
 					$('#uploadloading').show();
 				},
-				url: "/api/update/definition/<?php echo $id; ?>/header", 
+				url: "/api/update/taxonomy/<?php echo $id; ?>/header", 
 				data: $("#formupload").serialize(),
 				statusCode: {
 					200: function(data) {
@@ -947,7 +662,7 @@
 	        // Make the request
 	        xhr = new XMLHttpRequest();
 	        xhr.addEventListener('readystatechange', xhrComplete);
-	        xhr.open('POST', '/api/rotate-image', true);
+	        xhr.open('POST', '/rotate-image', true);
 	        xhr.send(formData);
 	    }
 	
@@ -1082,7 +797,7 @@
 					beforeSend: function() {
 						//$('#editorbuttons').hide(); 
 					},
-					url: "/api/update/definition/<?php echo $id; ?>?passive=true",
+					url: "/api/update/taxonomy/<?php echo $id; ?>?passive=true",
 					//data: $("#formeditor").serialize(),
 					processData: false,
 					contentType: false,
