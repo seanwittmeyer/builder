@@ -7,7 +7,7 @@
  * a single spot for them instead of having duplicate functions all over.
  *
  * Version 1.0 (2012.10.18.0017)
- * Edited by Sean Wittmeyer (sean@zilifone.net)
+ * Edited by Sean Wittmeyer (theseanwitt@gmail.com)
  * 
  */
 
@@ -1512,7 +1512,7 @@ class Cas extends CI_Model {
 			}
 
 			if ($flag == false) {
-				$details_url = "https://api.darksky.net/forecast/53f70ad9e7a06363b1bf6e5ddf7e66e1/".$weather['lat'].','.$weather['lon'];
+	        	$details_url = getenv('BUILDER_WEATHER_ENDPOINT').$weather['lat'].','.$weather['lon'];
 				//print_r($details_url); die;
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL, $details_url);

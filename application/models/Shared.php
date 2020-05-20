@@ -1305,7 +1305,7 @@ class shared extends CI_Model {
 			}
 
 			if ($flag == false) {
-	        	$details_url = "https://api.darksky.net/forecast/53f70ad9e7a06363b1bf6e5ddf7e66e1/".$weather['lat'].','.$weather['lon'];
+	        	$details_url = getenv('BUILDER_WEATHER_ENDPOINT').$weather['lat'].','.$weather['lon'];
 	        	//print_r($details_url); die;
 		        $ch = curl_init();
 		        curl_setopt($ch, CURLOPT_URL, $details_url);
