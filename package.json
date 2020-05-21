@@ -1,40 +1,37 @@
 {
-  "name": "bootstrap-npm-starter",
-  "version": "1.0.0",
-  "description": "Demo project for building a Bootstrap powered site via npm.",
+  "name": "builder",
+  "version": "2.0.0",
+  "description": "A personal playground for projects, thoughts, and hobbies.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/twbs/bootstrap-npm-starter.git"
+    "url": "git+https://github.com/seanwittmeyer/builder.git"
   },
   "bugs": {
-    "url": "https://github.com/twbs/bootstrap-npm-starter/issues"
+    "url": "https://github.com/seanwittmeyer/builder/issues"
   },
-  "homepage": "https://github.com/twbs/bootstrap-npm-starter#readme",
+  "homepage": "https://github.com/seanwittmeyer/builder",
   "scripts": {
     "build": "npm run css",
     "css-compile": "node-sass --include-path node_modules --output-style compressed --source-map true --source-map-contents true --precision 6 scss -o assets/css/",
     "css-prefix": "postcss --replace assets/css/starter.css --use autoprefixer --map",
     "css": "npm run css-compile && npm run css-prefix",
-    "server": "serve --listen 3000",
+    "start": "serve --listen 3000",
     "watch": "nodemon -e html,scss -x \"npm run css\"",
     "test": "npm run css"
   },
   "keywords": [
-    "bootstrap",
-    "sass",
-    "css",
-    "javascript",
-    "starter",
-    "template"
+    "seanwittmeyer"
   ],
-  "author": "mdo",
+  "author": "seanwittmeyer",
   "license": "MIT",
   "dependencies": {
     "bootstrap": "^4.5.0",
     "bootstrap-icons": "^1.0.0-alpha3",
     "bootstrap-select": "^1.13.17",
     "chart.js": "^2.9.3",
+    "d3": "^3.5.17",
     "jquery": "^3.5.1",
+    "nvd3": "^1.8.6",
     "popper.js": "^1.16.1"
   },
   "devDependencies": {

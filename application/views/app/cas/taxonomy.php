@@ -8,6 +8,18 @@
 	$p__list = $this->shared->get_related($relatedprinciples[1],$relatedprinciples[0]);
 	if (!empty($p__list)) { 
 	$p__host = $this->shared->get_data($relatedprinciples[1],$relatedprinciples[0]);  ?>
+
+<code>
+<?php 
+$all = array();
+$all = get_defined_vars();
+//foreach ($all as $a) print_r($a); 
+//die;
+print(json_encode($all));// (get_defined_vars()); 
+die;
+?>
+</code>
+
 	<!-- Nav --> 
 	<div class="principle-container-nav hide">
 		<!-- Nav tabs -->
@@ -185,7 +197,7 @@
 					</div>
 					<?php endif; ?>
 					<!-- /Footer List -->
-					<?php $this->shared->footer_photocitation($id,$img,$timestamp,$slug,$title); ?>
+					<?php $this->cas->footer_photocitation($id,$img,$timestamp,$slug,$title); ?>
 					<!-- Related -->
 					<div class="row related hide">
 						<?php // exclude the following for these taxonomy IDs
@@ -193,7 +205,6 @@
 								'taxonomy' => array(),
 								'definition' => array(),
 							);
-								
 						?>
 						<div class="col-sm-12">
 							<span class="subnav-title">Applying <?php echo $title; ?></span>
@@ -251,7 +262,7 @@
 							<div class="tab-content">
 								<div role="tabpanel" class="tab-pane fade in active" id="feed">
 									<p>This is the feed, a series of related links and resources. <a data-toggle="modal" data-target="#createlink">Add a link to the feed →</a></p>
-									<?php echo $this->shared->related_html($type,$id); ?>
+									<?php echo $this->cas->related_html($type,$id); ?>
 								</div>
 							</div>
 						

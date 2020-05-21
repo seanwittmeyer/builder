@@ -308,15 +308,25 @@ class Cas extends CI_Model {
 	Fields		$return[fields]		List of fields with hero layout
 	People		$return[people]		List of people definitions
 	
+
+	$defaults = array(
+		array('terms',$settings['terms']['title'],$settings['terms']['value'],false),
+		array('concepts',$settings['concepts']['title'],$settings['concepts']['value'],true),
+		array('principles',$settings['principles']['title'],$settings['principles']['value'],true),
+		array('fields',$settings['fields']['title'],$settings['fields']['value'],true),
+		array('people',$settings['people']['title'],$settings['people']['value'],false),
+	); 
+
 	*/
 	public function cartograph_content($hostid=false,$settings=false) {
 		// Set defaults and get content for each type. This default array should be replaced with page user data.
 		if (!is_array($settings)) $settings = $this->settings();
 		$return = array();
 		$defaults = array(
-			array('terms',$settings['terms']['title'],$settings['terms']['value'],false),
+			array('themes',$settings['themes']['title'],$settings['themes']['value'],false),
 			array('concepts',$settings['concepts']['title'],$settings['concepts']['value'],true),
 			array('principles',$settings['principles']['title'],$settings['principles']['value'],true),
+			array('terms',$settings['terms']['title'],$settings['terms']['value'],false),
 			array('fields',$settings['fields']['title'],$settings['fields']['value'],true),
 			array('people',$settings['people']['title'],$settings['people']['value'],false),
 		); 
@@ -324,9 +334,9 @@ class Cas extends CI_Model {
 		foreach ($defaults as $d) {
 			$_title = (isset($payload[$d[0]]['title'])) ? $payload[$d[0]]['title'] : $d[1];
 			$_parentid = (isset($payload[$d[0]]['id'])) ? $payload[$d[0]]['id'] : $d[2];
-			$_parent = $this->shared->get_data2('taxonomy', $_parentid);
+			$_parent = $this->get_data2('taxonomy', $_parentid);
 			$_parent['img'] = unserialize($_parent['img']);
-			$_childrensource = $this->shared->get_related('taxonomy',$_parentid);
+			$_childrensource = $this->get_related('taxonomy',$_parentid);
 			$_children = array();
 			foreach ($_childrensource as $c) {
 				if (isset($c['img'])) $c['img'] = unserialize($c['img']);
