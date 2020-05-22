@@ -12,6 +12,8 @@ window.jQuery = $;
 
 $(function() {
   $("#selectpicker").selectpicker();
+  $('[data-toggle="tooltip"]').tooltip();
+  $('[data-toggle="popover"]').popover();
 });
 
 console.log("main.js loaded without error, maybe.");

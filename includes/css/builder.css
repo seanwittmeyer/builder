@@ -41,6 +41,7 @@ html {
 body {
   /* Margin bottom by footer height */
   margin-bottom: 90px;
+  border-left: 15px solid #fe7964;
 }
 #mainnav {
   position: absolute;

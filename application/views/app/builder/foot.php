@@ -21,9 +21,6 @@
 	<?php } ?>
 	<!-- Make the site interactive -->
 	<script type="text/javascript">
-		$(function () { $('[data-toggle="tooltip"]').tooltip() });
-		$(function () { $('[data-toggle="popover"]').popover() });
-		$(function () { $('.selectpicker').selectpicker() });
 		/*$('#loginmodal').on('shown.bs.modal', function () {
 			$('#identity').focus();
 		})*/
