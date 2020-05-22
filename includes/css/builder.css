@@ -1,0 +1,89 @@
+/*!
+ * Builder
+ * A fun place Sean likes to hang out. Built on top of Bootstrap (thanks!) and Bootswatch (woo!).
+ * https://github.com/seanwittmeyer/builder
+ * Copyright 2004-2020 Sean Wittmeyer
+ * Licensed under MIT
+ */
+
+/* Setup
+-------------------------------------------------- */
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,200;0,400;0,700;1,200;1,400;1,700&family=IBM+Plex+Sans:ital,wght@0,200;0,400;0,700;1,200;1,400;1,700&family=IBM+Plex+Serif:ital,wght@0,200;0,400;0,700;1,200;1,400;1,700&display=swap");
+/* Using Plex for most of the site, use it this way:
+font-family: 'IBM Plex Mono', monospace;
+font-family: 'IBM Plex Sans', sans-serif;
+font-family: 'IBM Plex Serif', serif;
+Included font-weights: 200, 400, and 700 for each
+*/
+
+@-webkit-viewport {
+  width: device-width;
+}
+@-moz-viewport {
+  width: device-width;
+}
+@-ms-viewport {
+  width: device-width;
+}
+@-o-viewport {
+  width: device-width;
+}
+@viewport {
+  width: device-width;
+}
+
+/* Basic structure
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 90px;
+}
+#mainnav {
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+  width: 41.6666667%;
+  /* Set the fixed height of the footer here */
+  height: 90px;
+  background-color: #f5f5f5;
+}
+
+/* Links and headings fixes not in bootstrap
+-------------------------------------------------- */
+
+/* Headings
+-------------------------------------------------- */
+
+/* CAS (Field Notes)
+-------------------------------------------------- */
+
+/* Ski
+-------------------------------------------------- */
+
+/* Homepage
+-------------------------------------------------- */
+
+/* The Feed
+-------------------------------------------------- */
+
+/* Heading
+-------------------------------------------------- */
+
+/* Heading
+-------------------------------------------------- */
+
+/* Heading
+-------------------------------------------------- */
+
+/* Heading
+-------------------------------------------------- */
+
+/* Heading
+-------------------------------------------------- */
+
+/* Heading
+-------------------------------------------------- */

@@ -1,71 +1,41 @@
-<?php //setup
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 	if (!isset($loadjs)) $loadjs = array();
 	?><!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
-	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+	<meta name="viewport" content="initial-scale=1,maximum-scale=1">
 	<meta name="description" content="A personal digital playground for projects, thoughts, and hobbies.">
+	<meta name="generator" content="Builder 2 v2005">
 	<meta name="author" content="Sean Wittmeyer">
-	<link rel="icon" href="/favicon.ico">
+	<link rel="icon" href="/includes/img/favicon.jpg">
 	<title><?php echo $pagetitle; ?> - Sean's Website</title>
 	<script src="/includes/js/pace.min.js"></script>
-	<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,400;0,600;0,700;1,100;1,400;1,600;1,700&family=IBM+Plex+Sans:ital,wght@0,100;0,400;0,600;0,700;1,100;1,400;1,600;1,700&display=swap" rel="stylesheet">
-	<link href="/includes/css/bootstrap.min.css" rel="stylesheet">
-	<link href="/includes/css/font-awesome.min.css" rel="stylesheet">
-	<link href="/includes/css/summernote.css" rel="stylesheet" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 	<link href="/includes/css/bootstrap-select.min.css" rel="stylesheet" />
+	<link href="/includes/css/summernote.css" rel="stylesheet" />
+	<link href="/includes/css/font-awesome.min.css" rel="stylesheet">
+	<?php if (in_array('nvd3', $loadjs)) { ?> 
+	<link href='/includes/css/nvd3.css?20181203' rel='stylesheet' />
+	<?php } ?> 
 	<link href="/includes/css/builder.css?20200519" rel="stylesheet">
-	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-	<!--[if lt IE 9]>
-		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-	<![endif]-->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="/dist/index.bundle.js?<?=time()?>"></script>
+	<!-- - ->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+	-->
 	<script>window.jQuery || document.write('<script src="/includes/js/jquery.min.js"><\/script>')</script>
-	<!--<script src="/includes/js/typeahead.bundle.min.js"></script>-->
-	<script src="/includes/js/fileinput.min.js"></script>
-	<?php if (isset($loadjs['mapbox'])) { ?> 
+	<script src="/dist/general.bundle.js?<?=time()?>"></script>
+	<?php if (isset($loadjs['builder_viz'])) { ?> 
+	<script src="/dist/viz.bundle.js?<?=time()?>"></script>
+	<?php } ?>
+	<?php if (isset($loadjs['builder_maps'])) { ?> 
+	<script src="/dist/maps.bundle.js?<?=time()?>"></script>
 	<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.45.0/mapbox-gl.js'></script>
 	<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.45.0/mapbox-gl.css' rel='stylesheet' />
 	<?php } ?> 
-	<?php if (isset($loadjs['nanogallery'])) { ?> 
-	<script src='/includes/js/jquery.nanogallery2.min.js'></script>
-	<link href='/includes/css/nanogallery2.min.css' rel='stylesheet' />
-	<?php } ?> 
-	<?php if (isset($loadjs['masonry'])) { ?>
-	<script>
-	$( document ).ready(function() {
-		function masonrygo() {
-			$('.masonrygrid').masonry({
-				itemSelector: '.masonryblock'
-			});
-		}
-	});
-	//	Pace.done(alert('done'));
-	Pace.on('done', masonrygo());
-	</script>
-	<?php } ?> 
-
-	<?php if (in_array('masonry', $loadjs)) { ?> 
-	<script src="/includes/js/masonry.min.js"></script>
-	<script src="/includes/js/imagesloaded.min.js"></script>
-	<?php } ?> 
-	<?php if (in_array('chartsjs', $loadjs)) { ?> 
-	<script src="/includes/js/chart/Chart.bundle.2.7.3.js"></script>
-	<script src="/includes/js/chart/utils.js"></script>
-	<?php } ?> 
-	<?php if (in_array('sparkline', $loadjs)) { ?> 
-	<script src="/includes/js/jquery.sparkline.js"></script>
-	<?php } ?> 
-	<?php if (in_array('nvd3', $loadjs)) { ?> 
-	<link href='/includes/css/nvd3.css?20181203' rel='stylesheet' />
-	<script src="/includes/js/d3.v3.min.fixed.js"></script>
-	<script src="/includes/js/nvd3-1.8.4.js"></script>
-	<?php } ?> 
-	<script type="text/javascript">
+ 	<script type="text/javascript">
 		function herowindowheight() {
 			$('.windowminheight').css({'min-height': window.innerHeight-110});
 			$('.windowheight').css({'min-height': window.innerHeight-110,'height': window.innerHeight-110});

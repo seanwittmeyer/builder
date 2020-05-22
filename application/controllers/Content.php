@@ -1,6 +1,4 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-
-
 /* 
  * Content Controller
  *
@@ -33,11 +31,11 @@ class Content extends CI_Controller {
 		$data['loadjs'][] = 'blank';
 		$data['loadjs']['contenttools'] = true;
 		//print_r($data);die;
-		$this->load->view('app/builder/templates/header', $data);
-		$this->load->view('app/cas/helpers/menu', $data);
+		$this->load->view('app/builder/head', $data);
+		$this->load->view('app/builder/nav', $data);
 		$path = ($data['template'] == 'default') ? 'app/cas/definition': "app/cas/definition/{$data['template']}";
 		$this->load->view($path, $data);
-		$this->load->view('app/builder/templates/footer', $data);
+		$this->load->view('app/builder/foot', $data);
 	
 	}
 	public function taxonomy($slug)
@@ -55,11 +53,11 @@ class Content extends CI_Controller {
 		$data['loadjs'][] = 'blank';
 		$data['loadjs']['contenttools'] = true;
 		//print_r($data);die;
-		$this->load->view('app/builder/casheader', $data);
-		$this->load->view('app/cas/helpers/menu', $data);
+		$this->load->view('app/builder/head', $data);
+		$this->load->view('app/builder/nav', $data);
 		$path = ($data['template'] == 'default') ? 'app/cas/taxonomy': "app/cas/taxonomy/{$data['template']}";
 		$this->load->view($path, $data);
-		$this->load->view('app/builder/casfooter', $data);
+		$this->load->view('app/builder/foot', $data);
 	
 	}
 	public function paper($slug)
@@ -75,10 +73,10 @@ class Content extends CI_Controller {
 		$data['loadjs'][] = 'blank';
 
 		//print_r($data);die;
-		$this->load->view('app/builder/templates/header', $data);
-		$this->load->view('app/cas/helpers/menu', $data);
+		$this->load->view('app/builder/head', $data);
+		$this->load->view('app/builder/nav', $data);
 		$this->load->view('app/cas/paper', $data);
-		$this->load->view('app/builder/templates/footer', $data);
+		$this->load->view('app/builder/foot', $data);
 	
 	}
 	public function feed($type)
@@ -95,10 +93,10 @@ class Content extends CI_Controller {
 			'url'=> current_url()
 		);
 		//print_r($data);die;
-		$this->load->view('app/builder/templates/header', $data);
-		$this->load->view('app/cas/helpers/menu', $data);
+		$this->load->view('app/builder/head', $data);
+		$this->load->view('app/builder/nav', $data);
 		$this->load->view('app/cas/feed', $data);
-		$this->load->view('app/builder/templates/footer', $data);
+		$this->load->view('app/builder/foot', $data);
 	
 	}
 	/* dev use only

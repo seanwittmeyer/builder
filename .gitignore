@@ -1,48 +1,38 @@
-*/config/development
-*/logs/log-*.php
-!*/logs/index.html
-*/cache/*
-!*/cache/index.html
-!*/cache/.htaccess
-.nova/*
-design/*
-.DS_Store
-.DS_Store?
-
-#codeigniter 3
+# Design and Dev
 application/logs/*
 !application/logs/index.html
 !application/logs/.htaccess
 application/views/app/archive/*
-application/views/app/ski/*
-application/views/app/ski/*
-application/views/app/vr/*
-composer.phar
-composer.lock
-/vendor/
-sources/*
+.nova/*
+dev/*
+design/*
+.DS_Store
+.DS_Store?
 
-#pylos content
+# Content
 upload/img/*
 upload/vr/*
 store/*
 !store/.htaccess
 includes/app/de/design_explorer_data/*
 
-#pylos config
+# Config
 .env.production
 .env.development
 application/config/development/*
 
-# Logs
+# Logs and Caches
 logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
-
-# Diagnostic reports (https://nodejs.org/api/report.html)
+*/logs/log-*.php
+!*/logs/index.html
+*/cache/*
+!*/cache/index.html
+!*/cache/.htaccess
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # Runtime data
@@ -60,6 +50,9 @@ bower_components
 # Dependency directories
 node_modules/
 jspm_packages/
+composer.phar
+composer.lock
+vendor/
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
