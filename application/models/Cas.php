@@ -329,6 +329,7 @@ class Cas extends CI_Model {
 			array('terms',$settings['terms']['title'],$settings['terms']['value'],false),
 			array('fields',$settings['fields']['title'],$settings['fields']['value'],true),
 			array('people',$settings['people']['title'],$settings['people']['value'],false),
+			array('articles',$settings['articles']['title'],$settings['articles']['value'],false),
 		); 
 		// Make an array of content with hosts included for each type.
 		foreach ($defaults as $d) {

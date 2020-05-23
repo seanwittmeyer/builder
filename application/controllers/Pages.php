@@ -15,7 +15,7 @@ class Pages extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		//$this->load->library('ion_auth');
+		$this->load->model('cas');
 	}
 
 	public function view($slug = 'home')

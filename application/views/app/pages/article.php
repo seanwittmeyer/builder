@@ -1,57 +1,44 @@
-	<?php /* <!-- Jumbotron -->
-	<div class="container-fluid build-wrapper container-jumbotron">
-		<div class="bs-component">
-			<div class="jumbotron jumbotron-home" id="imgheader" style="background-image: url('<?php echo (isset($img['header']) && !empty($img['header'])) ? $img['header']['url']: '/includes/test/assets/Moofushi_Kandu_fish.jpg'; ?>');">
-				<div class="container">
-					<h1 class="light-text"><?php echo $title; ?><!-- (<?php echo $id; ?>)--></h1>
-					<div style="position: relative; top: 0px; left: 0px; float: right">
-						<?php if ($this->ion_auth->logged_in()) { ?><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#pageupload"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit Image</button><?php } ?>
-						<button type="button" class="btn btn-default btn-xs" data-toggle="popover" data-trigger="hover" title="Image Credit" data-content="<?php echo (isset($img['header']['caption']) && !empty($img['header']['caption'])) ? $img['header']['caption']: 'Shoot, no caption listed...'; ?>" ><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Credit</button>
+	<!-- Page map as a page nav in the top right corner -->
+	<canvas id="pagemap" class="article"></canvas>
+	<!-- /pagemap -->
+	<!-- Header -->
+	<header class="article-header" style="background-image: url('<?php echo (isset($img['header']) && !empty($img['header'])) ? $img['header']['url']: '/includes/test/assets/Moofushi_Kandu_fish.jpg'; ?>');">
+		<div class="row">
+			<div class="col-sm-5 wrapper">
+				<div class="subtitle">A blog on the built environment</div>
+				<div class="title">&larr; Field Notes &dtrif;</div>
+			</div>
+			<div class="col-sm-7"></div>
+		</div>
+	</header>
+	<!-- Header -->
+	<!-- Article -->
+	<article class="article-article">
+		<div class="container-fluid">
+			<div class="row text-center">
+				<div class="col-md"></div>
+				<header class="col-md-6">
+					<div class="subtitle"><?=$blogtype?></div>
+					<h1><?=$title?></h1><!-- (<?=$id?>)-->
+					<div class="excerpt"><?=$this->shared->handlebar_links($excerpt)?></div>
+				</header>
+				<div class="col-md"></div>
+			</div>
+			<div class="row">
+				<div class="col-md"></div>
+				<div class="col-md-4 text-right">
+					<p class="">This article was published by <?php echo $author; ?><br /> on <?php echo date("F j, Y", $timestamp); ?></p>
+				</div>
+				<div class="col-md-6">
+					<div class="body">
+						<p><?php echo $this->shared->handlebar_links($body); ?></p>
+						<?php $this->cas->footer_photocitation($id,$img,$timestamp,$slug,$title); ?>
 					</div>
 				</div>
+				<div class="col-md"></div>
 			</div>
 		</div>
-	</div>
-	<?php /* */ ?>
-	<!-- /Jumbotron -->
-	<!-- Panels -->
-	<link href="https://fonts.googleapis.com/css?family=Sumana:400,700" rel="stylesheet">
-	<div class="container-fluid build-wrapper top-nospace">
-		<div class="row">
-			<div class="col-lg-5">
-				<h1 class="articletitle"><?php echo $title; ?><!-- (<?php echo $id; ?>)--></h1>
-				<p class="articlemeta">Written by <?php echo $author; ?><br />and posted <?php echo date("F j, Y", $timestamp); ?></p>
-
-				
-			</div>
-			<div class="col-lg-6">
-				<p class="articlesubtitle" style="padding-top: 100px;"><?php echo $this->shared->handlebar_links($excerpt); ?></p>
-
-				<div class="bodytext articletext">
-					<p><?php echo $this->shared->handlebar_links($body); ?></p>
-				</div>
-			</div>
-			<!--
-			<div class="col-lg-4">
-				<?php $set = $this->shared->get_related($type,$id,true); ?>
-				<?php if ($set !== false) : ?>
-					<h3>Keep Exploring</h3>
-					<p>These are elements and topics related to <?php echo $title; ?>. You can also <a data-toggle="modal" data-target="#pageeditor">modify relationships &rarr;</a></p>
-					<?php foreach ($set as $single) { ?>
-						<blockquote>
-							<h4>
-								<a class="t_list_<?php echo $single['id']; ?>" href="/<?php echo $single['type']; ?>/<?php echo $single['slug']; ?>">
-									<span class="glyphicon glyphicon-<?php if($single['type'] == "taxonomy") { print('list'); } elseif ($single['type'] == "paper") { print('file'); } elseif ($single['type'] == "definition") { print('education'); } ?>" aria-hidden="true"></span> 
-									<?php echo $single['title']; ?>
-								</a>
-							</h4>
-							<p style="font-size:15px;"><?php echo $single['excerpt']; ?> <a href="/<?php echo $single['type']; ?>/<?php echo $single['slug']; ?>">Learn More about <?php echo $single['title']; ?> &rarr;</a></p>
-						</blockquote>
-					<?php } ?> <?php elseif ($this->ion_auth->is_admin()): ?><blockquote>No connected topics...yet.<br /><button class="btn btn-success" data-toggle="modal" data-target="#pageeditor">Add Relationships</button></blockquote><?php endif; ?>
-			</div>
-			-->
-		</div>
-	</div>
+	</article>
 	
 	<!-- /Panels -->
 	<div class="modal fade" id="pageeditor" tabindex="-1" role="dialog" aria-labelledby="pageeditor" aria-hidden="true">
@@ -308,5 +295,20 @@
 					}
 				}
 			});
+		});
+	</script>
+	<script>
+		//pagemap(document.querySelector('#pagemap'));
+		pagemap(document.querySelector('#pagemap'), {
+			viewport: null,
+			styles: {
+				'header,footer,section,article,p': 'rgba(0,0,0,0.08)',
+				'h1,a': 'rgba(0,0,0,0.10)',
+				'h2,h3,h4': 'rgba(0,0,0,0.08)',
+			},
+			back: 'rgba(0,0,0,0.02)',
+			view: 'rgba(0,0,0,0.05)',
+			drag: 'rgba(0,0,0,0.10)',
+			interval: null,
 		});
 	</script>

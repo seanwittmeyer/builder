@@ -12,7 +12,7 @@
 	<link rel="icon" href="/includes/img/favicon.jpg">
 	<title><?php echo $pagetitle; ?> - Sean's Website</title>
 	<script src="/includes/js/pace.min.js"></script>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+	<!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">-->
 	<link href="/includes/css/bootstrap-select.min.css" rel="stylesheet" />
 	<link href="/includes/css/summernote.css" rel="stylesheet" />
 	<link href="/includes/css/font-awesome.min.css" rel="stylesheet">
@@ -32,8 +32,8 @@
 			$('.windowminheight').css({'min-height': window.innerHeight-110});
 			$('.windowheight').css({'min-height': window.innerHeight-110,'height': window.innerHeight-110});
 			<?php if (isset($loadjs['skimaponload'])) { ?> 
-			map.resize();
-			map.fitBounds(bounds);
+				map.resize();
+				map.fitBounds(bounds);
 			<?php } ?> 
 		}
 		$(document).ready(herowindowheight);

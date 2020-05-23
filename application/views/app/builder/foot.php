@@ -19,6 +19,15 @@
 	</script>
 	<!-- /embedly -->
 	<?php } ?>
+	
+	<!-- Pagmap -->
+	<script type="text/javascript">
+			console.log("ok pagemap inline ran");
+			
+			console.log("ok pagemap inline ran");
+	</script>
+	<!-- /pagemap -->
+
 	<!-- Make the site interactive -->
 	<script type="text/javascript">
 		/*$('#loginmodal').on('shown.bs.modal', function () {
