@@ -24,6 +24,7 @@
   "license": "MIT",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.13.0",
+    "ContentTools": "^1.6.12",
     "bootstrap": "^4.5.0",
     "bootstrap-fileinput": "^5.0.8",
     "bootstrap-select": "^1.13.17",

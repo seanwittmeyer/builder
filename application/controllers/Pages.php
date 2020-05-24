@@ -1,6 +1,4 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-
-
 /* 
  * Pages Controller
  *
@@ -36,7 +34,10 @@ class Pages extends CI_Controller {
 			//print_r($data);die;
 			$data['pagetitle'] = $data['title'];
 			$data['contenttitle'] = $data['title'];
+			$data['loadjs']['contenttools'] = true;
 			$data['section'] = '';
+			$data['settings'] = $this->shared->settings();
+			$data['cartograph'] = $this->shared->cartograph_content(false,$data['settings']);
 			if (strpos($template, 'pylos') !== false) {
 				if ($template == 'pyloshome') {
 					$this->load->model('pylos_model');

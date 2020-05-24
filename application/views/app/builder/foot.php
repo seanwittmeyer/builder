@@ -22,9 +22,7 @@
 	
 	<!-- Pagmap -->
 	<script type="text/javascript">
-			console.log("ok pagemap inline ran");
-			
-			console.log("ok pagemap inline ran");
+
 	</script>
 	<!-- /pagemap -->
 

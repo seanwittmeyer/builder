@@ -50,6 +50,7 @@ module.exports = {
 			$: 'jquery',
 			jQuery: 'jquery',
 			pagemap: 'pagemap',
+			//ContentTools: 'ContentTools',
 		}),
 	],
 	entry: {
@@ -57,6 +58,7 @@ module.exports = {
 		general: './src/general.js',
 		maps: './src/maps.js',
 		viz: './src/viz.js',
+		//editor: './src/contenttools.js',
 	},
 	output: {
 		filename: '[name].bundle.js',

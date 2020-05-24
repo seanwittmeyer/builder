@@ -41,7 +41,7 @@ html {
 body {
 	/* Margin bottom by footer height */
 	margin-bottom: 90px;
-	width: calc(100% - 15px);
+	/* width: calc(100% - 15px); */
 	border-left: 15px solid #fe7964;
 }
 
@@ -149,8 +149,8 @@ span.photocreditpreview {
 	transition: width .5s, height .5s;
 }
 span.photocreditpreview:hover {
-	height: 200px;
-	width: 300px;
+	height: 150px;
+	width: 200px;
 }
 header.article-header {
 	background-size: cover;
@@ -161,8 +161,6 @@ header.article-header {
 header.article-header .wrapper {
 	background: rgba(255, 255, 255, .5);
 	padding: 20px 15px 20px 15px;
-	margin-left: 15px;
-	margin-right: -15px;
 }
 article.article-article header {
 	padding: 2rem 0;
@@ -171,18 +169,18 @@ article.article-article header h1 {
 	font-weight: 700;
 	font-family: "IBM Plex Serif";
 	font-style: italic;
-	padding-top: .5rem;
 }
 article.article-article header .excerpt {
-	padding: .5rem 0 1rem;
+	padding: .5rem 0 0rem;
 	font-family: "IBM Plex Mono";
 	font-style: italic;
 	font-size: 1.2rem;
+	font-weight: 200;
 }
 article.article-article .body {
 	font-family: "IBM Plex Serif";
-	font-size: 1rem;
-	line-height: 1.8rem;
+	font-size: 1.2rem;
+	line-height: 2rem;
 }
 
 
@@ -208,24 +206,46 @@ article.article-article .body {
 /* Heading
 -------------------------------------------------- */
 
-/* Heading
+/* ContentTools
 -------------------------------------------------- */
+.ct-widget.ct-ignition {
+	left: 30px !important;
+	position: fixed;
+	top: 110px !important;
+}
 
 /* Pagemap
 -------------------------------------------------- */
-#pagemap {
-	position: fixed;
-	top: 0;
-	right: 0;
-	width: 100px;
-	height: 100%;
-	z-index: 100;
+#pagemap { 
+	display: none;
 }
-#pagemap.article {
-	position: fixed;
-	top: 100px;
-	right: 10px;
-	width: 100px;
-	height: 100%;
-	z-index: 100;
+
+@media (min-width: 576px) {
+}
+
+@media (min-width: 768px) {
+}
+
+@media (min-width: 992px) {
+	#pagemap {
+		position: fixed;
+		display: initial;
+		bottom: 20px;
+		right: 20px;
+		width: 60px;
+		height: 100%;
+		z-index: 100;
+	}
+	#pagemap.article {
+		position: fixed;
+		display: initial;
+		bottom: 20px;
+		right: 20px;
+		width: 60px;
+		height: 100%;
+		z-index: 100;
+	}
+}
+
+@media (min-width: 1200px) {
 }

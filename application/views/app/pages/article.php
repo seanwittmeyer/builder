@@ -2,7 +2,7 @@
 	<canvas id="pagemap" class="article"></canvas>
 	<!-- /pagemap -->
 	<!-- Header -->
-	<header class="article-header" style="background-image: url('<?php echo (isset($img['header']) && !empty($img['header'])) ? $img['header']['url']: '/includes/test/assets/Moofushi_Kandu_fish.jpg'; ?>');">
+	<header class="article-header container-fluid" style="background-image: url('<?php echo (isset($img['header']) && !empty($img['header'])) ? $img['header']['url']: '/includes/test/assets/Moofushi_Kandu_fish.jpg'; ?>');">
 		<div class="row">
 			<div class="col-sm-5 wrapper">
 				<div class="subtitle">A blog on the built environment</div>
@@ -16,31 +16,33 @@
 	<article class="article-article">
 		<div class="container-fluid">
 			<div class="row text-center">
-				<div class="col-md"></div>
-				<header class="col-md-6">
-					<div class="subtitle"><?=$blogtype?></div>
-					<h1><?=$title?></h1><!-- (<?=$id?>)-->
-					<div class="excerpt"><?=$this->shared->handlebar_links($excerpt)?></div>
+				<div class="d-none d-sm-block col-sm"></div>
+				<header class="col-sm-10 col-lg-6">
+					<div class="subtitle" data-editable="" data-name="payload[blogtype]"><p><?=$blogtype?></p></div>
+					<div data-editable="" data-name="payload[title]"><h1><?=$title?></h1></div><!-- (<?=$id?>)-->
+					<div class="excerpt" data-editable="" data-name="payload[excerpt]"><p><?=$this->shared->handlebar_links($excerpt)?></p></div>
 				</header>
-				<div class="col-md"></div>
+				<div class="d-none d-sm-block col-sm"></div>
 			</div>
 			<div class="row">
-				<div class="col-md"></div>
-				<div class="col-md-4 text-right">
+				<div class="col-md d-none d-lg-block"></div>
+				<div class="col-md-5 col-lg-4 text-right">
 					<p class="">This article was published by <?php echo $author; ?><br /> on <?php echo date("F j, Y", $timestamp); ?></p>
 				</div>
-				<div class="col-md-6">
-					<div class="body">
-						<p><?php echo $this->shared->handlebar_links($body); ?></p>
-						<?php $this->cas->footer_photocitation($id,$img,$timestamp,$slug,$title); ?>
+				<div class="col-md-7 col-lg-6">
+					<div class="body" data-editable="" data-name="payload[body]">
+						<?php echo $this->shared->handlebar_links($body); ?></p>
 					</div>
+					<?php $this->cas->footer_photocitation($id,$img,$timestamp,$slug,$title); ?>
 				</div>
-				<div class="col-md"></div>
+				<div class="col-md d-none d-lg-block"></div>
 			</div>
 		</div>
 	</article>
+	<!-- /Article -->
+
 	
-	<!-- /Panels -->
+	<!-- /Page editor -->
 	<div class="modal fade" id="pageeditor" tabindex="-1" role="dialog" aria-labelledby="pageeditor" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -78,10 +80,6 @@
 						<!--<div class="cas-summernote">Hello Summernote</div>-->
 						<div class=""><textarea type="text" class="cas-summernote" id="cas-def-body" name="payload[body]"><?php echo $body; ?></textarea></div>
 					</div>
-					
-					
-					
-					
 					<h4>Metadata</h4>
 					<p>The richness of the site comes in its content relationships and connections. Select relationships this definition has with other content in the website.</p>
 					<div class="panel panel-default">
@@ -126,6 +124,7 @@
 			</div>
 		</div>
 	</div>
+	<!-- /Page Editor -->
 	<!-- Header Image File Uploader -->
 	<div class="modal fade" id="pageupload" tabindex="-1" role="dialog" aria-labelledby="pageupload" aria-hidden="true">
 		<div class="modal-dialog">
@@ -144,7 +143,8 @@
 					</div>
 					<div class="form-group">
 						<label for="payload[title]" class="">Caption</label>
-						<div class=""><input type="text" class="form-control" id="cas-def-title" name="payload[img][header][caption]" value="<?php echo $title; ?>"></div>
+						<p style="font-size: .7em;"><strong>Example:</strong> Underwater image of fish in Moofushi Kandu, Maldives, by Bruno de Giusti (via Wikimedia Commons)</p>
+						<div class=""><input type="text" class="form-control" id="cas-img-title" name="payload[img][header][caption]" value="<?php echo (isset($img['header']['caption'])) ? $img['header']['caption']: $title; ?>"></div>
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -162,147 +162,20 @@
 		</div>
 	</div>
 	<!-- /File Uploader -->
-	<script>
-		$('#pageeditor').on('shown.bs.modal', function () {
-			$('.cas-summernote').summernote({
-			  toolbar: [
-			    // [groupName, [list of button]]
-			    ['style', ['style']],
-			    ['simple', ['bold', 'italic', 'underline', 'clear']],
-			    ['para', ['ul', 'ol', 'paragraph']],
-			    ['link', ['linkDialogShow', 'picture']],
-			    ['code', ['codeview']],
-			    ['fullscreen', ['fullscreen']],
-			  ],
-			  callbacks: {
-				  onImageUpload: function(files, editor, welEditable) {
-				  	sendFile(files[0], this, welEditable);
-				  }
-			  }
-			});
-		});
-		function sendFile(file, el, welEditable) {
-            data = new FormData();
-            data.append("userfile", file);
-            $.ajax({
-                data: data,
-                type: "POST",
-                url: "/api/uploadimage/url",
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function(url) {
-	                //var url = JSON.parse(data);
-	                alert(url);
-                    //editor.insertImage(welEditable, url);
-                    $(el).summernote('editor.insertImage', url);
-                    console.log(url+' has been uploaded and inserted into summernote. bam!');
-                }
-            });
-        }
-		$('#pageupload').on('shown.bs.modal', function () {
-		    $("#cas-tax-file").fileinput({
-		        uploadAsync: false,
-				url: "/api/uploadimage", // remove X or it wont work...
-		        uploadExtraData: function() {
-		            return {
-		                id: '<?php echo $id; ?>',
-		                type: 'page'
-		            };
-		        }
-		    });
-		});
 
-		$('#cas-tax-file').fileinput({
-		    uploadUrl: "/api/uploadimage", // server upload action
-		    uploadAsync: true,
-		    showUpload: false, // hide upload button
-		    showRemove: false, // hide remove button
-		    minFileCount: 1,
-		    maxFileCount: 1
-		}).on("filebatchselected", function(event, files) {
-		    // trigger upload method immediately after files are selected
-		    $('#cas-tax-file').fileinput("upload");
-		}).on('fileuploaded', function(event, data, previewId, index) {
-		    var form = data.form, files = data.files, extra = data.extra,
-		        response = data.response, reader = data.reader;
-		    console.log(response.filename + ' has been uploaded');
-		    $('#imgheader').css('background-image','url('+response.filename+')');
-		    $('#cas-tax-fileurl').val(response.filename);
-		});
-		$('#submiteditor').click(function() {
-			$.ajax({
-				type: "POST",
-				beforeSend: function() {
-					$('#editorbuttons').hide(); 
-					$('#editorfail').hide(); 
-					$('#editorloading').show();
-				},
-				url: "/api/update/page/<?php echo $id; ?>",
-				data: $("#formeditor").serialize(),
-				statusCode: {
-					200: function(data) {
-						$('#editorloading').hide(); 
-						$('#editorsuccess').show();
-						var response = JSON.parse(data); 
-						$('#editorbuttons').show(); 
-						window.location.reload();
-					},
-					403: function(data) {
-						//var response = JSON.parse(data);
-						$('#editorloading').hide(); 
-						$('#editorfail').show();
-						$('#editorbuttons').show(); 
-					},
-					404: function(data) {
-						//var response = JSON.parse(data);
-						$('#editorloading').hide(); 
-						$('#editorfail').show();
-						$('#editorbuttons').show(); 
-					}
-				}
-			});
-		});
-		$('#submitupload').click(function() {
-			$.ajax({
-				type: "POST",
-				beforeSend: function() {
-					$('#uploadbuttons').hide(); 
-					$('#uploadfail').hide(); 
-					$('#uploadloading').show();
-				},
-				url: "/api/update/page/<?php echo $id; ?>/header", 
-				data: $("#formupload").serialize(),
-				statusCode: {
-					200: function(data) {
-						$('#uploadloading').hide(); 
-						$('#uploadsuccess').show();
-						var response = JSON.parse(data); 
-						$('#uploadbuttons').show(); 
-						window.location.reload();
-					},
-					403: function(data) {
-						//var response = JSON.parse(data);
-						$('#uploadloading').hide(); 
-						$('#uploadfail').show();
-						$('#uploadbuttons').show(); 
-					},
-					404: function(data) {
-						//var response = JSON.parse(data);
-						$('#uploadloading').hide(); 
-						$('#uploadfail').show();
-						$('#uploadbuttons').show(); 
-					}
-				}
-			});
-		});
-	</script>
+
+
+
+	<?php if ($this->ion_auth->logged_in() && isset($loadjs['contenttools'])) { 
+		$this->load->view("helpers/contenttools");
+		$this->load->view("helpers/editcontent");
+	} ?> 
 	<script>
 		//pagemap(document.querySelector('#pagemap'));
 		pagemap(document.querySelector('#pagemap'), {
 			viewport: null,
 			styles: {
-				'header,footer,section,article,p': 'rgba(0,0,0,0.08)',
+				'.title,nav,p': 'rgba(0,0,0,0.08)',
 				'h1,a': 'rgba(0,0,0,0.10)',
 				'h2,h3,h4': 'rgba(0,0,0,0.08)',
 			},

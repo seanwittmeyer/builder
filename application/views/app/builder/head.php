@@ -23,9 +23,16 @@
 	<script src="/dist/index.bundle.js?<?=$uniquejsversion?>"></script>
 	<script src="/dist/general.bundle.js?<?=$uniquejsversion?>"></script>
 	<?php if (isset($loadjs['builder_viz'])) { ?><script src="/dist/viz.bundle.js?<?=$uniquejsversion?>"></script><?php } ?> 
+	<?php if (isset($loadjs['contenttools'])) { ?>
+	<script src="/dist/editor.bundle.js?<?=$uniquejsversion?>"></script>
+	<link href="/includes/css/content-tools.min.css" rel="stylesheet" />
+	<?php } ?> 
 	<?php if (isset($loadjs['builder_maps'])) { ?><script src="/dist/maps.bundle.js?<?=$uniquejsversion?>"></script>
 	<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.45.0/mapbox-gl.js'></script>
 	<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.45.0/mapbox-gl.css' rel='stylesheet' />
+	<?php } ?> 
+	<?php if (isset($loadjs['contenttools'])) { ?> 
+	<link href='/includes/css/content-tools.min.css' rel='stylesheet' />
 	<?php } ?> 
  	<script type="text/javascript">
 		function herowindowheight() {
