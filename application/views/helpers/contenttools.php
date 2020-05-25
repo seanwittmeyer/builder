@@ -1,5 +1,5 @@
 <!-- Content Tools -->
-<script src='/includes/js/content-tools.min.js'></script>
+<!--<script src='/includes/js/content-tools.min.js'></script>-->
 <script>
 
 /* Content Tools Image Save */

@@ -44,6 +44,20 @@
 			<?php } ?> 
 		}
 		$(document).ready(herowindowheight);
+		function initsummernoteinstances() {
+			$('.cas-summernote').summernote({
+			  toolbar: [
+				// [groupName, [list of button]]
+				['style', ['style']],
+				['simple', ['bold', 'italic', 'underline', 'clear']],
+				['para', ['ul', 'ol', 'paragraph']],
+				['link', ['linkDialogShow']],
+				['code', ['codeview']],
+				['fullscreen', ['fullscreen']],
+				
+			  ],
+			});
+		}
 	</script>
 </head>
 <body onresize="herowindowheight()">

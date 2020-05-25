@@ -1,20 +1,39 @@
 //import 'bootstrap/dist/css/bootstrap.css';
-import './scss/app.scss';
-console.log('app scss build success.');
+import "./scss/app.scss";
+console.log("app scss build success.");
 
-import $ from 'jquery';
-import 'bootstrap';
-import 'bootstrap-select';
-import 'popper.js';
-import 'bootstrap-fileinput';
+import $ from "jquery";
+import "popper.js";
+import "bootstrap";
+import "bootstrap-select";
+import "bootstrap-fileinput";
 
-window.$ = window.jQuery = require('jquery');
+window.$ = window.jQuery = require("jquery");
 window.jQuery = $;
-console.log('index.bundle.js successfully loaded jquery as window.$ and window.jquery');
+console.log(
+  "index.bundle.js successfully loaded jquery as window.$ and window.jquery"
+);
 
 $(function() {
-	$('#selectpicker').selectpicker();
-	$('[data-toggle="tooltip"]').tooltip();
-	$('[data-toggle="popover"]').popover();
+  $("#selectpicker").selectpicker();
+  $('[data-toggle="tooltip"]').tooltip();
+  $('[data-toggle="popover"]').popover();
 });
-console.log('selectpicker, bootstrap tooltip+popover init success.');
+console.log("selectpicker, bootstrap tooltip+popover init success.");
+
+import "summernote/dist/summernote-bs4";
+import "summernote/dist/summernote-bs4.css";
+
+$(".cas-summernote").summernote({
+  toolbar: [
+    // [groupName, [list of button]]
+    ["style", ["style"]],
+    ["simple", ["bold", "italic", "underline", "clear"]],
+    ["para", ["ul", "ol", "paragraph"]],
+    ["link", ["linkDialogShow"]],
+    ["code", ["codeview"]],
+    ["fullscreen", ["fullscreen"]]
+  ]
+});
+
+console.log("summernote init success.");

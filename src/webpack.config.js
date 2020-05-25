@@ -1,70 +1,106 @@
-const path = require('path');
-const webpack = require('webpack');
+const HtmlWebPackPlugin = require("html-webpack-plugin");
+//const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const webpack = require("webpack");
+const path = require("path");
 
 module.exports = {
-	mode: 'production',
-	/*
+  mode: "production",
+  /*
   resolve: {
     alias: {
       jquery: "jquery/src/jquery"
     } 
   },
   */
-	module: {
-		rules: [
-			{
-				test: /\.(scss)$/,
-				use: [
-					{
-						// Adds CSS to the DOM by injecting a `<style>` tag
-						loader: 'style-loader',
-					},
-					{
-						// Interprets `@import` and `url()` like `import/require()` and will resolve them
-						loader: 'css-loader',
-					},
-					{
-						// Loader for webpack to process CSS with PostCSS
-						loader: 'postcss-loader',
-						options: {
-							plugins: function() {
-								return [require('autoprefixer')];
-							},
-						},
-					},
-					{
-						// Loads a SASS/SCSS file and compiles it to CSS
-						loader: 'sass-loader',
-					},
-				],
-			},
-			{
-				test: /\.css$/,
-				loaders: ['style-loader', 'css-loader'],
-			},
-		],
-	},
-	plugins: [
-		// Provides jQuery for other JS bundled with Webpack
-		new webpack.ProvidePlugin({
-			$: 'jquery',
-			jQuery: 'jquery',
-			pagemap: 'pagemap',
-			//ContentTools: 'ContentTools',
-		}),
-	],
-	entry: {
-		index: './src/index.js',
-		general: './src/general.js',
-		maps: './src/maps.js',
-		viz: './src/viz.js',
-		//editor: './src/contenttools.js',
-	},
-	output: {
-		filename: '[name].bundle.js',
-		path: path.resolve(__dirname, '../dist'),
-	},
-	/* not sure we want to do this yet
+  module: {
+    rules: [
+      {
+        test: /\.(sa|sc|c)ss$/,
+        use: [
+          /*
+		  {
+            loader: MiniCssExtractPlugin.loader
+          },
+		  */
+          {
+            // Adds CSS to the DOM by injecting a `<style>` tag
+            loader: "style-loader"
+          },
+          {
+            loader: "css-loader"
+          },
+          {
+            loader: "postcss-loader",
+            options: {
+              plugins: function() {
+                return [require("autoprefixer")];
+              }
+            }
+          },
+          {
+            loader: "sass-loader",
+            options: {
+              implementation: require("sass")
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg)$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "[name].[ext]",
+              outputPath: "dist/images"
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(woff|woff2|ttf|otf|eot)$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "[name].[ext]",
+              outputPath: "dist/fonts"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  plugins: [
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery",
+      CodeMirror: "codemirror",
+      pagemap: "pagemap"
+    }),
+    /*
+	new MiniCssExtractPlugin({
+      filename: "[name].css"
+    }),
+	*/
+    new HtmlWebPackPlugin({
+      inject: true,
+      template: `./src/index.html`,
+      filename: "index.html"
+    })
+  ],
+  entry: {
+    index: "./src/index.js",
+    general: "./src/general.js",
+    maps: "./src/maps.js",
+    viz: "./src/viz.js"
+    //editor: './src/contenttools.js',
+  },
+  output: {
+    filename: "dist/[name].bundle.js",
+    path: path.resolve(__dirname, "../")
+  }
+  /* not sure we want to do this yet
   optimization: {
     splitChunks: {
       chunks: "all"

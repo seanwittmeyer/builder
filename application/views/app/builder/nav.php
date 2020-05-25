@@ -24,7 +24,8 @@
 				<li><a href="/resume">Resume</a></li>
 				<li><a href="//sean.wittmeyer.io/">Portfolio</a></li>
 				<li><a href="/sayhello">Contact</a></li>
-			</div>
+			</ul>
+		</div>
 		<div class="tab-pane fade" id="projects" role="tabpanel" aria-labelledby="nav-projects-tab">
 			<ul>
 				<li><a href="/projects/architecture">Architecture</a></li>
