@@ -27,7 +27,7 @@
 			<div class="row">
 				<div class="col-md d-none d-lg-block"></div>
 				<div class="col-md-5 col-lg-4 text-right">
-					<p class="">This article was published by <?php echo $author; ?><br /> on <?php echo date("F j, Y", $timestamp); ?></p>
+					<p class="">This article was published <?php echo $this->shared->twitterdate($timestamp, true); ?> by <?php echo $author; ?>.</p>
 				</div>
 				<div class="col-md-7 col-lg-6">
 					<div class="body" data-editable="" data-name="payload[body]">
