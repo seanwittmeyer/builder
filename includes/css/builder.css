@@ -17,194 +17,228 @@ Included font-weights: 200, 400, and 700 for each
 */
 
 @-webkit-viewport {
-	width: device-width;
+  width: device-width;
 }
 @-moz-viewport {
-	width: device-width;
+  width: device-width;
 }
 @-ms-viewport {
-	width: device-width;
+  width: device-width;
 }
 @-o-viewport {
-	width: device-width;
+  width: device-width;
 }
 @viewport {
-	width: device-width;
+  width: device-width;
 }
 
-/* Basic structure
+/* Basic structure and CSS overrides
 -------------------------------------------------- */
 html {
-	position: relative;
-	min-height: 100%;
+  position: relative;
+  min-height: 100%;
 }
 body {
-	/* Margin bottom by footer height */
-	margin-bottom: 90px;
-	/* width: calc(100% - 15px); */
-	border-left: 15px solid #fe7964;
+  /* Margin bottom by footer height */
+  margin-bottom: 90px;
+  /* width: calc(100% - 15px); */
+  border-left: 15px solid #fe7964;
 }
-
+pre {
+	border: 1px #ddd solid;
+	padding: .5rem;
+	border-radius: .25rem;
+}
 /* Navs and Tabs 
 -------------------------------------------------- */
 #mainnav {
-	position: fixed;
-	bottom: 20px;
-	left: 30px;
-	width: calc(41.6666667% - 15px);
-	height: auto;
-	background-color: #f5f5f500;
-	z-index: 2000;
+  position: fixed;
+  bottom: 20px;
+  left: 30px;
+  width: calc(41.6666667% - 15px);
+  height: auto;
+  background-color: #f5f5f500;
+  z-index: 2000;
 }
-#mainnav #title, .sectiontitle {
-	font-size: 1.4rem;
-	font-weight: 700;
-	font-family: "IBM Plex Sans";
+#mainnav #title,
+.sectiontitle {
+  font-size: 1.4rem;
+  font-weight: 700;
+  font-family: "IBM Plex Sans";
 }
-#mainnav a, #mainnav li {
-	font-family: "IBM Plex Mono";
+#mainnav a,
+#mainnav li {
+  font-family: "IBM Plex Mono";
 }
 #mainnav .nav-item {
-	font-size: 0.9rem
+  font-size: 0.9rem;
 }
 #mainnav .tab-content {
-	font-size: 0.75rem
+  font-size: 0.75rem;
 }
-#mainnav a:link, #mainnav a:visited,
-.inlinetabs a:link, .inlinetabs a:visited {
-	color: black;
+#mainnav a:link,
+#mainnav a:visited,
+.inlinetabs a:link,
+.inlinetabs a:visited {
+  color: black;
 }
-#mainnav a:active, #mainnav a.active,
-.inlinetabs a:active, .inlinetabs a.active {
-	font-weight: 700;
+#mainnav a:active,
+#mainnav a.active,
+.inlinetabs a:active,
+.inlinetabs a.active {
+  font-weight: 700;
 }
 #mainnav #mainnavpanes ul {
-	margin: 0;padding: 0;
+  margin: 0;
+  padding: 0;
 }
 #mainnav #mainnavpanes li {
-	display: inline;
-	
+  display: inline;
 }
 #mainnav #mainnavpanes li::after {
-	content:" | ";
-	
+  content: " | ";
 }
 #mainnav #mainnavpanes li:last-child::after {
-	content: none;
-	
+  content: none;
 }
-.inlinetabs .tab-item, .inlinetabs .nav-link, .inlinetabs li {
-	font-family: "IBM Plex Mono";
-	font-size: 0.9rem
+.inlinetabs .tab-item,
+.inlinetabs .nav-link,
+.inlinetabs li {
+  font-family: "IBM Plex Mono";
+  font-size: 0.9rem;
 }
 #mainnav .nav-tabs,
 .inlinetabs .nav-tabs {
-	border: none;
+  border: none;
 }
 .inlinetabs .nav-tabs {
-	padding-bottom: 1rem;
+  padding-bottom: 1rem;
 }
-#mainnav .nav-tabs .nav-link.active, #mainnav .nav-tabs .nav-item.show .nav-link,
-.inlinetabs .nav-tabs .nav-link.active, .inlinetabs .nav-tabs .nav-item.show .nav-link {
-	background-color: transparent;
-	border: none;
+#mainnav .nav-tabs .nav-link.active,
+#mainnav .nav-tabs .nav-item.show .nav-link,
+.inlinetabs .nav-tabs .nav-link.active,
+.inlinetabs .nav-tabs .nav-item.show .nav-link {
+  background-color: transparent;
+  border: none;
 }
 
 #mainnav .nav-tabs .nav-link,
 .inlinetabs .nav-tabs .nav-link {
-	border: none;
+  border: none;
 }
-#mainnav .nav-link, 
+#mainnav .nav-link,
 .inlinetabs .nav-link {
-	display: inline;
-	padding: 0;
-	
+  display: inline;
+  padding: 0;
 }
 #mainnav .nav-link.active,
 .inlinetabs .nav-link.active {
-	text-decoration: underline;
+  text-decoration: underline;
 }
 #mainnav .nav-item::after {
-	content: "| ";
-	white-space: pre-wrap;
+  content: "| ";
+  white-space: pre-wrap;
 }
 .inlinetabs .nav-item::after {
-	content: " | ";
-	white-space: pre-wrap;
+  content: " | ";
+  white-space: pre-wrap;
 }
 #mainnav .nav-item:last-child::after,
 .inlinetabs .nav-item:last-child::after {
-	content: none;
+  content: none;
 }
-
+.dropdown-menu a.dropdown-header,
+.dropdown-menu a.dropdown-item {
+  font-size: 0.75rem;
+  padding: 0.15rem 1.5rem;
+}
+.dropdown-menu a.btn.btn-sm {
+  margin: 0.3rem 1.5rem 0.3rem 1.5rem;
+  display: block;
+}
+.article-header .dropdown-menu span,
+.article-header .dropdown-menu a {
+	font-weight: 400;
+}
+.article-header .dropdown-menu a {
+  font-family: "IBM Plex Mono";
+}
 
 /* Headings
 -------------------------------------------------- */
 header .title {
-	font-size: 1.4rem;
-	font-weight: 700;
+  font-size: 1.4rem;
+  font-weight: 700;
 }
 header .subtitle {
-	font-size: .9rem;
-	line-height: 1.1rem;
-	font-weight: 400;
-	font-style: italic;
-	font-family: "IBM Plex Mono";
+  font-size: 0.9rem;
+  line-height: 1.1rem;
+  font-weight: 400;
+  font-style: italic;
+  font-family: "IBM Plex Mono";
 }
-
 
 /* CAS (Field Notes)
 -------------------------------------------------- */
 
 span.photocreditpreview {
-	display: block;
-	width: 73px;
-	height: 41px;
-	background-size: cover;
-	background-position: center center;
-	border-radius: 2px;
-	vertical-align: middle;
-	margin: 4px 10px 20px 0;
-	float: left;
-	transition: width .5s, height .5s;
+  display: block;
+  width: 73px;
+  height: 41px;
+  background-size: cover;
+  background-position: center center;
+  border-radius: 2px;
+  vertical-align: middle;
+  margin: 4px 10px 20px 0;
+  float: left;
+  transition: width 0.5s, height 0.5s;
 }
 span.photocreditpreview:hover {
-	height: 150px;
-	width: 200px;
+  height: 150px;
+  width: 200px;
 }
 header.article-header {
-	background-size: cover;
-	background-position: center center;
-	background-repeat: no-repeat;
-	height: 90px;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  height: 90px;
 }
 header.article-header .wrapper {
-	background: rgba(255, 255, 255, .5);
-	padding: 20px 15px 20px 15px;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 20px 15px 20px 15px;
 }
 article.article-article header {
-	padding: 2rem 0;
+  padding: 2rem 0;
 }
 article.article-article header h1 {
-	font-weight: 700;
-	font-family: "IBM Plex Serif";
-	font-style: italic;
+  font-weight: 700;
+  font-family: "IBM Plex Serif";
+  font-style: italic;
 }
 article.article-article header .excerpt {
-	padding: .5rem 0 0rem;
-	font-family: "IBM Plex Mono";
-	font-style: italic;
-	font-size: 1.2rem;
-	font-weight: 200;
+  padding: 0.5rem 0 0rem;
+  font-family: "IBM Plex Mono";
+  font-style: italic;
+  font-size: 1.2rem;
+  font-weight: 200;
 }
 article.article-article .body {
-	font-family: "IBM Plex Serif";
-	font-size: 1.2rem;
-	line-height: 2rem;
+  font-family: "IBM Plex Serif";
+  font-size: 1.2rem;
+  line-height: 2rem;
 }
-
-
-
+.articlethemes {
+	list-style: none;
+	text-align: right;
+}
+.articlethemes li {
+	margin: 0;
+	padding: 0 2rem 0 0;
+	list-style: none;
+	background-repeat: no-repeat;
+	background-position: right center;
+	background-size: 1.5rem;
+}
 /* Ski
 -------------------------------------------------- */
 
@@ -223,42 +257,69 @@ article.article-article .body {
 /* Off Canvas Edit Pane
 -------------------------------------------------- */
 .offcanvaspane {
-	display: none;
+  display: none;
 }
 body.offcanvas {
-	width: calc(100% - 350px);
+  width: calc(100% - 350px);
 }
 body.offcanvas .offcanvaspane {
-	display: block;
-	width: 350px;
-	position: fixed;
-	top: 0;
-	bottom: 0;
-	right: 0;
-	border-left: 2px solid #fe7964;
-	padding-top: 20px;
-	padding-bottom: 50px;
-	overflow: auto;
+  display: block;
+  width: 350px;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  border-left: 2px solid #fe7964;
+  padding-top: 20px;
+  padding-bottom: 50px;
+  overflow: auto;
 }
-
-
+body.offcanvas .offcanvaspane .offcanvasbuttons {
+  padding: 5px 0 1rem;
+}
+body.offcanvas .offcanvaspane .bootstrap-select .dropdown-menu.inner {
+  max-width: 300px;
+}
+body.offcanvas .offcanvaspane .editorheaderimgpreview {
+	height: 100px;
+	margin: .5em 1px;
+	border: 1px solid #ced4da;
+	border-radius: 0.25rem;
+    background-size: cover;
+	background-position: center center;
+	vertical-align: middle;
+}
 
 /* Forms
 -------------------------------------------------- */
 /* This is supposed to be a way to add in the fancy floating labels for our forms. */
 .form-label-group {
-  position: relative; margin-bottom: 1rem;
+  position: relative;
+  margin-bottom: 1rem;
 }
-.form-label-group > input, 
+.form-label-group > input,
 .form-label-group > label,
 .form-label-group > select {
-  height: 3.125rem; padding: .75rem;
+  height: 3.125rem;
+  padding: 0.75rem;
 }
 .form-label-group > textarea {
-	padding: .75rem;
+  padding: 0.75rem;
 }
 .form-label-group > label {
-	position: absolute; top: 0; left: 0; display: block; width: 100%; margin-bottom: 0; /* Override default `<label>` margin */ line-height: 1.5; color: #495057; pointer-events: none; cursor: text; /* Match the input under the label */ border: 1px solid transparent; border-radius: .25rem; transition: all .1s ease-in-out;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  margin-bottom: 0; /* Override default `<label>` margin */
+  line-height: 1.5;
+  color: #495057;
+  pointer-events: none;
+  cursor: text; /* Match the input under the label */
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  transition: all 0.1s ease-in-out;
 }
 .form-label-group input::-webkit-input-placeholder {
   color: transparent;
@@ -275,15 +336,19 @@ body.offcanvas .offcanvaspane {
 .form-label-group input::placeholder {
   color: transparent;
 }
-.form-label-group input:not(:placeholder-shown), 
-.form-label-group select:not(:placeholder-shown), 
+.form-label-group input:not(:placeholder-shown),
+.form-label-group select:not(:placeholder-shown),
 .form-label-group textarea:not(:placeholder-shown) {
-  padding-top: 1.25rem; padding-bottom: .25rem;
+  padding-top: 1.25rem;
+  padding-bottom: 0.25rem;
 }
 .form-label-group input:not(:placeholder-shown) ~ label,
 .form-label-group select:not(:placeholder-shown) ~ label,
 .form-label-group textarea:not(:placeholder-shown) ~ label {
-  padding-top: .25rem; padding-bottom: .25rem; font-size: 12px; color: #777;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  font-size: 12px;
+  color: #777;
 }
 /* Fallback for Edge
 -------------------------------------------------- */
@@ -306,19 +371,18 @@ body.offcanvas .offcanvaspane {
   }
 }
 
-
 /* ContentTools
 -------------------------------------------------- */
 .ct-widget.ct-ignition {
-	left: 30px !important;
-	position: fixed;
-	top: 110px !important;
+  left: 30px !important;
+  position: fixed;
+  top: 110px !important;
 }
 
 /* Pagemap
 -------------------------------------------------- */
-#pagemap { 
-	display: none;
+#pagemap {
+  display: none;
 }
 
 @media (min-width: 576px) {
@@ -328,24 +392,27 @@ body.offcanvas .offcanvaspane {
 }
 
 @media (min-width: 992px) {
-	#pagemap {
-		position: fixed;
-		display: initial;
-		bottom: 20px;
-		right: 20px;
-		width: 60px;
-		height: 100%;
-		z-index: 100;
-	}
-	#pagemap.article {
-		position: fixed;
-		display: initial;
-		bottom: 20px;
-		right: 20px;
-		width: 60px;
-		height: 100%;
-		z-index: 100;
-	}
+  #pagemap {
+    position: fixed;
+    display: initial;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 100%;
+    z-index: 100;
+  }
+  #pagemap.article {
+    position: fixed;
+    display: initial;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 100%;
+    z-index: 100;
+  }
+  body.offcanvas #pagemap.article {
+    right: 370px;
+  }
 }
 
 @media (min-width: 1200px) {

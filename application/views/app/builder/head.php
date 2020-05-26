@@ -33,6 +33,7 @@
 	<?php } ?> 
 	<?php if (isset($loadjs['contenttools'])) { ?> 
 	<link href='/includes/css/content-tools.min.css' rel='stylesheet' />
+	<!--<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.8/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />-->
 	<?php } ?> 
  	<script type="text/javascript">
 		function herowindowheight() {
@@ -58,6 +59,22 @@
 			  ],
 			});
 		}
+		function openeditor() {
+			$('body').addClass('offcanvas'); 
+			initsummernoteinstances(); 
+			return false;
+		}
+		function copyStringToClipboard(string) {
+			function handler(event) {
+				event.clipboardData.setData('text/plain', string);
+				event.preventDefault();
+				document.removeEventListener('copy', handler, true);
+			}
+		
+			document.addEventListener('copy', handler, true);
+			document.execCommand('copy');
+		}
+
 	</script>
 </head>
 <body onresize="herowindowheight()">

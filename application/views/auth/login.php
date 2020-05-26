@@ -87,15 +87,15 @@
 			<div id="infoMessage" class="mt-5 mb-3 text-muted text-center"><?php echo $message;?></div>
 			<div class="form-label-group">
 				<input type="email" id="identity" class="form-control" placeholder="Email address" required="" autofocus="" autocomplete="off" style="cursor: auto;" name="identity">
-				<label for="identity">Email address</label>
+				<label for="identity">📧 Email</label>
 			</div>
 			<div class="form-label-group">
 				<input type="password" id="password" class="form-control" placeholder="Password" required="" autocomplete="off" style="cursor: auto;" name="password">
-				<label for="password">Password</label>
+				<label for="password">🔑 Password</label>
 			</div>
 			<div class="form-label-group">
 				<input type="text" pattern="\d*" id="otp" class="form-control" placeholder="Authenticator Code" required="" autocomplete="off" style="cursor: auto;" name="otp">
-				<label for="otp">Authenticator Code</label>
+				<label for="otp">📲 Authenticator Code (Check EF3BA0)</label>
 			</div>
 			<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
                   <p class="mt-5 mb-3 text-muted text-center"><a href="/auth/forgot_password">forgot?</a> Or...</p>

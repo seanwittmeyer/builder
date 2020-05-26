@@ -716,7 +716,7 @@ class shared extends CI_Model {
 					'title' => $post['title'],
 					'template' => $post['template'],
 					'timestamp' => time(),
-					'type' => $post['type'],
+					'pagetype' => $post['pagetype'],
 					'payload' => serialize($post['payload']),
 					'author' => $post['author'],
 				);
@@ -863,6 +863,161 @@ class shared extends CI_Model {
 
 			return $return;
 		}
+	}
+	
+	// simple create makes content from templates
+	public function simple_create($template=false, $slug=false)
+	{
+		// Set up
+		$user = $this->ion_auth->user()->row();
+
+		// Templates
+		switch ($template) {
+			case "attribute":
+				print(json_encode("this is template is not configured... yet"));die;
+				$type = 'attribute';
+				$insert = array(
+					'timestamp' => time(),
+					'title' => $post['title'],
+					'user' => $user->id
+				);
+				break;
+			case "diagram":
+				print(json_encode("this is template is not configured... yet"));die;
+				$type = 'diagram';
+				$insert = array(
+					'timestamp' => time(),
+					'type' => $post['type'],
+					'typeid' => $post['typeid'],
+					'url' => $post['url'],
+					'user' => $user->id,
+				);
+				break;
+			case "comment":
+				print(json_encode("this is template is not configured... yet"));die;
+				$type = 'comment';
+				$insert = array(
+					'timestamp' => time(),
+					'content' => (isset($post['content'])) ? $post['content']: '',
+					'value' => $post['value'],
+					'type' => $post['type'],
+					'typeid' => $post['typeid'],
+					'user' => $user->id,
+				);
+				break;
+			case "definition":
+				$type = 'definition';
+				$insert = array(
+					'slug' => ($slug) ? $this->slug($slug,$type,'slug'): $this->slug('untitled',$type,'slug'),
+					'timestamp' => time(),
+					'unique' => sha1('cas-'.microtime()),
+					'body' => 'This is the body of your new definition, edit with good fortune',
+					'subtitle' => 'This is the subtitle',
+					'title' => 'Untitled',
+					'excerpt' => 'This is the excerpt',
+					'user' => $user->id,
+				);
+				break;
+			case "taxonomy":
+				$type = 'taxonomy';
+				$insert = array(
+					'user' => $user->id,
+					'slug' => ($slug) ? $this->slug($slug,$type,'slug'): $this->slug('untitled',$type,'slug'),
+					'body' => 'This is the body of your new tax, edit with good fortune',
+					'excerpt' => 'This is the excerpt',
+					'title' => 'Untitled',
+					'unique' => sha1('cas-'.microtime()),
+					'subtitle' => 'This is the subtitle',
+					'timestamp' => time(),
+					'payload' => serialize(array()),
+					'definition' => '-',
+					'link' => '-',
+					'page' => '-',
+					'paper' => '-',
+					'synonym' => '-',
+					'taxonomy' => '-',
+				);
+				break;
+			case "link":
+				print(json_encode("this is template is not configured... yet"));die;
+				$type = 'attribute';
+				$insert = array(
+					'user' => $user->id,
+					'hosttype' => $post['hosttype'],
+					'hostid' => $post['hostid'],
+					'excerpt' => 'This is the excerpt',
+					'title' => 'Untitled',
+					'unique' => sha1('cas-'.microtime()),
+					'timestamp' => time(),
+					'type' => $post['type'],
+					'uri' => $post['uri'],
+					'payload' => serialize(array()),
+				);
+				break;
+			case "page":
+				$type = 'page';
+				$insert = array(
+					'user' => $user->id,
+					'slug' => ($slug) ? $this->slug($slug,$type,'slug'): $this->slug('untitled',$type,'slug'),
+					'body' => 'This is the body of your new page, edit with good fortune',
+					'excerpt' => 'This is the excerpt',
+					'title' => 'Untitled',
+					'template' => 'article',
+					'timestamp' => time(),
+					'pagetype' => 'page',
+					'payload' => serialize(array()),
+					'author' => 'Sean Wittmeyer',
+				);
+				break;
+			case "paper":
+				print(json_encode("this is template is not configured... yet"));die;
+				$type = 'paper';
+				$insert = array(
+					'user' => $user->id,
+					'slug' => ($slug) ? $this->slug($slug,$type,'slug'): $this->slug('untitled',$type,'slug'),
+					'body' => 'This is the body of your new definition, edit with good fortune',
+					'excerpt' => 'This is the excerpt',
+					'title' => 'Untitled',
+					'timestamp' => time(),
+					'type' => $post['type'],
+					'uri' => $post['uri'],
+					//'storage' => $image,
+					'payload' => serialize(array()),
+					'author' => 'Sean Wittmeyer',
+					'abstract' => 'This is the abstract',
+				);
+				
+				break;
+			default:
+				$return = array(
+					'error' => true,
+					'message' => 'Hmmm, we do not know that one.',
+				);
+				return $return;
+				break;
+		}
+		// success
+		$query = $this->db->insert("build_$type",$insert);
+		$return = array(
+			'result' => $query,
+			'error' => false,
+			'insert' => $insert,
+			'id' => $this->db->insert_id(),
+			'message' => "Your $type has been added to the site!",
+		);
+		if (isset($insert['url'])) $return['url'] = $insert['url'];
+		if (isset($insert['slug'])) $return['url'] = site_url($type.'/'.$insert['slug']);
+		if ($type == 'attribute') {
+			$insert = array(
+				'type' => 'attribute',
+				'typeid' => $this->db->insert_id(),
+				'user' => 0, // user 0 is test/demo user
+				'timestamp' => time(),
+				'value' => .5
+			);
+			$this->db->insert("build_rating",$insert);
+		}
+		return $return;
 	}
 	
 
@@ -1013,7 +1168,7 @@ class shared extends CI_Model {
 					//$this->form_validation->set_rules('payload[body]', 'body', 'required');
 					$this->form_validation->set_rules('payload[title]', 'title', 'required');
 					$this->form_validation->set_rules('payload[body]', 'body', 'required');
-					
+					//die;
 					$update = array(
 						//'slug' => $this->slug($post['title'],$type,'slug'),
 						'body' => $post['body'],
@@ -1021,6 +1176,7 @@ class shared extends CI_Model {
 						'title' => $post['title'],
 						'template' => $post['template'],
 						'blogtype' => $post['blogtype'],
+						'pagetype' => $post['pagetype'],
 						'timestamp' => time(),
 						'author' => (isset($post['author'])) ? $post['author']:'Sean Wittmeyer',);
 					if (!empty($post['payload'])) $update['payload'] = serialize($post['payload']);
@@ -1030,7 +1186,7 @@ class shared extends CI_Model {
 							if (!empty($rel_array)) {
 								foreach ($rel_array as $rel_id) $relationships_insert[] = array(
 									'primary' => $id,
-									'type' => 'taxonomy',
+									'type' => 'page',
 									'definition' => '',
 									'link' => '',
 									'page' => '',
@@ -1092,7 +1248,7 @@ class shared extends CI_Model {
 				return $return;
 				break;
 		}
-
+		
 		if ($this->form_validation->run() == FALSE)	{
 			// fail
 			$return = array(
@@ -1104,7 +1260,8 @@ class shared extends CI_Model {
 		} else {
 			// success
 			$this->db->where('id', $id);
-			//json_encode($update);die;
+			//$this->output->set_status_header('404');print(json_encode($relationships_insert));die;
+			
 			$query = $this->db->update("build_$type",$update);
 			$return = array(
 				'result' => $query,
@@ -1114,16 +1271,17 @@ class shared extends CI_Model {
 				//'url' => (isset($insert['slug'])) ? site_url($type.'/'.$insert['slug']) : $insert['uri'],
 				'message' => "Your $type has been updated!",
 			);
-			// we are handling the realtionships update part poorly right now, just leaving this out while we set up new mechanisms.
+			// we are handling the relationships update part poorly right now, just leaving this out while we set up new mechanisms.
 			if ($file === false && $p === false) {
 				$this->db->where(array('primary'=>$id,'type'=>$type));
 				$this->db->delete("build_relationship"); 
 				if (isset($relationships_insert)) {
 					//print_r($insert_r); die;
 					$this->db->insert_batch("build_relationship",$relationships_insert);
-					$return['relathionship_insert'] = true;
+					$return['relationship_insert'] = true;
 				}
 			}
+			//$this->output->set_status_header('404');print_r($relationships_insert);die;
 			return $return;
 		}
 	}
@@ -1484,15 +1642,15 @@ class shared extends CI_Model {
 	
 	public function footer_photocitation($id,$img,$timestamp,$slug,$title,$includeheader=true) {
 		$citation = 'Wittmeyer, S. ('.date('Y, j F', $timestamp)."). $title. Retrieved from ".current_url();
-		$js_citation = "$(this).attr('title', 'citation copied!').tooltip('fixTitle').tooltip('show'); copyStringToClipboard('$citation');";
-		$js_handlebars = "$(this).attr('title', '{{".$slug."}} copied!').tooltip('fixTitle').tooltip('show'); copyStringToClipboard('{{".$slug."}}');";
+		$js_citation = "$(this).tooltip('hide').attr('data-original-title', 'citation copied!').tooltip('show'); copyStringToClipboard('$citation');";
+		$js_handlebars = "$(this).tooltip('hide').attr('data-original-title', '{{".$slug."}} copied!').tooltip('show'); copyStringToClipboard('{{".$slug."}}');";
 		echo '<div style="padding-bottom:30px;"><p>&nbsp;</p><hr />';
 		if ($includeheader) {
 			echo '<p><span class="photocreditpreview" style="background-image: url(';
 			echo (isset($img['header']) && !empty($img['header'])) ? $img['header']['url']: '/includes/test/assets/Moofushi_Kandu_fish.jpg'; 
 			echo ');"></span><strong style="display: block;">Photo Credit and Caption: </strong> ';
 			echo (isset($img['header']) && !empty($img['header'])) ? $img['header']['caption']: ' Underwater image of fish in Moofushi Kandu, Maldives, by Bruno de Giusti (via Wikimedia Commons)'; 
-			if ($this->ion_auth->logged_in()) echo ' <a href="#pageupload" data-toggle="modal" data-target="#pageupload">(Modify Photo/Caption &rarr;)</a>';
+			if ($this->ion_auth->logged_in()) echo ' <a href="#" onclick="openeditor();">(Modify Photo/Caption &rarr;)</a>';
 			echo '</p>';
 		}
 		echo '<p style="clear: both;"><strong>Cite this page:</strong><br><pre onclick="'.$js_citation.'" style="cursor: pointer;" data-toggle="tooltip" data-placement="top" title="click to copy citation">'.$citation.'</pre></p>';
