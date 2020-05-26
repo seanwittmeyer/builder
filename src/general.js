@@ -1,4 +1,3 @@
-import '@fortawesome/fontawesome-free';
 import 'summernote';
 import 'selectize';
 import 'typeahead.js';

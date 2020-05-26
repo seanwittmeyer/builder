@@ -4,12 +4,10 @@
 	<div class="form-label-group">
 		<input type="text" class="form-control" placeholder="Page Title" required="" autocomplete="off" name="payload[img][header][caption]" value="<?php echo (isset($img['header']['caption'])) ? $img['header']['caption']: $title; ?>">
 		<label for="payload[img][header][caption]">Image Caption</label>
-		<p style="font-size: .7em;"><strong>Example:</strong> Underwater image of fish in Moofushi Kandu, Maldives, by Bruno de Giusti (via Wikimedia Commons)</p>
 	</div>
 
-	<div class="form-label-group">
+	<div class="">
 		<input type="file" id="cas-tax-file" name="userfile" value="">
-		<label for="payload[excerpt]">Image</label>
 		<input type="hidden" id="cas-tax-fileurl" name="payload[img][header][url]" value="<?php echo (isset($img['header']) && !empty($img['header'])) ? $img['header']['url']: ''; ?>">
 	</div>
 	<br />

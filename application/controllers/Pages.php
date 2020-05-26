@@ -60,16 +60,18 @@ class Pages extends CI_Controller {
 				if ($template == 'rsvp') {
 					$data['loadjs']['rsvp'] = true;
 				}
-				$this->load->view('app/archive/builder/templates/header', $data);
+				$this->load->view('app/builder/head', $data);
+				$this->load->view('app/builder/nav', $data);
 				$this->load->view("app/pages/$template", $data);
-				$this->load->view('app/archive/builder/templates/footer', $data);
+				$this->load->view('app/builder/foot', $data);
 			}
 		} else {
 			$data['pagetitle'] = ucfirst($slug); // Capitalize the first letter
 			$data['section'] = '';
-			$this->load->view('app/archive/builder/templates/header', $data);
+			$this->load->view('app/builder/head', $data);
+			$this->load->view('app/builder/nav', $data);
 			$this->load->view('app/content/'.$slug, $data);
-			$this->load->view('app/archive/builder/templates/footer', $data);
+			$this->load->view('app/builder/foot', $data);
 		}
 	}
 }

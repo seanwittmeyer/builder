@@ -37,12 +37,12 @@ Included font-weights: 200, 400, and 700 for each
 html {
   position: relative;
   min-height: 100%;
+  border-left: 15px solid #fe7964;
 }
 body {
   /* Margin bottom by footer height */
   margin-bottom: 90px;
   /* width: calc(100% - 15px); */
-  border-left: 15px solid #fe7964;
 }
 pre {
 	border: 1px #ddd solid;
@@ -215,7 +215,7 @@ article.article-article header h1 {
   font-family: "IBM Plex Serif";
   font-style: italic;
 }
-article.article-article header .excerpt {
+article.article-article .excerpt {
   padding: 0.5rem 0 0rem;
   font-family: "IBM Plex Mono";
   font-style: italic;
@@ -233,12 +233,28 @@ article.article-article .body {
 }
 .articlethemes li {
 	margin: 0;
-	padding: 0 2rem 0 0;
+	padding: .2rem 2rem .2rem 0;
 	list-style: none;
 	background-repeat: no-repeat;
 	background-position: right center;
 	background-size: 1.5rem;
 }
+article.article-article aside {
+	font-family: "IBM Plex Mono";
+	padding-top: 4px;
+}
+
+article.article-article aside .meta {
+	font-weight: 200;
+	font-style: italic;
+}
+article.article-article aside li a {
+	font-weight: 700;
+	color: #000;
+	font-size: .85rem;
+	font-family: "IBM Plex Serif";
+}
+
 /* Ski
 -------------------------------------------------- */
 

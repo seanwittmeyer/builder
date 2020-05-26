@@ -93,6 +93,7 @@ module.exports = {
 		general: './src/general.js',
 		maps: './src/maps.js',
 		viz: './src/viz.js',
+		fa: './src/fontawesome.js',
 		//editor: './src/contenttools.js',
 	},
 	output: {

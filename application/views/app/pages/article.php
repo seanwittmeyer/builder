@@ -27,17 +27,19 @@
 			</div>
 			<div class="row">
 				<div class="col-md d-none d-lg-block"></div>
-				<div class="col-md-5 col-lg-4 text-right">
-					<p class="">This article was published <?php echo $this->shared->twitterdate($timestamp, true); ?> by <?php echo $author; ?>.</p>
-					<ul class="articlethemes">
-					<?php /* Get related themes */
-					$themes = $this->shared->get_related('taxonomy','34'); 
-					$_themes = array(); 
-					foreach ($themes as $i) $_themes[] = $i['id'];
-					foreach ($set as $s) if ($s['type']=='taxonomy' && in_array($s['id'],$_themes)) { ?>
-							<li style="background-image: url(<?=$s['icon']?>);"><a class="" href="/theme/<?=$s['slug']?>"><?=$s['title']?></a></li>
-					<?php } ?> 
-					</ul>
+				<div class="col-md-5 col-lg-4 text-right ">
+					<aside>
+						<p class="meta">This article was published <br><?php echo $this->shared->twitterdate($timestamp, true); ?> by <?php echo $author; ?>.</p>
+						<ul class="articlethemes">
+						<?php /* Get related themes */
+						$themes = $this->shared->get_related('taxonomy','34'); 
+						$_themes = array(); 
+						foreach ($themes as $i) $_themes[] = $i['id'];
+						foreach ($set as $s) if ($s['type']=='taxonomy' && in_array($s['id'],$_themes)) { ?>
+								<li style="background-image: url(<?=$s['icon']?>);"><a class="" href="/theme/<?=$s['slug']?>"><?=$s['title']?></a></li>
+						<?php } ?> 
+						</ul>
+					</aside>
 				</div>
 				<div class="col-md-7 col-lg-6">
 					<div class="body" data-editable="" data-name="payload[body]">
