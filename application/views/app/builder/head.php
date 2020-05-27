@@ -22,7 +22,7 @@
 	<link href="/includes/css/builder.css?<?=$uniquejsversion?>" rel="stylesheet">
 	<script src="/dist/index.bundle.js?<?=$uniquejsversion?>"></script>
 	<script src="/dist/general.bundle.js?<?=$uniquejsversion?>"></script>
-	<script src="/dist/fa.bundle.js"></script>
+	<script src="/dist/fa.bundle.js" async></script>
 	<?php if (isset($loadjs['builder_viz'])) { ?><script src="/dist/viz.bundle.js?<?=$uniquejsversion?>"></script><?php } ?> 
 	<?php if (isset($loadjs['contenttools'])) { ?>
 	<script src="/dist/editor.bundle.js?<?=$uniquejsversion?>"></script>

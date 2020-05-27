@@ -60,6 +60,14 @@ pre {
   background-color: #f5f5f500;
   z-index: 2000;
 }
+#mainnav.fullwidth {
+	width: calc(100% - 45px);
+	background: #EBEBEB;
+	padding-top: 1rem;
+	padding-bottom: 20px;
+	bottom: 0;
+	border-top: 1px solid #fe7964;
+}
 #mainnav #title,
 .sectiontitle {
   font-size: 1.4rem;
@@ -157,14 +165,52 @@ pre {
   display: block;
 }
 .article-header .dropdown-menu span,
-.article-header .dropdown-menu a {
+.article-header .dropdown-menu a,
+.article-theme .dropdown-menu span,
+.article-theme .dropdown-menu a {
 	font-weight: 400;
 }
-.article-header .dropdown-menu a {
+.article-header .dropdown-menu a,
+.article-theme .dropdown-menu a {
   font-family: "IBM Plex Mono";
 }
+.dropdown-menu i {
+	width: 1rem;
+}
+.pilltabs .nav-tabs {
+	border: none;
+	display: block;
+}
+.pilltabs .nav-item {
+	margin: 0;
+	display: block;
+}
+.pilltabs .nav-tabs .nav-link {
+	color: #111;
+	font-family: "IBM Plex Sans";
+	font-size: 1rem;
+	text-align: right;
+	border: none;
+	background: white;
+	border-radius: 0;
+	width: 100%;
+	margin-bottom: .3rem;
+}
+.pilltabs .nav-tabs .nav-link.active, 
+.pilltabs .nav-tabs .nav-item.show .nav-link {
+	color: #111;
+	background-color: white;
+	border: 0;
+}
+.pilltabs .nav-tabs .nav-item .nav-link.active::after {
+  content: " →";
+  white-space: pre-wrap;
+}
+#cas-link-embed-preview {
+	max-width: 100%;
+}
 
-/* Headings
+/* Headings and Header Elements
 -------------------------------------------------- */
 header .title {
   font-size: 1.4rem;
@@ -176,6 +222,35 @@ header .subtitle {
   font-weight: 400;
   font-style: italic;
   font-family: "IBM Plex Mono";
+}
+header .naked {
+	padding-top: 2rem;
+}
+header .naked .input-group-text {
+	background-color: transparent;
+	border: none;
+}
+header .naked input {
+	background-color: transparent;
+	background-clip: padding-box;
+	border: none;
+	border-radius: none;
+	padding-left: 0;
+}
+header .naked .form-control:focus {
+	background-color: transparent;
+	border-bottom: #7fbbe3 1px solid;
+	box-shadow: none;
+	border-radius: 0;
+}
+header a {
+	color: #111;
+}
+.index h4 a {
+	font-family: "IBM Plex Serif";
+	font-weight: 700;
+	font-style: italic;
+	color: #111;
 }
 
 /* CAS (Field Notes)
@@ -207,22 +282,26 @@ header.article-header .wrapper {
   background: rgba(255, 255, 255, 0.5);
   padding: 20px 15px 20px 15px;
 }
-article.article-article header {
-  padding: 2rem 0;
+article.article-article header,
+article.article-theme header {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 article.article-article header h1 {
   font-weight: 700;
   font-family: "IBM Plex Serif";
   font-style: italic;
 }
-article.article-article .excerpt {
+article.article-article .excerpt,
+article.article-theme .excerpt {
   padding: 0.5rem 0 0rem;
   font-family: "IBM Plex Mono";
   font-style: italic;
   font-size: 1.2rem;
   font-weight: 200;
 }
-article.article-article .body {
+article.article-article .body,
+article.article-theme .body {
   font-family: "IBM Plex Serif";
   font-size: 1.2rem;
   line-height: 2rem;
@@ -239,20 +318,34 @@ article.article-article .body {
 	background-position: right center;
 	background-size: 1.5rem;
 }
-article.article-article aside {
+article.article-article aside,
+article.article-theme aside {
 	font-family: "IBM Plex Mono";
 	padding-top: 4px;
 }
 
-article.article-article aside .meta {
+article.article-article aside .meta,
+article.article-theme aside .meta {
 	font-weight: 200;
 	font-style: italic;
 }
-article.article-article aside li a {
+article.article-article aside li a,
+article.article-theme aside li a {
 	font-weight: 700;
 	color: #000;
 	font-size: .85rem;
 	font-family: "IBM Plex Serif";
+}
+.article-theme .themeicon {
+	max-height: 100px;
+	margin-top: 4rem;
+	width: max-content;
+}
+article.article-theme header h1 {
+  font-weight: 200;
+  font-family: "IBM Plex Mono";
+  font-style: italic;
+  letter-spacing: -0.1rem;
 }
 
 /* Ski
@@ -264,8 +357,44 @@ article.article-article aside li a {
 /* The Feed
 -------------------------------------------------- */
 
-/* 
+/* Masonry
 -------------------------------------------------- */
+@media (min-width: 576px) {
+	.card-columns {
+		-webkit-column-count: 4;
+		-moz-column-count: 4;
+		column-count: 4 !important;
+	}
+	.card-columns.card-columns-3 {
+		-webkit-column-count: 3;
+		-moz-column-count: 3;
+		column-count: 3 !important;
+		margin: 1em 0;
+	}
+}
+.card-columns .card {
+	padding: .5rem 1rem;
+}
+.card .feed-footer, .card .feed-footer address, .card .feed-footer a {
+	padding: 0;
+	margin: 0;
+}
+.card .feed-footer address {
+	border-bottom: 1px #999 dotted; 
+	display: inline;
+}
+.card .feed-footer a {
+	display: inline;
+}
+.card .feed-footer {
+	background: #E1D3B9;
+	margin: -31px 0 20px 2px;
+	display: block;
+	z-index: 2;
+	position: relative;
+	font-size: .65rem;
+	font-family: "IBM Plex Mono";
+}
 
 /* Heading
 -------------------------------------------------- */
@@ -366,8 +495,6 @@ body.offcanvas .offcanvaspane .editorheaderimgpreview {
   font-size: 12px;
   color: #777;
 }
-/* Fallback for Edge
--------------------------------------------------- */
 @supports (-ms-ime-align: auto) {
   .form-label-group > label {
     display: none;
@@ -376,8 +503,6 @@ body.offcanvas .offcanvaspane .editorheaderimgpreview {
     color: #777;
   }
 }
-/* Fallback for IE
--------------------------------------------------- */
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
   .form-label-group > label {
     display: none;

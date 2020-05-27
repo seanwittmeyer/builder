@@ -1,4 +1,12 @@
-<!-- Page map as a page nav in the top right corner -->
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+/* 
+ * Content - Definition Listing
+ *
+ * This lists all of the definitions in the site.
+ * 
+ */
+?>	<!-- Page map as a page nav in the top right corner -->
 	<canvas id="pagemap" class="article"></canvas>
 	<!-- /pagemap -->
 	<!-- Header -->
@@ -18,8 +26,8 @@
 						<div class="dropdown-divider"></div>
 						<span class="dropdown-header">Create New Content</span>
 						<a class="dropdown-item" onclick="openeditor();"><i class="fas fa-book"></i> New Definition</a>
-						<a class="dropdown-item" onclick="openeditor();"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> New Taxonomy (or collection)</a>
-						<a class="dropdown-item" onclick="openeditor();"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> New Page</a>
+						<a class="dropdown-item" onclick="openeditor();"><i class="fas fa-th"></i> New Taxonomy (or collection)</a>
+						<a class="dropdown-item" onclick="openeditor();"><i class="far fa-file"></i> New Page</a>
 					</div>
 				</div>
 				<?php } ?> 
@@ -41,7 +49,7 @@
 					<div class="excerpt"><p>Definitions are key thinkers, attributes, and seminal texts that relate or contribute to Complex Adaptive Systems theory. This is an alphabetical listing of all definitions in the CAS Explorer. <a href="/taxonomy"> See all categories and collections in the site &rarr;</a></p></div>
 				</div>
 				<div class="d-none d-md-block col-md"></div>
-				<div class="col-sm-7">
+				<div class="col-sm-7 index">
 
 				<?php $set = $this->shared->get_data2('definition',false,false,true); ?>
 				<?php foreach ($set as $single) { ?>

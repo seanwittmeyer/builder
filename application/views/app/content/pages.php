@@ -18,8 +18,8 @@
 						<div class="dropdown-divider"></div>
 						<span class="dropdown-header">Create New Content</span>
 						<a class="dropdown-item" onclick="openeditor();"><i class="fas fa-book"></i> New Definition</a>
-						<a class="dropdown-item" onclick="openeditor();"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> New Taxonomy (or collection)</a>
-						<a class="dropdown-item" onclick="openeditor();"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> New Page</a>
+						<a class="dropdown-item" onclick="openeditor();"><i class="fas fa-th"></i> New Taxonomy (or collection)</a>
+						<a class="dropdown-item" onclick="openeditor();"><i class="far fa-file"></i> New Page</a>
 					</div>
 				</div>
 				<?php } ?> 
@@ -41,7 +41,7 @@
 					<div class="excerpt"><p>This is a listing of all pages in the site. Much of the content in this site is also categorized as <a href="/definition">definitions (key thinkers, attributes, etc)</a> and <a href="/taxonomy">taxonomies (collections, applications, sets, etc.)</a>, both good places to find what you may be looking for.</p></div>
 				</div>
 				<div class="d-none d-md-block col-md"></div>
-				<div class="col-sm-7">
+				<div class="col-sm-7 index">
 
 			<?php $set = $this->shared->get_data2('page',false,false,true); ?>
 			<?php foreach ($set as $single) { ?>

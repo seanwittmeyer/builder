@@ -35,7 +35,7 @@ class Pages extends CI_Controller {
 			$data['pagetitle'] = $data['title'];
 			$data['contenttitle'] = $data['title'];
 			$data['loadjs']['contenttools'] = true;
-			$data['section'] = '';
+			$data['section'] = array($data['section'],$data['slug']);
 			$data['settings'] = $this->shared->settings();
 			$data['cartograph'] = $this->shared->cartograph_content(false,$data['settings']);
 			if (strpos($template, 'pylos') !== false) {
@@ -67,7 +67,7 @@ class Pages extends CI_Controller {
 			}
 		} else {
 			$data['pagetitle'] = ucfirst($slug); // Capitalize the first letter
-			$data['section'] = '';
+			$data['section'] = array('page',$slug);
 			$this->load->view('app/builder/head', $data);
 			$this->load->view('app/builder/nav', $data);
 			$this->load->view('app/content/'.$slug, $data);

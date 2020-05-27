@@ -1067,6 +1067,8 @@ class shared extends CI_Model {
 						'body' => $post['body'],
 						'title' => $post['title'],
 						'subtitle' => $post['subtitle'],
+						'template' => $post['template'],
+						'author' => (isset($post['author'])) ? $post['author']:'Sean Wittmeyer',
 						'excerpt' => $post['excerpt'],
 						'payload' => (isset($post['payload'])) ? serialize($post['payload']) : '',
 					);
@@ -1106,8 +1108,11 @@ class shared extends CI_Model {
 					$update = array(
 						'timestamp' => time(),
 					);
+					$handlebarlinks = array('body','excerpt','subtitle'); // for contenttools, replace site html links with handlebar slugs
+					$striphtml = array('title','slug','subtitle','blogtype'); // for contenttools, remove extra html
+					$stripspaces = array('title','slug','subtitle','blogtype'); // for contenttools, remove trailing and extra spaces and new lines
 					foreach ($pool as $var) {
-						if (isset($post[$var])) $update[$var] = $this->parse_bytype_helper($post[$var],$var);
+						if (isset($post[$var])) $update[$var] = $this->parse_bytype_helper($post[$var],$var,false,$handlebarlinks,$striphtml,$stripspaces);
 					}
 				} else {
 					//$this->form_validation->set_rules('payload[body]', 'body', 'required');
@@ -1120,6 +1125,7 @@ class shared extends CI_Model {
 						'excerpt' => $post['excerpt'],
 						'title' => $post['title'],
 						'subtitle' => $post['subtitle'],
+						'template' => $post['template'],
 						'timestamp' => time(),
 						'payload' => (isset($post['payload'])) ? serialize($post['payload']) : '',
 					);
@@ -1549,11 +1555,11 @@ class shared extends CI_Model {
 		}
 	}
 	// parse form values by type
-	public function parse_bytype_helper($value,$type) {
+	public function parse_bytype_helper($value,$type,$handlebarlinks=false,$striphtml=false,$stripspaces=false) {
 		// definitions - make arrays of form input names for each process
-		$handlebarlinks = array('body','excerpt','subtitle'); // for contenttools, replace site html links with handlebar slugs
-		$striphtml = array('title','slug','subtitle','excerpt','blogtype'); // for contenttools, remove extra html
-		$stripspaces = array('title','slug','subtitle','excerpt','blogtype'); // for contenttools, remove trailing and extra spaces and new lines
+		if (!$handlebarlinks) $handlebarlinks = array('body','excerpt','subtitle'); // for contenttools, replace site html links with handlebar slugs
+		if (!$striphtml) $striphtml = array('title','slug','subtitle','excerpt','blogtype'); // for contenttools, remove extra html
+		if (!$stripspaces) $stripspaces = array('title','slug','subtitle','excerpt','blogtype'); // for contenttools, remove trailing and extra spaces and new lines
 		
 		// handlebar links
 		if (in_array($type, $handlebarlinks)) {
@@ -1623,23 +1629,22 @@ class shared extends CI_Model {
 	public function related_html($type,$id) {
 		$links = $this->get_data('link',false,array('hosttype'=>$type,'hostid'=>$id)); 
 		$host = $this->get_data($type,$id);
-
 		$return = '';
 		if ($links === false) {
 			$return .= '<blockquote>Nothing in the feed...yet.<br /><button class="btn btn-success" data-toggle="modal" data-target="#createlink">Create a Link</button></blockquote>';
 		} else {
-			$return .=  '<!-- CAS Embed --><div class="cas-embed">';
+			$return .=  '<div class="card-columns card-columns-3 grid-filter">';
 			foreach ($links as $link) { 
-				$__host = $this->get_data($link['hosttype'],$link['hostid']);
-				$return .= '<blockquote class="embedly-card" data-card-key="74435e49e8fa468eb2602ea062017ceb" data-card-controls="0"><h4><a href="'.$link['uri'].'">'.$link['title'].'</a></h4><p>'.$link['excerpt'].'</p></blockquote><div class="feed-footer"><address data-toggle="tooltip" data-title="'.$link['excerpt'].'">Description</address> | This is linked to <a href="/'.$link['hosttype'].'/'.$__host['slug'].'">'.$__host['title'].'</a>.';
-				//if ($this->ion_auth->is_admin()) $return .= ' | <a href="/api/remove/link/'.$link['id'].'/refresh" data-toggle="tooltip" data-title="Are you sure?">Delete</a>';
-				$return .= '</div>';
+				$return .=   '<div class="cas-embed card" data-searchval="'.str_replace('"', '', ($link['title'].' '.$link['excerpt'])).'">
+				<blockquote class="embedly-card" data-card-key="74435e49e8fa468eb2602ea062017ceb" data-card-controls="0"><h4><a href="'.$link['uri'].'">'.$link['title'].'</a></h4><p>'.$link['excerpt'].'</p></blockquote><div class="feed-footer"><address data-toggle="tooltip" data-title="'.$link['excerpt'].'">Description</address>';
+				if ($this->ion_auth->is_admin()) $return .=   ' | <a href="/api/remove/link/'.$link['id'].'/refresh" data-toggle="tooltip" data-title="Are you sure?"><i class="fas fa-trash"></i></a>'; 
+				$return .=   '</div></div><!-- /CAS Embed -->';
 			}
 			$return .= '</div><!-- /CAS Embed --> ';
 		}
 		return $return;
 	}
-	
+
 	public function footer_photocitation($id,$img,$timestamp,$slug,$title,$includeheader=true) {
 		$citation = 'Wittmeyer, S. ('.date('Y, j F', $timestamp)."). $title. Retrieved from ".current_url();
 		$js_citation = "$(this).tooltip('hide').attr('data-original-title', 'citation copied!').tooltip('show'); copyStringToClipboard('$citation');";

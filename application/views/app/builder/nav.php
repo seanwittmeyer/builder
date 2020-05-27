@@ -1,5 +1,5 @@
 <!-- Main nav tabs in the bottom left corner -->
-<nav id="mainnav" class="">
+<nav id="mainnav" class="<?php if (isset($navfullwidth)) echo 'fullwidth'; ?>">
 	<a href="/" id="title">Sean Wittmeyer</a>&nbsp;
 	<div class="dropup" style="display: inline-block;">
 		<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
@@ -42,31 +42,31 @@
 	</div>
 	<ul class="nav nav-tabs" id="mainnavtabs" role="tablist">
 		<li class="nav-item" role="presentation">
-			<a class="nav-link" href="//sean.wittmeyer.io/">Projects</a>
+			<a class="nav-link<?php $section = (isset($section)) ? $section: array('',''); if ($section[0] == 'projects') echo ' active'; ?>" href="//sean.wittmeyer.io/">Projects</a>
 			<!--<a class="nav-link" id="nav-projects-tab" data-toggle="tab" href="#projects" role="tab" aria-controls="home" aria-selected="true">Projects</a>-->
 		</li>
 		<li class="nav-item" role="presentation">
-			<a class="nav-link" id="nav-fieldnotes-tab" data-toggle="tab" href="#fieldnotes" role="tab" aria-controls="profile" aria-selected="false">Field Notes</a>
+			<a class="nav-link<?php if ($section[0] == 'notes') echo ' active'; ?>" id="nav-fieldnotes-tab" data-toggle="tab" href="#fieldnotes" role="tab" aria-controls="profile" aria-selected="false">Field Notes</a>
 		</li>
 		<li class="nav-item" role="presentation">
-			<a class="nav-link" id="nav-pylos-tab" data-toggle="tab" href="#pylos" role="tab" aria-controls="profile" aria-selected="false">Pylos</a>
+			<a class="nav-link<?php if ($section[0] == 'pylos') echo ' active'; ?>" id="nav-pylos-tab" data-toggle="tab" href="#pylos" role="tab" aria-controls="profile" aria-selected="false">Pylos</a>
 		</li>
 		<li class="nav-item" role="presentation">
-			<a class="nav-link" id="nav-feed-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="profile" aria-selected="false">Feed</a>
+			<a class="nav-link<?php if ($section[0] == 'feed') echo ' active'; ?>" id="nav-feed-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="profile" aria-selected="false">Feed</a>
 		</li>
 		<li class="nav-item" role="presentation">
-			<a class="nav-link" id="nav-playground-tab" data-toggle="tab" href="#playground" role="tab" aria-controls="contact" aria-selected="false">Playground</a>
+			<a class="nav-link<?php if ($section[0] == 'playground') echo ' active'; ?>" id="nav-playground-tab" data-toggle="tab" href="#playground" role="tab" aria-controls="contact" aria-selected="false">Playground</a>
 		</li>
 	</ul>
 	<div class="tab-content" id="mainnavpanes">
-		<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="nav-home-tab">
+		<div class="tab-pane fade<?php if (!in_array($section[0],array('projects','notes','pylos','feed','playground'))) echo ' show active'; ?>" id="home" role="tabpanel" aria-labelledby="nav-home-tab">
 			<ul>
 				<li><a href="/resume">Resume &nearr;</a></li>
 				<li><a href="//sean.wittmeyer.io/">Portfolio &nearr;</a></li>
 				<li><a href="https://sean.wittmeyer.io/contact-form">Contact</a></li>
 			</ul>
 		</div>
-		<div class="tab-pane fade" id="projects" role="tabpanel" aria-labelledby="nav-projects-tab">
+		<div class="tab-pane fade<?php if ($section[0] == 'projects') echo ' show active'; ?>" id="projects" role="tabpanel" aria-labelledby="nav-projects-tab">
 			<ul>
 				<li><a href="/projects/architecture">Architecture</a></li>
 				<li><a href="/projects/designbuild">Design Build</a></li>
@@ -76,45 +76,45 @@
 				<li><a href="/resume">Resume &nearr;</a></li>
 			</ul>
 		</div>
-		<div class="tab-pane fade" id="fieldnotes" role="tabpanel" aria-labelledby="nav-fieldnotes-tab">
+		<div class="tab-pane fade<?php if ($section[0] == 'notes') echo ' show active'; ?>" id="fieldnotes" role="tabpanel" aria-labelledby="nav-fieldnotes-tab">
 			<ul>
-				<li><a href="/fieldnotes">Field Notes</a></li>
-				<li class="dropup"><a href="/feed/html" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Themes</a>
+				<li><a href="/notes">Field Notes</a></li>
+				<li class="dropup"><a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Themes</a>
 					<div class="dropdown-menu" aria-labelledby="">
 						<span class="dropdown-header">General Themes</span>
 						<div class="dropdown-divider"></div>
 						<?php foreach ($this->shared->get_related('taxonomy','34') as $i) { ?><a class="dropdown-item" href="/theme/<?php echo $i['slug']; ?>"><?php echo $i['title']; ?></a><?php } ?> 
 					</div>
 				</li>
-				<li><a href="/feed/file">Observations</a></li>
-				<li><a href="/feed/paper">Ideas</a></li>
-				<li><a href="/feed/book">Articles</a></li>
+				<li><a <?php if ($section[0] == 'notes' && $section[1] == 'observations') echo 'class="active" '; ?>href="/notes/observations">Observations</a></li>
+				<li><a <?php if ($section[0] == 'notes' && $section[1] == 'ideas') echo 'class="active" '; ?>href="/notes/ideas">Ideas</a></li>
+				<li><a <?php if ($section[0] == 'notes' && $section[1] == 'articles') echo 'class="active" '; ?>href="/notes/articles">Articles</a></li>
 			</ul>
 		</div>
-		<div class="tab-pane fade" id="pylos" role="tabpanel" aria-labelledby="nav-pylos-tab">
+		<div class="tab-pane fade<?php if ($section[0] == 'pylos') echo ' show active'; ?>" id="pylos" role="tabpanel" aria-labelledby="nav-pylos-tab">
 			<ul>
-				<li><a href="/pylos">Pylos</a></li>
-				<li><a href="/pylos/strategies">Strategies</a></li>
-				<li><a href="/pylos/themes">Themes</a></li>
-				<li><a href="/pylos/blocks">Resources</a></li>
-				<li><a href="/pylos/tools">Tools</a></li>
+				<li><a <?php if ($section[0] == 'pylos' && $section[1] == 'index') echo 'class="active" '; ?>href="/pylos">Pylos</a></li>
+				<li><a <?php if ($section[0] == 'pylos' && $section[1] == 'strategies') echo 'class="active" '; ?>href="/pylos/strategies">Strategies</a></li>
+				<li><a <?php if ($section[0] == 'pylos' && $section[1] == 'themes') echo 'class="active" '; ?>href="/pylos/themes">Themes</a></li>
+				<li><a <?php if ($section[0] == 'pylos' && $section[1] == 'resources') echo 'class="active" '; ?>href="/pylos/blocks">Resources</a></li>
+				<li><a <?php if ($section[0] == 'pylos' && $section[1] == 'tools') echo 'class="active" '; ?>href="/pylos/tools">Tools</a></li>
 			</ul>
 		</div>
-		<div class="tab-pane fade" id="feed" role="tabpanel" aria-labelledby="nav-feed-tab">
+		<div class="tab-pane fade<?php if ($section[0] == 'feed') echo ' show active'; ?>" id="feed" role="tabpanel" aria-labelledby="nav-feed-tab">
 			<ul>
-				<li><a href="/feed/video">Videos</a></li>
-				<li><a href="/feed/html">Webpages</a></li>
-				<li><a href="/feed/paper">Papers</a></li>
-				<li><a href="/feed/book">Books</a></li>
-				<li><a href="/feed/profile">Profiles</a></li>
-				<li><a href="/feed/other">Other</a></li>
+				<li><a <?php if ($section[0] == 'feed' && $section[1] == 'video') echo 'class="active" '; ?>href="/feed/video">Videos</a></li>
+				<li><a <?php if ($section[0] == 'feed' && $section[1] == 'html') echo 'class="active" '; ?>href="/feed/html">Webpages</a></li>
+				<li><a <?php if ($section[0] == 'feed' && $section[1] == 'paper') echo 'class="active" '; ?>href="/feed/paper">Papers</a></li>
+				<li><a <?php if ($section[0] == 'feed' && $section[1] == 'book') echo 'class="active" '; ?>href="/feed/book">Books</a></li>
+				<li><a <?php if ($section[0] == 'feed' && $section[1] == 'profile') echo 'class="active" '; ?>href="/feed/profile">Profiles</a></li>
+				<li><a <?php if ($section[0] == 'feed' && $section[1] == 'other') echo 'class="active" '; ?>href="/feed/other">Other</a></li>
 			</ul>
 		</div>
-		<div class="tab-pane fade" id="playground" role="tabpanel" aria-labelledby="nav-playground-tab">
+		<div class="tab-pane fade<?php if ($section[0] == 'playground') echo ' show active'; ?>" id="playground" role="tabpanel" aria-labelledby="nav-playground-tab">
 			<ul>
-				<li><a href="/ski">Ski</a></li>
-				<li><a href="/trains">Trains</a></li>
-				<li><a href="/football">Football</a></li>
+				<li><a <?php if ($section[0] == 'playground' && $section[1] == 'ski') echo 'class="active" '; ?>href="/ski">Ski</a></li>
+				<li><a <?php if ($section[0] == 'playground' && $section[1] == 'trains') echo 'class="active" '; ?>href="/trains">Trains</a></li>
+				<li><a <?php if ($section[0] == 'playground' && $section[1] == 'football') echo 'class="active" '; ?>href="/football">Football</a></li>
 				<li><a href="https://sean.wittmeyer.io/contact-form">Contact</a></li>
 			</ul>
 		</div>

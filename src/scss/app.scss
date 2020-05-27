@@ -18,5 +18,10 @@ $green: #28a745 !default;
 $teal: #20c997 !default;
 $cyan: #17a2b8 !default;
 
+$card-columns-count: 3;
+$card-bg: #E1D3B9;
+$card-border-width: 0px !default;
+
+
 // Bootstrap and its default variables
 @import "~bootstrap/scss/bootstrap";

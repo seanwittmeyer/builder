@@ -1,13 +1,19 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /* 
- * Page - Article View
+ * Taxonomy - Article View
  *
- * This is a view used by single pages with the 'article' template set.
+ * This is a view used by single tax with the 'article' template set.
  * 
  */
  
-  $set = $this->shared->get_related($type,$id,true); ?> 
+$set = $this->shared->get_related($type,$id,true); 
+$excludearray = array(
+	'taxonomy' => array(),
+	'definition' => array(),
+	'page' => array(),
+);
+?> 
 <!-- Page map as a page nav in the top right corner -->
 	<canvas id="pagemap" class="article"></canvas>
 	<!-- /pagemap -->
@@ -28,7 +34,7 @@
 			<div class="row text-center">
 				<div class="d-none d-sm-block col-sm"></div>
 				<header class="col-sm-10 col-lg-6">
-					<div class="subtitle" data-editable="" data-name="payload[blogtype]"><p><?=$blogtype?></p></div>
+					<div class="subtitle" data-editable="" data-name="payload[subtitle]"><p><?=$subtitle?></p></div>
 					<div data-editable="" data-name="payload[title]"><h1><?=$title?></h1></div><!-- (<?=$id?>)-->
 					<div class="excerpt" data-editable="" data-name="payload[excerpt]"><p><?=$this->shared->handlebar_links($excerpt)?></p></div>
 				</header>
@@ -38,15 +44,16 @@
 				<div class="col-md d-none d-lg-block"></div>
 				<div class="col-md-5 col-lg-4 text-right ">
 					<aside>
-						<p class="meta">This article was published <br><?php echo $this->shared->twitterdate($timestamp, true); ?> by <?php echo $author; ?>.</p>
+						<p class="meta">This article was published <br><?php echo $this->shared->twitterdate($timestamp, true); ?>.</p>
 						<ul class="articlethemes">
 						<?php /* Get related themes */
 						$themes = $this->shared->get_related('taxonomy','34'); 
 						$_themes = array(); 
+						if (is_array($set) && !empty($set)) {
 						foreach ($themes as $i) $_themes[] = $i['id'];
 						foreach ($set as $s) if ($s['type']=='taxonomy' && in_array($s['id'],$_themes)) { ?>
 								<li style="background-image: url(<?=$s['icon']?>);"><a class="" href="/theme/<?=$s['slug']?>"><?=$s['title']?></a></li>
-						<?php } ?> 
+						<?php } } ?> 
 						</ul>
 					</aside>
 				</div>
@@ -55,6 +62,37 @@
 						<?php echo $this->shared->handlebar_links($body); ?></p>
 					</div>
 					<?php $this->shared->footer_photocitation($id,$img,$timestamp,$slug,$title); ?>
+					<hr>
+					<div class="row">
+						<div class="col-md-6">
+							<h4><strong>Children</strong></h4>
+							<p>Explore <?php echo $title; ?> further in the topics and collections below.</p>
+							<?php $set = $this->shared->get_related($type,$id,true); ?>
+							<?php if ($set !== false) : ?>
+							<?php foreach ($set as $single) { 
+								if (in_array($single['id'], $excludearray[$single['type']])) continue; ?>
+								<h4><a class="t_list_<?php echo $single['id']; ?>" href="/<?php echo $single['type']; ?>/<?php echo $single['slug']; ?>"><?php echo $single['title']; ?></a></h4>
+								<!--<p><?php echo $single['excerpt']; ?> <a href="/<?php echo $single['type']; ?>/<?php echo $single['slug']; ?>">Learn More about <?php echo $single['title']; ?> &rarr;</a></p>-->
+							<?php } ?> 
+							<?php elseif ($this->ion_auth->is_admin()): ?><blockquote>No connected topics...yet.<br /><button class="btn btn-success" data-toggle="modal" data-target="#pageeditor">Add Relationships</button></blockquote><?php endif; ?>
+						</div>
+						<div class="col-md-6">
+							<h4><strong>Parents</strong></h4>
+							<p><?php echo $title; ?> is part of the following collections.</p>
+							<?php $set = $this->shared->get_related_parents($type,$id,true); ?>
+							<?php /* */ ?>
+							<?php if ($set !== false) : ?>
+							<?php foreach ($set as $single) { 
+								if (!isset($single['id'])) continue; 
+								if (in_array($single['id'], $excludearray[$single['type']])) continue; ?>
+								<h4><a class="t_list_<?php echo $single['id']; ?>" href="/<?php echo $single['type']; ?>/<?php echo $single['slug']; ?>"><?php echo $single['title']; ?></a></h4>
+								<!--<p><?php echo $single['excerpt']; ?> <a href="/<?php echo $single['type']; ?>/<?php echo $single['slug']; ?>">Learn More about <?php echo $single['title']; ?> &rarr;</a></p>-->
+							<?php } ?> 
+							<?php elseif ($this->ion_auth->is_admin()): ?><blockquote>No connected topics...yet.<br /><button class="btn btn-success" data-toggle="modal" data-target="#pageeditor">Add Relationships</button></blockquote><?php endif; ?>
+							<?php /**/ ?>
+						</div>
+					</div>
+
 				</div>
 				<div class="col-md d-none d-lg-block"></div>
 			</div>
@@ -90,27 +128,15 @@
 						</div>
 						<div class="form-label-group">
 							<select name="payload[template]" class="form-control">
-								<?php foreach (get_filenames("./application/views/app/pages") as $pagetemplate) { $pagetemplate = str_replace('.php', '', $pagetemplate); ?>
+								<?php foreach (get_filenames("./application/views/app/cas/taxonomy") as $pagetemplate) { $pagetemplate = str_replace('.php', '', $pagetemplate); ?>
 								<option value="<?php echo $pagetemplate; ?>"<?php if ($pagetemplate == $template) { ?> selected="selected"<?php } ?>><?php echo ucfirst($pagetemplate); ?></option>
 								<?php } ?>
 							</select>
 							<label for="payload[template]">Page Template</label>
 						</div>
 						<div class="form-label-group">
-							<select name="payload[pagetype]" class="form-control">
-								<?php foreach (array('page','blog') as $__pagetype) { ?>
-								<option value="<?php echo $__pagetype; ?>"<?php if ($__pagetype == $pagetype) { ?> selected="selected"<?php } ?>><?php echo ucfirst($__pagetype); ?></option>
-								<?php } ?>
-							</select>
-							<label for="payload[pagetype]">Page Type</label>
-						</div>
-						<div class="form-label-group">
-							<input type="text" class="form-control" placeholder="Page Title" required="" autocomplete="off" name="payload[blogtype]" value="<?=$blogtype?>">
-							<label for="payload[blogtype]">Blog Type</label>
-						</div>
-						<div class="form-label-group">
-							<input type="text" class="form-control" placeholder="Page Title" required="" autocomplete="off" name="payload[author]" value="<?=$author?>">
-							<label for="payload[author]">Author</label>
+							<input type="text" class="form-control" placeholder="Subtitle" required="" autocomplete="off" name="payload[subtitle]" value="<?=$subtitle?>">
+							<label for="payload[subtitle]">Subtitle</label>
 						</div>
 						<div class="">
 							<label for="payload[relationships][definition][]">Definitions</label>

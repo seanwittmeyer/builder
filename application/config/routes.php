@@ -86,6 +86,7 @@ $route['topic/(:any)'] = 'content/taxonomy/$1'; // flexible post titles are nice
 $route['concept/(:any)'] = 'content/definition/$1'; // flexible post titles are nice
 $route['term/(:any)'] = 'content/definition/$1'; // flexible post titles are nice
 $route['thinker/(:any)'] = 'content/definition/$1'; // flexible post titles are nice
+$route['article/(:any)'] = 'content/definition/$1'; // flexible post titles are nice
 
 $route['feed/(:any)'] = 'content/feed/$1'; // feed listing pages by type
 

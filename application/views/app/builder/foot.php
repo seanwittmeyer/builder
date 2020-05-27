@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?> 
 	<?php if (isset($loadjs['embedly'])) { ?> 
 	<!-- Format embedly content cards -->
-	<script async src="//cdn.embedly.com/widgets/platform.js"></script>
+	<script src="//cdn.embedly.com/widgets/platform.js"></script>
 	<script src="//cdn.embed.ly/jquery.embedly-3.1.1.min.js"></script>
 	<script>
 		$.embedly.defaults.key = '74435e49e8fa468eb2602ea062017ceb';

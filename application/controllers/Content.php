@@ -20,20 +20,20 @@ class Content extends CI_Controller {
 	{
 		$data = $this->shared->get_byslug('definition',$slug);
 		if (!isset($data['title'])) show_404();
-		$data['settings'] = $this->cas->settings();
-		$data['cartograph'] = $this->cas->cartograph_content(false,$data['settings']);
-		$data['related'] = $this->cas->get_related('definition',$data['id']);
+		$data['settings'] = $this->shared->settings();
+		$data['cartograph'] = $this->shared->cartograph_content(false,$data['settings']);
+		$data['related'] = $this->shared->get_related('definition',$data['id']);
 		if ($data['img'] != '') $data['img'] = unserialize($data['img']);
 		if ($data['payload'] != '') $data['payload'] = unserialize($data['payload']);
 		$data['type'] = 'definition';
 		$data['pagetitle'] = $data['title'];
-		$data['section'] = 'musings';
+		$data['section'] = array('notes','definition');
 		$data['loadjs'][] = 'blank';
 		$data['loadjs']['contenttools'] = true;
 		//print_r($data);die;
 		$this->load->view('app/builder/head', $data);
 		$this->load->view('app/builder/nav', $data);
-		$path = ($data['template'] == 'default') ? 'app/cas/definition': "app/cas/definition/{$data['template']}";
+		$path = ($data['template'] == 'default') ? 'app/cas/definition/definition': "app/cas/definition/{$data['template']}";
 		$this->load->view($path, $data);
 		$this->load->view('app/builder/foot', $data);
 	
@@ -42,20 +42,21 @@ class Content extends CI_Controller {
 	{
 		$data = $this->shared->get_byslug('taxonomy',$slug);
 		if (!isset($data['title'])) show_404();
-		$data['related'] = $this->cas->get_related('taxonomy',$data['id']);
-		$data['settings'] = $this->cas->settings();
-		$data['cartograph'] = $this->cas->cartograph_content(false,$data['settings']);
+		$data['related'] = $this->shared->get_related('taxonomy',$data['id']);
+		$data['settings'] = $this->shared->settings();
+		$data['cartograph'] = $this->shared->cartograph_content(false,$data['settings']);
 		$data['type'] = 'taxonomy';
 		if ($data['img'] != '') $data['img'] = unserialize($data['img']);
 		if ($data['payload'] != '') $data['payload'] = unserialize($data['payload']);
 		$data['pagetitle'] = $data['title'];
-		$data['section'] = 'musings';
+		$data['section'] = array('notes',$data['slug']);
 		$data['loadjs'][] = 'blank';
 		$data['loadjs']['contenttools'] = true;
+		$data['loadjs']['embedly'] = true;
 		//print_r($data);die;
 		$this->load->view('app/builder/head', $data);
 		$this->load->view('app/builder/nav', $data);
-		$path = ($data['template'] == 'default') ? 'app/cas/taxonomy': "app/cas/taxonomy/{$data['template']}";
+		$path = ($data['template'] == 'default') ? 'app/cas/taxonomy/taxonomy': "app/cas/taxonomy/{$data['template']}";
 		$this->load->view($path, $data);
 		$this->load->view('app/builder/foot', $data);
 	
@@ -69,7 +70,7 @@ class Content extends CI_Controller {
 		$data['cartograph'] = $this->shared->cartograph_content(false,$data['settings']);
 		$data['type'] = 'paper';
 		$data['pagetitle'] = $data['title'];
-		$data['section'] = 'musings';
+		$data['section'] = array('notes',$data['slug']);
 		$data['loadjs'][] = 'blank';
 
 		//print_r($data);die;
@@ -83,15 +84,16 @@ class Content extends CI_Controller {
 	{
 		$data['type'] = $type;
 		$data['pagetitle'] = ($type == 'html') ? 'Websites': ucfirst($type).'s';
-		$data['section'] = 'musings';
-		$data['loadjs']['masonry'] = true;
+		$data['section'] = array('feed',$type);
+		$data['loadjs']['embedly'] = true;
 		$data['loadjs']['livesearch'] = true;
-		$data['settings'] = $this->cas->settings();
-		$data['cartograph'] = $this->cas->cartograph_content(false,$data['settings']);
+		$data['settings'] = $this->shared->settings();
+		//$data['cartograph'] = $this->cas->cartograph_content(false,$data['settings']);
 		$data['path'] = array(
 			'title'=>'The Feed',
 			'url'=> current_url()
 		);
+		$data['navfullwidth'] = true;
 		//print_r($data);die;
 		$this->load->view('app/builder/head', $data);
 		$this->load->view('app/builder/nav', $data);

@@ -1,9 +1,9 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /* 
- * Page - Article View
+ * Definition - Article View
  *
- * This is a view used by single pages with the 'article' template set.
+ * This is a view used by single definitions with the 'article' template set.
  * 
  */
  
@@ -28,7 +28,7 @@
 			<div class="row text-center">
 				<div class="d-none d-sm-block col-sm"></div>
 				<header class="col-sm-10 col-lg-6">
-					<div class="subtitle" data-editable="" data-name="payload[blogtype]"><p><?=$blogtype?></p></div>
+					<div class="subtitle" data-editable="" data-name="payload[subtitle]"><p><?=$subtitle?></p></div>
 					<div data-editable="" data-name="payload[title]"><h1><?=$title?></h1></div><!-- (<?=$id?>)-->
 					<div class="excerpt" data-editable="" data-name="payload[excerpt]"><p><?=$this->shared->handlebar_links($excerpt)?></p></div>
 				</header>
@@ -52,7 +52,7 @@
 				</div>
 				<div class="col-md-7 col-lg-6">
 					<div class="body" data-editable="" data-name="payload[body]">
-						<?php echo $this->shared->handlebar_links($body); ?></p>
+						<?php echo $this->shared->handlebar_links($body); ?>
 					</div>
 					<?php $this->shared->footer_photocitation($id,$img,$timestamp,$slug,$title); ?>
 				</div>
@@ -90,23 +90,15 @@
 						</div>
 						<div class="form-label-group">
 							<select name="payload[template]" class="form-control">
-								<?php foreach (get_filenames("./application/views/app/pages") as $pagetemplate) { $pagetemplate = str_replace('.php', '', $pagetemplate); ?>
+								<?php foreach (get_filenames("./application/views/app/cas/definition") as $pagetemplate) { $pagetemplate = str_replace('.php', '', $pagetemplate); ?>
 								<option value="<?php echo $pagetemplate; ?>"<?php if ($pagetemplate == $template) { ?> selected="selected"<?php } ?>><?php echo ucfirst($pagetemplate); ?></option>
 								<?php } ?>
 							</select>
 							<label for="payload[template]">Page Template</label>
 						</div>
 						<div class="form-label-group">
-							<select name="payload[pagetype]" class="form-control">
-								<?php foreach (array('page','blog') as $__pagetype) { ?>
-								<option value="<?php echo $__pagetype; ?>"<?php if ($__pagetype == $pagetype) { ?> selected="selected"<?php } ?>><?php echo ucfirst($__pagetype); ?></option>
-								<?php } ?>
-							</select>
-							<label for="payload[pagetype]">Page Type</label>
-						</div>
-						<div class="form-label-group">
-							<input type="text" class="form-control" placeholder="Page Title" required="" autocomplete="off" name="payload[blogtype]" value="<?=$blogtype?>">
-							<label for="payload[blogtype]">Blog Type</label>
+							<input type="text" class="form-control" placeholder="Subtitle" required="" autocomplete="off" name="payload[subtitle]" value="<?=$subtitle?>">
+							<label for="payload[subtitle]">Subtitle</label>
 						</div>
 						<div class="form-label-group">
 							<input type="text" class="form-control" placeholder="Page Title" required="" autocomplete="off" name="payload[author]" value="<?=$author?>">
