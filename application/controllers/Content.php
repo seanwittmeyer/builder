@@ -30,6 +30,7 @@ class Content extends CI_Controller {
 		$data['section'] = array('notes','definition');
 		$data['loadjs'][] = 'blank';
 		$data['loadjs']['contenttools'] = true;
+		$data['loadjs']['embedly'] = true;
 		//print_r($data);die;
 		$this->load->view('app/builder/head', $data);
 		$this->load->view('app/builder/nav', $data);

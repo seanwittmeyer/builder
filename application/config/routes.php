@@ -128,11 +128,6 @@ $route['designexplorer/(:any)/(:any)'] = 'designexplorer/$1/$2'; // not sure we'
 $route['designexplorer/(:any)'] = 'designexplorer/$1';
 $route['designexplorer'] = 'designexplorer/index';
 
-$route['ppt/(:any)/(:any)/(:any)/(:any)'] = 'ppt/view/$1/$2/$3/$4'; // not sure we'll need this either, since data will come over post
-$route['ppt/(:any)/(:any)/(:any)'] = 'ppt/view/$1/$2/$3'; // not sure we'll need this either, since data will come over post
-$route['ppt/(:any)/(:any)'] = 'ppt/view/$1/$2'; // not sure we'll need this either, since data will come over post
-$route['ppt/(:any)'] = 'ppt/view/$1';
-$route['ppt'] = 'ppt/index';
 
 /*
 | -------------------------------------------------------------------------
@@ -152,8 +147,8 @@ $route['app'] = 'api/index';
 $route['(:any)/(:any)'] = 'content/$1/$2'; // flexible post titles are nice
 
 // Error handling and defaults
-$route['default_controller'] = 'pages/view';
 $route['(:any)'] = 'pages/view/$1';
+$route['default_controller'] = 'pages/view';
 $route['404_override'] = '';
 
 //$route['default_controller'] = 'welcome';

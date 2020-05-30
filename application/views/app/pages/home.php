@@ -55,7 +55,7 @@
 						<?php echo $this->shared->handlebar_links($body); ?></p>
 					</div>
 						<?php $weather = $this->shared->weather($location=false,$source='ip',$formatted=false); ?> 
-						<script type="text/javascript" src="https://darksky.net/widget/graph-bar/<?php echo $weather['lat'].','.$weather['lon']; ?>/us12/en.js?width=undefined&title=Full Forecast&textColor=111&bgColor=transparent&skyColor=undefined&fontFamily=-apple-system,BlinkMacSystemFont,Segoe UI&customFont=&units=us&timeColor=ffffff&tempColor=ffffff&currentDetailsOption=true"></script>
+						<script type="text/javascript" src="https://darksky.net/widget/graph-bar/<?php echo $weather['lat'].','.$weather['lon']; ?>/us12/en.js?width=undefined&title=Full Forecast&textColor=111&bgColor=transparent&skyColor=undefined&fontFamily=-apple-system,BlinkMacSystemFont,Segoe UI&customFont=&units=us&timeColor=111&tempColor=111&currentDetailsOption=true"></script>
 
 					<?php //$this->shared->footer_photocitation($id,$img,$timestamp,$slug,$title); ?>
 				</div>

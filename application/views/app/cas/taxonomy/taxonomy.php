@@ -22,7 +22,7 @@ $excludearray = array(
 		<div class="row">
 			<div class="col-sm-5 wrapper">
 				<div class="subtitle">A blog on the built environment</div>
-				<div class="title">Field Notes &rarr; Themes <?php $this->load->view('helpers/menu-fieldnotes'); ?></div>
+				<div class="title"><a href="/notes">Field Notes</a> &rarr; Themes <?php $this->load->view('helpers/menu-fieldnotes'); ?></div>
 			</div>
 			<div class="col-sm-7"></div>
 		</div>
@@ -53,7 +53,7 @@ $excludearray = array(
 								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="theme-feed-tab" data-toggle="tab" href="#themefeed" role="tab" aria-controls="themefeed" aria-selected="false">Books and Websites</a></li> 
 							</ul>
 						</nav>
-						<p class="meta">This article was published <br><?php echo $this->shared->twitterdate($timestamp, true); ?>.</p>
+						<p class="meta">This article was last updated <br><?php echo $this->shared->twitterdate($timestamp, true); ?>.</p>
 						<ul class="articlethemes">
 						<?php /* Get related themes */
 						$themes = $this->shared->get_related('taxonomy','34'); 
@@ -71,7 +71,7 @@ $excludearray = array(
 						<div class="tab-pane fade show active" id="themeintro" role="tabpanel" aria-labelledby="theme-intro-tab">
 						<!-- Introduction -->
 							<div class="body" data-editable="" data-name="payload[excerpt]">
-								<?php echo $this->shared->handlebar_links($excerpt); ?>
+								<?=$excerpt?>
 							</div>
 						<!-- /Introduction -->
 						</div>
@@ -99,6 +99,24 @@ $excludearray = array(
 						</div>
 						<div class="tab-pane fade" id="themechildren" role="tabpanel" aria-labelledby="theme-children-tab">
 						<!-- Children -->
+							<div class="row">
+								<div class="col children">
+									<h4><strong>Children</strong></h4>
+									<p>Explore <?php echo $title; ?> further in the topics and collections below.</p>
+									<?php $set = $this->shared->get_related($type,$id,true); ?>
+									<?php if ($set !== false) : ?>
+									<?php foreach ($set as $single) { 
+										if (in_array($single['id'], $excludearray[$single['type']])) continue; ?>
+										<div class="child-article">
+											<?php if (isset($blogtype)) { ?><span class="subtitle"><?=$blogtype?></span><?php } elseif (isset($subtitle)) { ?><span class="subtitle"><?=$subtitle?></span><?php } ?>
+											<a class="title t_list_<?=$single['id']?>" href="/<?=$single['type']?>/<?=$single['slug']?>"><?=$single['title']?></a>
+											<?php echo ($type === 'page') ? $single['subtitle']: ($type === 'definition') ? $single['excerpt']: ''; ?> <a href="/<?=$single['type']?>/<?=$single['slug']?>">keep reading... &rarr;</a>
+										</div>
+									<?php } ?> 
+									<?php elseif ($this->ion_auth->is_admin()): ?><blockquote>No connected topics...yet.<br /><button class="btn btn-success" data-toggle="modal" data-target="#pageeditor">Add Relationships</button></blockquote><?php endif; ?>
+									<hr>
+								</div>
+							</div>
 							<div class="row">
 								<div class="col-md-6">
 									<h4><strong>Children</strong></h4>
@@ -177,27 +195,28 @@ $excludearray = array(
 							<label for="payload[relationships][definition][]">Definitions</label>
 							<select name="payload[relationships][definition][]" class="selectpicker form-control" data-width="100%" data-live-search="true" data-size="5" multiple data-selected-text-format="count > 4">
 							<?php // List definitions
-								$list = $this->shared->list_bytype('definition'); $relationships = array(); if ($set !== false) foreach ($set as $ss) $relationships[] = $ss['id'];
+								$list = $this->shared->list_bytype('definition'); $relationships = array(); $relationships = $this->shared->get_related($type, $id, true, false); if ($relationships === false) $relationships = array(); 
+								 if (!isset($relationships['definition'])) $relationships['definition'] = array(); //var_dump($relationships);
 								if ($list === false) { echo '<option disabled>No definitions to display.</option>'; } else {
-								foreach ($list as $a) { $selected = (in_array($a['id'],$relationships)) ? ' selected' : ''; echo '<option value="'.$a['id'].'"'.$selected.'>'.$a['title']."</option>\n"; }} ?> 
+								foreach ($list as $a) { $selected = (in_array($a['id'],$relationships['definition'])) ? ' selected' : ''; echo '<option value="'.$a['id'].'"'.$selected.'>'.$a['title']."</option>\n"; }} ?> 
 							</select>
 						</div>
 						<div class="">
 							<label for="payload[relationships][taxonomy][]">Taxonomy</label>
 							<select name="payload[relationships][taxonomy][]" class="selectpicker form-control" data-width="100%" data-live-search="true" data-size="5" multiple data-selected-text-format="count > 4">
 							<?php // List taxonomy
-								$list = $this->shared->list_bytype('taxonomy');
+								$list = $this->shared->list_bytype('taxonomy'); if (!isset($relationships['taxonomy'])) $relationships['taxonomy'] = array();
 								if ($list === false) { echo '<option disabled>No taxonomy to display.</option>'; } else {
-								foreach ($list as $a) { $selected = (in_array($a['id'],$relationships)) ? ' selected' : ''; echo '<option value="'.$a['id'].'"'.$selected.'>'.$a['title']."</option>\n"; }} ?> 
+								foreach ($list as $a) { $selected = (in_array($a['id'],$relationships['taxonomy'])) ? ' selected' : ''; echo '<option value="'.$a['id'].'"'.$selected.'>'.$a['title']."</option>\n"; }} ?> 
 							</select>
 						</div>
 						<div class="">
 							<label for="payload[relationships][page][]">Pages</label>
 							<select name="payload[relationships][page][]" class="selectpicker form-control" data-width="100%" data-live-search="true" data-size="5" multiple data-selected-text-format="count > 4">
 							<?php // List taxonomy
-								$list = $this->shared->list_bytype('page');
+								$list = $this->shared->list_bytype('page');  if (!isset($relationships['page'])) $relationships['page'] = array();
 								if ($list === false) { echo '<option disabled>No pages to display.</option>'; } else {
-								foreach ($list as $a) { $selected = (in_array($a['id'],$relationships)) ? ' selected' : ''; echo '<option value="'.$a['id'].'"'.$selected.'>'.$a['title']."</option>\n"; }} ?> 
+								foreach ($list as $a) { $selected = (in_array($a['id'],$relationships['page'])) ? ' selected' : ''; echo '<option value="'.$a['id'].'"'.$selected.'>'.$a['title']."</option>\n"; }} ?> 
 							</select>
 						</div>
 						<br />

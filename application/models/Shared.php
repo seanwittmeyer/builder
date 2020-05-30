@@ -302,7 +302,6 @@ class shared extends CI_Model {
 		// Setup
 		//if ($where) $this->db->where($where);
 		//($sorttitle) ? $this->db->order_by("title", "asc") : $this->db->order_by("timestamp", "desc");
-	
 		//$related = array();
 		$query = $this->db->get_where("build_relationship",array('primary'=>$hostid,'type'=>$hosttype));
 		$result = $query->result_array();
@@ -320,7 +319,6 @@ class shared extends CI_Model {
 			} else {
 				$return[$i[0]][] = $i[1];
 			}
-			
 		}
 		return $return;
 	}
@@ -1109,10 +1107,10 @@ class shared extends CI_Model {
 						'timestamp' => time(),
 					);
 					$handlebarlinks = array('body','excerpt','subtitle'); // for contenttools, replace site html links with handlebar slugs
-					$striphtml = array('title','slug','subtitle','blogtype'); // for contenttools, remove extra html
-					$stripspaces = array('title','slug','subtitle','blogtype'); // for contenttools, remove trailing and extra spaces and new lines
+					$striphtml = array('title','slug','blogtype'); // for contenttools, remove extra html
+					$stripspaces = array('title','slug','blogtype'); // for contenttools, remove trailing and extra spaces and new lines
 					foreach ($pool as $var) {
-						if (isset($post[$var])) $update[$var] = $this->parse_bytype_helper($post[$var],$var,false,$handlebarlinks,$striphtml,$stripspaces);
+						if (isset($post[$var])) $update[$var] = $this->parse_bytype_helper($post[$var],$var,$handlebarlinks,$striphtml,$stripspaces);
 					}
 				} else {
 					//$this->form_validation->set_rules('payload[body]', 'body', 'required');
@@ -1557,9 +1555,9 @@ class shared extends CI_Model {
 	// parse form values by type
 	public function parse_bytype_helper($value,$type,$handlebarlinks=false,$striphtml=false,$stripspaces=false) {
 		// definitions - make arrays of form input names for each process
-		if (!$handlebarlinks) $handlebarlinks = array('body','excerpt','subtitle'); // for contenttools, replace site html links with handlebar slugs
-		if (!$striphtml) $striphtml = array('title','slug','subtitle','excerpt','blogtype'); // for contenttools, remove extra html
-		if (!$stripspaces) $stripspaces = array('title','slug','subtitle','excerpt','blogtype'); // for contenttools, remove trailing and extra spaces and new lines
+		if ($handlebarlinks === false) $handlebarlinks = array('body','excerpt','subtitle'); // for contenttools, replace site html links with handlebar slugs
+		if ($striphtml === false) $striphtml = array('title','slug','subtitle','excerpt','blogtype'); // for contenttools, remove extra html
+		if ($stripspaces === false) $stripspaces = array('title','slug','subtitle','excerpt','blogtype'); // for contenttools, remove trailing and extra spaces and new lines
 		
 		// handlebar links
 		if (in_array($type, $handlebarlinks)) {

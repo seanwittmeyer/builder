@@ -34,7 +34,7 @@
 		<div class="row">
 			<div class="col-sm-5 wrapper">
 				<div class="subtitle">A blog on the built environment</div>
-				<div class="title">&larr; Field Notes <?php $this->load->view('helpers/menu-fieldnotes'); ?></div>
+				<div class="title"><a href="/notes">&larr; Field Notes</a> <?php $this->load->view('helpers/menu-fieldnotes'); ?></div>
 			</div>
 			<div class="col-sm-7"></div>
 		</div>
@@ -103,6 +103,18 @@
 					</div>
 					<?php $this->shared->footer_photocitation($id,$img,$timestamp,$slug,$title); ?>
 
+<!-- Feed -->
+	<div class="input-group">
+		<div class="input-group-prepend">
+			<div class="input-group-text"><i class="fas fa-search"></i></div>
+		</div>
+		<input type="text" class="form-control" id="livesearch" placeholder="find a link...">
+		<div class="input-group-append">
+			<button class="btn btn-outline-secondary" type="button" data-toggle="modal" data-target="#createlink"><i class="fas fa-plus"></i> &nbsp; Add a link </button>
+		</div>
+	</div>
+	<?php echo $this->shared->related_html($type,$id); ?>
+<!-- /Feed -->
 
 				</div>
 				<!-- /Body -->
@@ -150,31 +162,32 @@
 						</select>
 						<label for="payload[template]">Page Template</label>
 					</div>
-					<div class="">
+						<div class="">
 						<label for="payload[relationships][definition][]">Definitions</label>
 						<select name="payload[relationships][definition][]" class="selectpicker form-control" data-width="100%" data-live-search="true" data-size="5" multiple data-selected-text-format="count > 4">
 						<?php // List definitions
-							$list = $this->shared->list_bytype('definition'); $relationships = array(); if ($set !== false) foreach ($set as $ss) $relationships[] = $ss['id'];
+							$list = $this->shared->list_bytype('definition'); $relationships = array(); $relationships = $this->shared->get_related($type, $id, true, false); if ($relationships === false) $relationships = array(); 
+							 if (!isset($relationships['definition'])) $relationships['definition'] = array(); //var_dump($relationships);
 							if ($list === false) { echo '<option disabled>No definitions to display.</option>'; } else {
-							foreach ($list as $a) { $selected = (in_array($a['id'],$relationships)) ? ' selected' : ''; echo '<option value="'.$a['id'].'"'.$selected.'>'.$a['title']."</option>\n"; }} ?> 
+							foreach ($list as $a) { $selected = (in_array($a['id'],$relationships['definition'])) ? ' selected' : ''; echo '<option value="'.$a['id'].'"'.$selected.'>'.$a['title']."</option>\n"; }} ?> 
 						</select>
 					</div>
 					<div class="">
 						<label for="payload[relationships][taxonomy][]">Taxonomy</label>
 						<select name="payload[relationships][taxonomy][]" class="selectpicker form-control" data-width="100%" data-live-search="true" data-size="5" multiple data-selected-text-format="count > 4">
 						<?php // List taxonomy
-							$list = $this->shared->list_bytype('taxonomy');
+							$list = $this->shared->list_bytype('taxonomy'); if (!isset($relationships['taxonomy'])) $relationships['taxonomy'] = array();
 							if ($list === false) { echo '<option disabled>No taxonomy to display.</option>'; } else {
-							foreach ($list as $a) { $selected = (in_array($a['id'],$relationships)) ? ' selected' : ''; echo '<option value="'.$a['id'].'"'.$selected.'>'.$a['title']."</option>\n"; }} ?> 
+							foreach ($list as $a) { $selected = (in_array($a['id'],$relationships['taxonomy'])) ? ' selected' : ''; echo '<option value="'.$a['id'].'"'.$selected.'>'.$a['title']."</option>\n"; }} ?> 
 						</select>
 					</div>
 					<div class="">
 						<label for="payload[relationships][page][]">Pages</label>
 						<select name="payload[relationships][page][]" class="selectpicker form-control" data-width="100%" data-live-search="true" data-size="5" multiple data-selected-text-format="count > 4">
 						<?php // List taxonomy
-							$list = $this->shared->list_bytype('page');
+							$list = $this->shared->list_bytype('page');  if (!isset($relationships['page'])) $relationships['page'] = array();
 							if ($list === false) { echo '<option disabled>No pages to display.</option>'; } else {
-							foreach ($list as $a) { $selected = (in_array($a['id'],$relationships)) ? ' selected' : ''; echo '<option value="'.$a['id'].'"'.$selected.'>'.$a['title']."</option>\n"; }} ?> 
+							foreach ($list as $a) { $selected = (in_array($a['id'],$relationships['page'])) ? ' selected' : ''; echo '<option value="'.$a['id'].'"'.$selected.'>'.$a['title']."</option>\n"; }} ?> 
 						</select>
 					</div>
 					<br />

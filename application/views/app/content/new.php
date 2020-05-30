@@ -1,62 +1,70 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /* 
- * Definition - Article View
+ * Page - Article View
  *
- * This is a view used by single definitions with the 'article' template set.
+ * This is a view used by single pages with the 'article' template set.
  * 
  */
  
-  $set = $this->shared->get_related($type,$id,true); ?> 
+?> 
 <!-- Page map as a page nav in the top right corner -->
 	<canvas id="pagemap" class="article"></canvas>
 	<!-- /pagemap -->
 	<!-- Header -->
-	<header class="article-header container-fluid" style="background-image: url('<?php echo (isset($img['header']) && !empty($img['header'])) ? $img['header']['url']: '/includes/test/assets/Moofushi_Kandu_fish.jpg'; ?>');">
+	<header class="article-header container-fluid">
 		<div class="row">
-			<div class="col-sm-5 wrapper">
-				<div class="subtitle">A blog on the built environment</div>
-				<div class="title"><a href="/notes">&larr; Field Notes</a> <?php $this->load->view('helpers/menu-fieldnotes'); ?></div>
+			<div class="col-sm-5 wrapper" style="background: transparent; ">
+				<div class="subtitle">Site utilities</div>
+				<div class="title">Add Content <?php $this->load->view('helpers/menu-fieldnotes'); ?></div>
 			</div>
 			<div class="col-sm-7"></div>
 		</div>
 	</header>
-	<!-- Header -->
+	<!-- /Header -->
 	<!-- Article -->
-	<article class="article-article">
+	<article class="article-theme">
 		<div class="container-fluid">
-			<div class="row text-center">
-				<div class="d-none d-sm-block col-sm"></div>
-				<header class="col-sm-10 col-lg-6">
-					<div class="subtitle" data-editable="" data-name="payload[subtitle]"><p><?=$subtitle?></p></div>
-					<div data-editable="" data-name="payload[title]"><h1><?=$title?></h1></div><!-- (<?=$id?>)-->
-					<div class="excerpt" data-editable="" data-name="payload[excerpt]"><p><?=$this->shared->handlebar_links($excerpt)?></p></div>
+			<div class="row ">
+				<div class="col-md d-none d-lg-block"></div>
+				<div class="col-md-5 col-lg-4 text-right"></div>
+				<header class="col-md-7 col-lg-6">
+					<div data-editable="" data-name="payload[title]"><h1>Let's add some content</h1></div>
+					<div class="excerpt" data-editable="" data-name="payload[subtitle]"><p>The easiest way to add pages and other content is on this page. Either set initial content or click create to get an untitled template.</p></div>
 				</header>
 				<div class="d-none d-sm-block col-sm"></div>
 			</div>
 			<div class="row">
 				<div class="col-md d-none d-lg-block"></div>
 				<div class="col-md-5 col-lg-4 text-right ">
-					<aside>
-						<p class="meta">This article was last updated <br><?php echo $this->shared->twitterdate($timestamp, true); ?> by <?php echo $author; ?>.</p>
-						<ul class="articlethemes">
-						<?php /* Get related themes */
-						$themes = $this->shared->get_related('taxonomy','34'); 
-						$_themes = array(); 
-						foreach ($themes as $i) $_themes[] = $i['id'];
-						foreach ($set as $s) if ($s['type']=='taxonomy' && in_array($s['id'],$_themes)) { ?>
-								<li style="background-image: url(<?=$s['icon']?>);"><a class="" href="/theme/<?=$s['slug']?>"><?=$s['title']?></a></li>
-						<?php } ?> 
-						</ul>
+					<aside class="col-sm-10 float-right">
+						<nav id="themenav" class="pilltabs">
+							<ul class="nav nav-tabs" role="tablist">
+								<li class="nav-item d-block" role="presentation"><a class="nav-link active" id="new-all-tab" data-toggle="tab" href="#newall" role="tab" aria-controls="newall" aria-selected="true">Quick Create <i class="fas fa-plus"></i></a></li> 
+								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="new-tax-tab" data-toggle="tab" href="#newtax" role="tab" aria-controls="newtax" aria-selected="false">Theme/Collection <i class="fas fa-th-large"></i></a></li> 
+								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="new-def-tab" data-toggle="tab" href="#newdef" role="tab" aria-controls="newdef" aria-selected="false">Article <i class="fas fa-scroll"></i></a></li> 
+								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="new-page-tab" data-toggle="tab" href="#newpage" role="tab" aria-controls="newpage" aria-selected="false">Page <i class="far fa-file-alt"></i></a></li> 
+								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="new-link-tab" data-toggle="tab" href="#newlink" role="tab" aria-controls="newlink" aria-selected="false">Link/Feed Item <i class="fas fa-link"></i></a></li> 
+							</ul>
+						</nav>
 					</aside>
 				</div>
 				<div class="col-md-7 col-lg-6">
-					<div class="body" data-editable="" data-name="payload[body]">
-						<?php echo $this->shared->handlebar_links($body); ?>
+					<div class="tab-content" id="offcanvaspanes">
+						<div class="tab-pane fade show active" id="themeintro" role="tabpanel" aria-labelledby="theme-intro-tab">
+						<!-- Introduction -->
+						<!-- /Introduction -->
+						</div>
+						<div class="tab-pane fade" id="themebody" role="tabpanel" aria-labelledby="theme-body-tab">
+						<!-- Body -->
+						<!-- /Body -->
+						</div>
+						<div class="tab-pane fade" id="themefeed" role="tabpanel" aria-labelledby="theme-feed-tab">
+						<!-- Feed -->
+						<!-- /Feed -->
+						</div>
 					</div>
-					<?php $this->shared->footer_photocitation($id,$img,$timestamp,$slug,$title); ?>
 				</div>
-				<div class="col-md d-none d-lg-block"></div>
 			</div>
 		</div>
 	</article>
@@ -90,15 +98,23 @@
 						</div>
 						<div class="form-label-group">
 							<select name="payload[template]" class="form-control">
-								<?php foreach (get_filenames("./application/views/app/cas/definition") as $pagetemplate) { $pagetemplate = str_replace('.php', '', $pagetemplate); ?>
+								<?php foreach (get_filenames("./application/views/app/pages") as $pagetemplate) { $pagetemplate = str_replace('.php', '', $pagetemplate); ?>
 								<option value="<?php echo $pagetemplate; ?>"<?php if ($pagetemplate == $template) { ?> selected="selected"<?php } ?>><?php echo ucfirst($pagetemplate); ?></option>
 								<?php } ?>
 							</select>
 							<label for="payload[template]">Page Template</label>
 						</div>
 						<div class="form-label-group">
-							<input type="text" class="form-control" placeholder="Subtitle" required="" autocomplete="off" name="payload[subtitle]" value="<?=$subtitle?>">
-							<label for="payload[subtitle]">Subtitle</label>
+							<select name="payload[pagetype]" class="form-control">
+								<?php foreach (array('page','blog') as $__pagetype) { ?>
+								<option value="<?php echo $__pagetype; ?>"<?php if ($__pagetype == $pagetype) { ?> selected="selected"<?php } ?>><?php echo ucfirst($__pagetype); ?></option>
+								<?php } ?>
+							</select>
+							<label for="payload[pagetype]">Page Type</label>
+						</div>
+						<div class="form-label-group">
+							<input type="text" class="form-control" placeholder="Page Title" required="" autocomplete="off" name="payload[blogtype]" value="<?=$blogtype?>">
+							<label for="payload[blogtype]">Blog Type</label>
 						</div>
 						<div class="form-label-group">
 							<input type="text" class="form-control" placeholder="Page Title" required="" autocomplete="off" name="payload[author]" value="<?=$author?>">
@@ -108,28 +124,27 @@
 							<label for="payload[relationships][definition][]">Definitions</label>
 							<select name="payload[relationships][definition][]" class="selectpicker form-control" data-width="100%" data-live-search="true" data-size="5" multiple data-selected-text-format="count > 4">
 							<?php // List definitions
-								$list = $this->shared->list_bytype('definition'); $relationships = array(); $relationships = $this->shared->get_related($type, $id, true, false); if ($relationships === false) $relationships = array(); 
-								 if (!isset($relationships['definition'])) $relationships['definition'] = array(); //var_dump($relationships);
+								$list = $this->shared->list_bytype('definition'); $relationships = array(); if ($set !== false) foreach ($set as $ss) $relationships[] = $ss['id'];
 								if ($list === false) { echo '<option disabled>No definitions to display.</option>'; } else {
-								foreach ($list as $a) { $selected = (in_array($a['id'],$relationships['definition'])) ? ' selected' : ''; echo '<option value="'.$a['id'].'"'.$selected.'>'.$a['title']."</option>\n"; }} ?> 
+								foreach ($list as $a) { $selected = (in_array($a['id'],$relationships)) ? ' selected' : ''; echo '<option value="'.$a['id'].'"'.$selected.'>'.$a['title']."</option>\n"; }} ?> 
 							</select>
 						</div>
 						<div class="">
 							<label for="payload[relationships][taxonomy][]">Taxonomy</label>
 							<select name="payload[relationships][taxonomy][]" class="selectpicker form-control" data-width="100%" data-live-search="true" data-size="5" multiple data-selected-text-format="count > 4">
 							<?php // List taxonomy
-								$list = $this->shared->list_bytype('taxonomy'); if (!isset($relationships['taxonomy'])) $relationships['taxonomy'] = array();
+								$list = $this->shared->list_bytype('taxonomy');
 								if ($list === false) { echo '<option disabled>No taxonomy to display.</option>'; } else {
-								foreach ($list as $a) { $selected = (in_array($a['id'],$relationships['taxonomy'])) ? ' selected' : ''; echo '<option value="'.$a['id'].'"'.$selected.'>'.$a['title']."</option>\n"; }} ?> 
+								foreach ($list as $a) { $selected = (in_array($a['id'],$relationships)) ? ' selected' : ''; echo '<option value="'.$a['id'].'"'.$selected.'>'.$a['title']."</option>\n"; }} ?> 
 							</select>
 						</div>
 						<div class="">
 							<label for="payload[relationships][page][]">Pages</label>
 							<select name="payload[relationships][page][]" class="selectpicker form-control" data-width="100%" data-live-search="true" data-size="5" multiple data-selected-text-format="count > 4">
 							<?php // List taxonomy
-								$list = $this->shared->list_bytype('page');  if (!isset($relationships['page'])) $relationships['page'] = array();
+								$list = $this->shared->list_bytype('page');
 								if ($list === false) { echo '<option disabled>No pages to display.</option>'; } else {
-								foreach ($list as $a) { $selected = (in_array($a['id'],$relationships['page'])) ? ' selected' : ''; echo '<option value="'.$a['id'].'"'.$selected.'>'.$a['title']."</option>\n"; }} ?> 
+								foreach ($list as $a) { $selected = (in_array($a['id'],$relationships)) ? ' selected' : ''; echo '<option value="'.$a['id'].'"'.$selected.'>'.$a['title']."</option>\n"; }} ?> 
 							</select>
 						</div>
 						<br />
@@ -166,22 +181,6 @@
 	</div>
 	<!-- /Off canvas -->
 	<?php } ?>
-	<!-- Modal -->
-	<div class="modal fade" id="deletemodal" tabindex="-1" role="dialog" aria-labelledby="deletemodal" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Delete</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				</div>
-				<div class="modal-body">You are about to delete this page.</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary pull-right" data-dismiss="modal">Just kidding, close</button>
-					<a href="/api/remove/page/<?php echo $id; ?>/home" class="btn btn-danger">Delete this page</a>
-				</div>
-			</div>
-		</div>
-	</div>
 	<?php if ($this->ion_auth->logged_in() && isset($loadjs['contenttools'])) { 
 		$this->load->view("helpers/contenttools");
 		$this->load->view("helpers/editor-scripts");
