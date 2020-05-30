@@ -108,9 +108,9 @@ $excludearray = array(
 									<?php foreach ($set as $single) { 
 										if (in_array($single['id'], $excludearray[$single['type']])) continue; ?>
 										<div class="child-article">
-											<?php if (isset($blogtype)) { ?><span class="subtitle"><?=$blogtype?></span><?php } elseif (isset($subtitle)) { ?><span class="subtitle"><?=$subtitle?></span><?php } ?>
+											<?php if (isset($single['blogtype'])) { ?><span class="subtitle"><?=$single['blogtype']?></span><?php } elseif (isset($single['subtitle'])) { ?><span class="subtitle"><?=$single['subtitle']?></span><?php } ?>
 											<a class="title t_list_<?=$single['id']?>" href="/<?=$single['type']?>/<?=$single['slug']?>"><?=$single['title']?></a>
-											<?php echo ($type === 'page') ? $single['subtitle']: ($type === 'definition') ? $single['excerpt']: ''; ?> <a href="/<?=$single['type']?>/<?=$single['slug']?>">keep reading... &rarr;</a>
+											<?php echo ($single['type'] === 'page') ? $single['subtitle']: ($single['type'] === 'definition') ? $single['excerpt']: ''; ?> <a href="/<?=$single['type']?>/<?=$single['slug']?>">keep reading... &rarr;</a>
 										</div>
 									<?php } ?> 
 									<?php elseif ($this->ion_auth->is_admin()): ?><blockquote>No connected topics...yet.<br /><button class="btn btn-success" data-toggle="modal" data-target="#pageeditor">Add Relationships</button></blockquote><?php endif; ?>

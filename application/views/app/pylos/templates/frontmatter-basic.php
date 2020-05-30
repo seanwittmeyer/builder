@@ -7,7 +7,7 @@
 
 	<div class="container-fluid build-wrapper">
 		<div class="row">
-			<div class="col-sm-6 col-md-3"><h3 class="text-left"><a href="/" style="color:#3e3f3a !important;"><span class="firmlogotype">ZGF</span> Pylos</a></h3></div>
+			<div class="col-sm-6 col-md-3"><h3 class="text-left"><a href="/" style="color:#3e3f3a !important;">Pylos</a></h3></div>
 			<div class="col-sm-4 tablet-hide hidden-xs"><h3 class="text-left">Project Performance Library</h3></div>
 			<div class="col-sm-6 col-md-5">
 				<nav class="text-right">

@@ -51,14 +51,20 @@ class Pages extends CI_Controller {
 				$this->load->view('app/pylos/templates/frontmatter-default', $data);
 				$this->load->view("app/pages/$template", $data);
 				$this->load->view('app/pylos/templates/footer', $data);
-			} elseif (strpos($template, 'article') !== false) {
-				$this->load->view('app/builder/head', $data);
-				$this->load->view('app/builder/nav', $data);
-				$this->load->view("app/pages/$template", $data);
-				$this->load->view('app/builder/foot', $data);
 			} else {
-				if ($template == 'rsvp') {
-					$data['loadjs']['rsvp'] = true;
+				switch ($template) {
+					case "trains":
+						$data['section'] = array('playground',$slug);
+					break;
+					case "football":
+						$data['section'] = array('playground',$slug);
+					break;
+					case "fieldnotes":
+						$data['section'] = array('notes',$slug);
+					break;
+					case "rsvp" :
+						$data['loadjs']['rsvp'] = true;
+						break;
 				}
 				$this->load->view('app/builder/head', $data);
 				$this->load->view('app/builder/nav', $data);
@@ -68,6 +74,12 @@ class Pages extends CI_Controller {
 		} else {
 			$data['pagetitle'] = ucfirst($slug); // Capitalize the first letter
 			$data['section'] = array('page',$slug);
+			switch ($slug) {
+				case "new":
+					$data['loadjs']['contenttools'] = true;
+					$data['loadjs']['embedly'] = true;
+				break;
+			}
 			$this->load->view('app/builder/head', $data);
 			$this->load->view('app/builder/nav', $data);
 			$this->load->view('app/content/'.$slug, $data);

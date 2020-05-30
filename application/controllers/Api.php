@@ -4,9 +4,9 @@
  * CAS API Controller
  *
  * This is the controller that handles all of the API calls. It handles calls 
- * authenticated by key, session user, or the public..
+ * authenticated by key, session user, or the public.
  *
- * Version 1.4.5 (2014 04 23 1530)
+ * Version 2.0.1 (2020 20 05 29 2026)
  * Edited by Sean Wittmeyer (theseanwitt@gmail.com)
  * 
  */
@@ -25,27 +25,54 @@ class Api extends CI_Controller {
 	}
 
 	public function update($type=false,$id=false,$file=false)
+{
+	if ($type===false || $id===false) {
+		$this->output->set_status_header('404');
+		print json_encode(array('result'=>'404','type'=>'error','message'=>"Blast, don't forget to specify the type and ID. Do not pass go."));
+		die;
+	}
+	if (!$this->ion_auth->logged_in()) {
+		$this->output->set_status_header('403');
+		print json_encode(array('result'=>'403','type'=>'error','message'=>"You can't update ".$type."s unless you are logged in."));
+		die;
+	}
+	$result = $this->shared->update($type,$id,$file);
+	if ($result['error'] === true) {
+		$this->output->set_status_header('403');
+		print json_encode(array('result'=>'403','type'=>'error','message'=>$result['message']));
+		//print_r($post = $this->input->post('payload'));
+		die;
+	}
+	$this->output->set_status_header('200');
+	print json_encode(array('result'=>'200','type'=>'success','message'=>"All done!",'result'=>$result));
+	
+}
+
+	public function simplecreate()
 	{
-		if ($type===false || $id===false) {
+		$_template = $this->input->post('template');
+		$_slug = $this->input->post('slug');
+		
+		if ($_template===NULL) {
 			$this->output->set_status_header('404');
-			print json_encode(array('result'=>'404','type'=>'error','message'=>"Blast, don't forget to specify the type and ID. Do not pass go."));
+			print json_encode(array('result'=>'404','type'=>'error','message'=>"We gotta know the template, chief"));
 			die;
 		}
 		if (!$this->ion_auth->logged_in()) {
 			$this->output->set_status_header('403');
-			print json_encode(array('result'=>'403','type'=>'error','message'=>"You can't update ".$type."s unless you are logged in."));
+			print json_encode(array('result'=>'403','type'=>'error','message'=>"You can't create a ".$template."s unless you are logged in."));
 			die;
 		}
-		$result = $this->shared->update($type,$id,$file);
+		$result = $this->shared->simple_create($_template,$_slug);
 		if ($result['error'] === true) {
 			$this->output->set_status_header('403');
 			print json_encode(array('result'=>'403','type'=>'error','message'=>$result['message']));
-			//print_r($post = $this->input->post('payload'));
 			die;
+			//print_r($post = $this->input->post('payload'));
 		}
 		$this->output->set_status_header('200');
 		print json_encode(array('result'=>'200','type'=>'success','message'=>"All done!",'result'=>$result));
-		
+				
 	}
 
 	public function remove($type=false,$id=false,$refresh=false)

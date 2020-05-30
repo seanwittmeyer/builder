@@ -44,7 +44,7 @@
 						$themes = $this->shared->get_related('taxonomy','34'); 
 						$_themes = array(); 
 						foreach ($themes as $i) $_themes[] = $i['id'];
-						foreach ($set as $s) if ($s['type']=='taxonomy' && in_array($s['id'],$_themes)) { ?>
+						if (is_array($set)) foreach ($set as $s) if ($s['type']=='taxonomy' && in_array($s['id'],$_themes)) { ?>
 								<li style="background-image: url(<?=$s['icon']?>);"><a class="" href="/theme/<?=$s['slug']?>"><?=$s['title']?></a></li>
 						<?php } ?> 
 						</ul>

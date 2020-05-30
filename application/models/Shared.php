@@ -909,10 +909,12 @@ class shared extends CI_Model {
 					'slug' => ($slug) ? $this->slug($slug,$type,'slug'): $this->slug('untitled',$type,'slug'),
 					'timestamp' => time(),
 					'unique' => sha1('cas-'.microtime()),
-					'body' => 'This is the body of your new definition, edit with good fortune',
+					'body' => '<p>This is the body of your new definition, edit with good fortune</p>',
 					'subtitle' => 'This is the subtitle',
 					'title' => 'Untitled',
-					'excerpt' => 'This is the excerpt',
+					'template' => 'article',
+					'excerpt' => '<p>This is the excerpt</p>',
+					'author' => 'Sean Wittmeyer',
 					'user' => $user->id,
 				);
 				break;
@@ -921,19 +923,20 @@ class shared extends CI_Model {
 				$insert = array(
 					'user' => $user->id,
 					'slug' => ($slug) ? $this->slug($slug,$type,'slug'): $this->slug('untitled',$type,'slug'),
-					'body' => 'This is the body of your new tax, edit with good fortune',
-					'excerpt' => 'This is the excerpt',
+					'body' => '<p>This is the body of your new tax, edit with good fortune</p>',
+					'excerpt' => '<p>This is the excerpt</p>',
 					'title' => 'Untitled',
+					'template' => 'taxonomy',
 					'unique' => sha1('cas-'.microtime()),
 					'subtitle' => 'This is the subtitle',
 					'timestamp' => time(),
 					'payload' => serialize(array()),
-					'definition' => '-',
-					'link' => '-',
-					'page' => '-',
-					'paper' => '-',
-					'synonym' => '-',
-					'taxonomy' => '-',
+					'definition' => 0,
+					'link' => 0,
+					'page' => 0,
+					'paper' => 0,
+					'synonym' => 0,
+					'taxonomy' => 0,
 				);
 				break;
 			case "link":
@@ -957,7 +960,7 @@ class shared extends CI_Model {
 				$insert = array(
 					'user' => $user->id,
 					'slug' => ($slug) ? $this->slug($slug,$type,'slug'): $this->slug('untitled',$type,'slug'),
-					'body' => 'This is the body of your new page, edit with good fortune',
+					'body' => '<p>This is the body of your new page, edit with good fortune</p>',
 					'excerpt' => 'This is the excerpt',
 					'title' => 'Untitled',
 					'template' => 'article',

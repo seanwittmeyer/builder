@@ -78,7 +78,7 @@
 		</div>
 		<div class="tab-pane fade<?php if ($section[0] == 'notes') echo ' show active'; ?>" id="fieldnotes" role="tabpanel" aria-labelledby="nav-fieldnotes-tab">
 			<ul>
-				<li><a href="/notes">Field Notes</a></li>
+				<li><a  <?php if ($section[0] == 'notes' && $section[1] == 'notes') echo 'class="active" '; ?>href="/notes">Field Notes</a></li>
 				<li class="dropup"><a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Themes</a>
 					<div class="dropdown-menu" aria-labelledby="">
 						<span class="dropdown-header">General Themes</span>

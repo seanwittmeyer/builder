@@ -19,7 +19,6 @@
 	<?php if (in_array('nvd3', $loadjs)) { ?> 
 	<link href='/includes/css/nvd3.css' rel='stylesheet' />
 	<?php } ?> 
-	<link href="/includes/css/builder.css?<?=$uniquejsversion?>" rel="stylesheet">
 	<script src="/dist/index.bundle.js?<?=$uniquejsversion?>"></script>
 	<script src="/dist/general.bundle.js?<?=$uniquejsversion?>"></script>
 	<script src="/dist/fa.bundle.js" async></script>
@@ -36,6 +35,7 @@
 	<link href='/includes/css/content-tools.min.css' rel='stylesheet' />
 	<!--<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.8/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />-->
 	<?php } ?> 
+	<link href="/includes/css/builder.css?<?=$uniquejsversion?>" rel="stylesheet">
  	<script type="text/javascript">
 		function herowindowheight() {
 			$('.windowminheight').css({'min-height': window.innerHeight-110});
