@@ -45,20 +45,40 @@ body {
   /* width: calc(100% - 15px); */
 }
 pre {
-	border: 1px #ddd solid;
-	padding: .5rem;
-	border-radius: .25rem;
+  border: 1px #ddd solid;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
 }
 h1 {
-	font-family: "IBM Plex Sans";
-	font-weight: 700;
-	font-size: 1.8rem;
+  font-family: "IBM Plex Sans";
+  font-weight: 700;
+  font-size: 1.8rem;
 }
 h2 {
-	font-family: "IBM Plex Sans";
-	font-weight: 700;
-	font-size: 1.5rem;
-
+  font-family: "IBM Plex Sans";
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100%;
+}
+.flex-1 {
+  flex: 1;
+}
+a:link,
+a:visited {
+  color: #111;
+}
+a:hover {
+  text-decoration: none;
+  font-style: italic;
+}
+a:active {
+  font-weight: 700;
+  font-style: italic;
 }
 /* Navs and Tabs 
 -------------------------------------------------- */
@@ -66,18 +86,23 @@ h2 {
   position: fixed;
   bottom: 20px;
   left: 30px;
-  width: calc(41.6666667% - 15px);
+  width: 100%;
   height: auto;
   background-color: #f5f5f500;
   z-index: 2000;
 }
+@media (min-width: 992px) {
+  #mainnav {
+    width: calc(41.6666667% - 15px);
+  }
+}
 #mainnav.fullwidth {
-	width: calc(100% - 45px);
-	background: #EBEBEB;
-	padding-top: 1rem;
-	padding-bottom: 20px;
-	bottom: 0;
-	border-top: 1px solid #fe7964;
+  width: calc(100% - 45px);
+  background: #ebebeb;
+  padding-top: 1rem;
+  padding-bottom: 20px;
+  bottom: 0;
+  border-top: 1px solid #fe7964;
 }
 #mainnav #title,
 .sectiontitle {
@@ -179,46 +204,50 @@ h2 {
 .article-header .dropdown-menu a,
 .article-theme .dropdown-menu span,
 .article-theme .dropdown-menu a {
-	font-weight: 400;
+  font-weight: 400;
 }
 .article-header .dropdown-menu a,
 .article-theme .dropdown-menu a {
   font-family: "IBM Plex Mono";
 }
 .dropdown-menu i {
-	width: 1rem;
+  width: 1rem;
 }
 .pilltabs .nav-tabs {
-	border: none;
-	display: block;
+  border: none;
+  display: block;
 }
 .pilltabs .nav-item {
-	margin: 0;
-	display: block;
+  margin: 0;
+  display: block;
 }
 .pilltabs .nav-tabs .nav-link {
-	color: #111;
-	font-family: "IBM Plex Sans";
-	font-size: 1rem;
-	text-align: right;
-	border: none;
-	background: white;
-	border-radius: 0;
-	width: 100%;
-	margin-bottom: .3rem;
+  color: #111;
+  font-family: "IBM Plex Sans";
+  font-size: 1rem;
+  text-align: right;
+  border: none;
+  background: white;
+  border-radius: 0;
+  width: 100%;
+  margin-bottom: 0.3rem;
+  padding-right: 2rem;
 }
-.pilltabs .nav-tabs .nav-link.active, 
+.pilltabs .nav-tabs .nav-link.active,
 .pilltabs .nav-tabs .nav-item.show .nav-link {
-	color: #111;
-	background-color: white;
-	border: 0;
+  color: #111;
+  background-color: white;
+  border: 0;
 }
-.pilltabs .nav-tabs .nav-item .nav-link.active::after {
-  content: " →";
-  white-space: pre-wrap;
+.pilltabs .nav-tabs .nav-item .nav-link.active:before {
+  content: "\f061"; /* this is your text. You can also use UTF-8 character codes as I do here */
+  right: 25px;
+  position: absolute;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
 }
 #cas-link-embed-preview {
-	max-width: 100%;
+  max-width: 100%;
 }
 
 /* Headings and Header Elements
@@ -235,45 +264,53 @@ header .subtitle {
   font-family: "IBM Plex Mono";
 }
 header .naked {
-	padding-top: 2rem;
+  padding-top: 2rem;
 }
 header .naked .input-group-text {
-	background-color: transparent;
-	border: none;
+  background-color: transparent;
+  border: none;
 }
 header .naked input {
-	background-color: transparent;
-	background-clip: padding-box;
-	border: none;
-	border-radius: none;
-	padding-left: 0;
+  background-color: transparent;
+  background-clip: padding-box;
+  border: none;
+  border-radius: none;
+  padding-left: 0;
 }
 header .naked .form-control:focus {
-	background-color: transparent;
-	border-bottom: #7fbbe3 1px solid;
-	box-shadow: none;
-	border-radius: 0;
+  background-color: transparent;
+  border-bottom: #7fbbe3 1px solid;
+  box-shadow: none;
+  border-radius: 0;
+}
+.naked button img {
+  height: 2rem;
+  width: auto;
+  margin: -0.5rem -0.2rem;
 }
 header a {
-	color: #111;
+  color: #111;
 }
 .index h4 a {
-	font-family: "IBM Plex Serif";
-	font-weight: 700;
-	font-style: italic;
-	color: #111;
+  font-family: "IBM Plex Serif";
+  font-weight: 700;
+  font-style: italic;
+  color: #111;
 }
 article .body h1 {
-	font-family: "IBM Plex Sans";
-	font-weight: 700;
-	font-size: 1.8rem;
+  font-family: "IBM Plex Sans";
+  font-weight: 700;
+  font-size: 1.8rem;
 }
 article .body h2 {
-	font-family: "IBM Plex Sans";
-	font-weight: 700;
-	font-size: 1.5rem;
-
+  font-family: "IBM Plex Sans";
+  font-weight: 700;
+  font-size: 1.5rem;
 }
+article .body iframe {
+  width: 100%;
+}
+
 /* CAS (Field Notes)
 -------------------------------------------------- */
 
@@ -329,39 +366,39 @@ article.article-theme .body {
   line-height: 2rem;
 }
 .articlethemes {
-	list-style: none;
-	text-align: right;
+  list-style: none;
+  text-align: right;
 }
 .articlethemes li {
-	margin: 0;
-	padding: .2rem 2rem .2rem 0;
-	list-style: none;
-	background-repeat: no-repeat;
-	background-position: right center;
-	background-size: 1.5rem;
+  margin: 0;
+  padding: 0.2rem 2rem 0.2rem 0;
+  list-style: none;
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: 1.5rem;
 }
 article.article-article aside,
 article.article-theme aside {
-	font-family: "IBM Plex Mono";
-	padding-top: 4px;
+  font-family: "IBM Plex Mono";
+  padding-top: 4px;
 }
 
 article.article-article aside .meta,
 article.article-theme aside .meta {
-	font-weight: 200;
-	font-style: italic;
+  font-weight: 200;
+  font-style: italic;
 }
 article.article-article aside li a,
 article.article-theme aside li a {
-	font-weight: 700;
-	color: #000;
-	font-size: .85rem;
-	font-family: "IBM Plex Serif";
+  font-weight: 700;
+  color: #000;
+  font-size: 0.85rem;
+  font-family: "IBM Plex Serif";
 }
 .article-theme .themeicon {
-	max-height: 100px;
-	margin-top: 4rem;
-	width: max-content;
+  max-height: 100px;
+  margin-top: 4rem;
+  width: max-content;
 }
 article.article-theme header h1 {
   font-weight: 200;
@@ -370,54 +407,303 @@ article.article-theme header h1 {
   letter-spacing: -0.1rem;
   font-size: 2.5rem;
 }
+.body img {
+  max-width: 100% !important;
+  height: auto !important;
+}
+/* Related links
+-------------------------------------------------- */
 
+.children .child-article {
+  display: block;
+  padding-bottom: 0.9rem;
+  margin-bottom: 0.9rem;
+  border-bottom: 1px solid #fe7964;
+}
+.children .child-article:last-of-type {
+  border-bottom: none;
+}
+.children .child-article .subtitle {
+  font-family: "IBM Plex Mono";
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.children .child-article .title {
+  font-size: 1.5rem;
+  font-style: italic;
+  font-family: "IBM Plex Serif";
+  font-weight: 700;
+  color: #111;
+  display: block;
+}
 /* Ski
 -------------------------------------------------- */
 
 /* Homepage
 -------------------------------------------------- */
+body.body-home {
+  margin-bottom: 0px;
+}
+body.body-home #mainnav,
+body.body-home #mainnav a {
+  color: white;
+}
 
+.article-home .title {
+  font-family: "IBM Plex Sans";
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin-top: -0.2rem;
+}
+.article-home .subtitle {
+  font-family: "IBM Plex Mono";
+  font-style: italic;
+  font-size: 0.85rem;
+}
+.article-home .intro,
+.article-home .data {
+  padding-top: 20px;
+}
+.article-home .intro,
+.article-home .data {
+  background: #fe7964;
+  color: white;
+}
+.article-home .content .col-sm-8 {
+  padding-top: 20px;
+}
+
+.article-home .content .col-sm-4 {
+  background-color: white;
+  padding-top: 20px;
+}
+.article-home .content > .row {
+  border-bottom: 1px solid #fe7964;
+}
+
+.article-home .content > .row:last-child {
+  border-bottom: 0px;
+}
+.article-home .portfolio {
+  cursor: pointer;
+  background-image: url(/includes/img/imov.png);
+  background-position: 80% 84%;
+  background-size: 60% auto;
+  background-repeat: no-repeat;
+}
+.article-home .projects .row img {
+  height: auto;
+  width: 100%;
+}
+.article-home .projects .row .title {
+  font-family: "IBM Plex Serif";
+  font-size: 1.5rem;
+  font-style: italic;
+}
+.article-home .projects .row .excerpt {
+  font-family: "IBM Plex Serif";
+  font-size: 0.8rem;
+}
+.article-home .projects .links {
+  font-family: "IBM Plex Mono";
+  font-size: 0.8rem;
+  padding: 0.5rem 0 20px;
+}
+.article-home .notes .row img {
+  height: auto;
+  width: 100%;
+}
+.article-home .notes .row .title {
+  font-family: "IBM Plex Serif";
+  font-size: 1.5rem;
+  font-style: italic;
+}
+.article-home .notes .row .excerpt {
+  font-family: "IBM Plex Serif";
+  font-size: 0.8rem;
+}
+.article-home .notes .links {
+  font-family: "IBM Plex Mono";
+  font-size: 0.8rem;
+  padding: 0.5rem 0 20px;
+}
+.themeicons img {
+  max-width: 60%;
+  margin-top: 0.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.article-home ul.asidelist {
+  list-style: none;
+  padding-left: 0;
+  font-size: 0.85rem;
+  font-family: "IBM Plex Mono";
+  line-height: 0.95rem;
+}
+.article-home ul.asidelist li {
+  margin: 0.6rem 0;
+}
+.article-home .portfolio a {
+  font-family: "IBM Plex Mono";
+  font-size: 0.8rem;
+  color: #111;
+  position: absolute;
+  bottom: 20px;
+}
+.article-home .body {
+  font-size: 1.2rem;
+  line-height: 1.2rem;
+  font-family: "IBM Plex Mono";
+  font-weight: 200;
+  font-style: italic;
+  letter-spacing: -0.08rem;
+  padding-top: 5vh;
+  padding-right: 7vh;
+}
+.article-home .body a {
+  font-family: "IBM Plex Serif";
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: -0.05rem;
+  color: white;
+  text-decoration: underline;
+}
+.article-home .body p {
+  padding-bottom: 1rem;
+}
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  .article-home .body {
+    letter-spacing: -0.08rem;
+    padding-top: 15vh;
+    padding-right: 7vh;
+  }
+  .article-home .body a {
+    letter-spacing: -0.08rem;
+  }
+}
+/* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
+@media (min-width: 768px) {
+  .article-home .body {
+    letter-spacing: -0.1rem;
+    padding-top: 15vh;
+    padding-right: 7vh;
+  }
+  .article-home .body a {
+    letter-spacing: -0.1rem;
+  }
+}
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .article-home .body {
+    font-size: 1.8rem;
+    line-height: 1.8rem;
+    letter-spacing: -0.1rem;
+    padding-top: 10vh;
+    padding-right: 7vh;
+  }
+  .article-home .body a {
+    letter-spacing: -0.1rem;
+  }
+}
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .article-home .body {
+    font-size: 2rem;
+    line-height: 2rem;
+    letter-spacing: -0.1rem;
+    padding-top: 15vh;
+    padding-right: 7vh;
+  }
+  .article-home .body a {
+    letter-spacing: -0.1rem;
+  }
+}
+/* Desktop devices (large desktops, 1600px and up) */
+@media (min-width: 1600px) {
+  .article-home .body {
+    font-size: 2.2rem;
+    line-height: 2.5rem;
+    letter-spacing: -0.1rem;
+    padding-top: 15vh;
+    padding-right: 7vh;
+  }
+  .article-home .body a {
+    letter-spacing: -0.1rem;
+  }
+}
 /* The Feed
 -------------------------------------------------- */
 
 /* Masonry
 -------------------------------------------------- */
 @media (min-width: 576px) {
-	.card-columns {
-		-webkit-column-count: 4;
-		-moz-column-count: 4;
-		column-count: 4 !important;
-		padding-bottom: 100px;
-	}
-	.card-columns.card-columns-3 {
-		-webkit-column-count: 3;
-		-moz-column-count: 3;
-		column-count: 3 !important;
-		margin: 1em 0;
-	}
+  .card-columns {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3 !important;
+    padding-bottom: 100px;
+  }
+  .card-columns.card-columns-3 {
+    -webkit-column-count: 1;
+    -moz-column-count: 1;
+    column-count: 1 !important;
+    margin: 1em 0;
+  }
+}
+@media (min-width: 1200px) {
+  .card-columns {
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    column-count: 4 !important;
+    padding-bottom: 100px;
+  }
+  .card-columns.card-columns-3 {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2 !important;
+    margin: 1em 0;
+  }
+}
+@media (min-width: 1600px) {
+  .card-columns {
+    -webkit-column-count: 5;
+    -moz-column-count: 5;
+    column-count: 5 !important;
+    padding-bottom: 100px;
+  }
+  .card-columns.card-columns-3 {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3 !important;
+    margin: 1em 0;
+  }
 }
 .card-columns .card {
-	padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
 }
-.card .feed-footer, .card .feed-footer address, .card .feed-footer a {
-	padding: 0;
-	margin: 0;
+.card .feed-footer,
+.card .feed-footer address,
+.card .feed-footer a {
+  padding: 0;
+  margin: 0;
 }
 .card .feed-footer address {
-	border-bottom: 1px #999 dotted; 
-	display: inline;
+  border-bottom: 1px #999 dotted;
+  display: inline;
 }
 .card .feed-footer a {
-	display: inline;
+  display: inline;
 }
 .card .feed-footer {
-	background: #E1D3B9;
-	margin: -31px 0 20px 2px;
-	display: block;
-	z-index: 2;
-	position: relative;
-	font-size: .65rem;
-	font-family: "IBM Plex Mono";
+  background: white;
+  margin: -31px 0 20px 2px;
+  display: block;
+  z-index: 2;
+  position: relative;
+  font-size: 0.65rem;
+  font-family: "IBM Plex Mono";
 }
 
 /* Heading
@@ -450,13 +736,13 @@ body.offcanvas .offcanvaspane .bootstrap-select .dropdown-menu.inner {
   max-width: 300px;
 }
 body.offcanvas .offcanvaspane .editorheaderimgpreview {
-	height: 100px;
-	margin: .5em 1px;
-	border: 1px solid #ced4da;
-	border-radius: 0.25rem;
-    background-size: cover;
-	background-position: center center;
-	vertical-align: middle;
+  height: 100px;
+  margin: 0.5em 1px;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  background-size: cover;
+  background-position: center center;
+  vertical-align: middle;
 }
 
 /* Forms
@@ -607,5 +893,3 @@ body.offcanvas .offcanvaspane .editorheaderimgpreview {
   width: 100%;
   height: 2px;
 }
-  
-  

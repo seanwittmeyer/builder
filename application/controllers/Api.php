@@ -229,6 +229,18 @@ class Api extends CI_Controller {
 		}
 		$this->shared->storeimage($return);		
 	}	
+	public function insertimage($return=false)
+	{
+		if (!$this->ion_auth->logged_in()) {
+			$this->output->set_status_header('403');
+			print json_encode(array('result'=>'403','type'=>'error','message'=>"You can't create ".$type."s unless you are logged in."));
+			die;
+		}
+		//content tools wants to tell us the image we uploaded is not being ditched, may handle this later. returning a 200 for now.
+		$this->shared->returnimage($return);		
+
+	}	
+
 	public function weather($method='default',$arg=false) {
 		switch ($method) {
 			case 'weather':

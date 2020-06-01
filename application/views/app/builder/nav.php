@@ -48,9 +48,11 @@
 		<li class="nav-item" role="presentation">
 			<a class="nav-link<?php if ($section[0] == 'notes') echo ' active'; ?>" id="nav-fieldnotes-tab" data-toggle="tab" href="#fieldnotes" role="tab" aria-controls="profile" aria-selected="false">Field Notes</a>
 		</li>
+		<!-- we will do this later.
 		<li class="nav-item" role="presentation">
 			<a class="nav-link<?php if ($section[0] == 'pylos') echo ' active'; ?>" id="nav-pylos-tab" data-toggle="tab" href="#pylos" role="tab" aria-controls="profile" aria-selected="false">Pylos</a>
 		</li>
+		-->
 		<li class="nav-item" role="presentation">
 			<a class="nav-link<?php if ($section[0] == 'feed') echo ' active'; ?>" id="nav-feed-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="profile" aria-selected="false">Feed</a>
 		</li>
@@ -89,6 +91,8 @@
 				<li><a <?php if ($section[0] == 'notes' && $section[1] == 'observations') echo 'class="active" '; ?>href="/notes/observations">Observations</a></li>
 				<li><a <?php if ($section[0] == 'notes' && $section[1] == 'ideas') echo 'class="active" '; ?>href="/notes/ideas">Ideas</a></li>
 				<li><a <?php if ($section[0] == 'notes' && $section[1] == 'articles') echo 'class="active" '; ?>href="/notes/articles">Articles</a></li>
+				<li><a href="/new"><i class="fas fa-plus"></i></a></li>
+				<li><a href="" onclick="openeditor(); return false;"><i class="fas fa-edit"></i></a></li>
 			</ul>
 		</div>
 		<div class="tab-pane fade<?php if ($section[0] == 'pylos') echo ' show active'; ?>" id="pylos" role="tabpanel" aria-labelledby="nav-pylos-tab">
@@ -115,6 +119,7 @@
 				<li><a <?php if ($section[0] == 'playground' && $section[1] == 'ski') echo 'class="active" '; ?>href="/ski">Ski</a></li>
 				<li><a <?php if ($section[0] == 'playground' && $section[1] == 'trains') echo 'class="active" '; ?>href="/trains">Trains</a></li>
 				<li><a <?php if ($section[0] == 'playground' && $section[1] == 'football') echo 'class="active" '; ?>href="/football">Football</a></li>
+				<li><a href="/pylos">Pylos</a></li>
 				<li><a href="https://sean.wittmeyer.io/contact-form">Contact</a></li>
 			</ul>
 		</div>

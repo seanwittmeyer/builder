@@ -110,7 +110,7 @@ $excludearray = array(
 										<div class="child-article">
 											<?php if (isset($single['blogtype'])) { ?><span class="subtitle"><?=$single['blogtype']?></span><?php } elseif (isset($single['subtitle'])) { ?><span class="subtitle"><?=$single['subtitle']?></span><?php } ?>
 											<a class="title t_list_<?=$single['id']?>" href="/<?=$single['type']?>/<?=$single['slug']?>"><?=$single['title']?></a>
-											<?php echo ($single['type'] === 'page') ? $single['subtitle']: ($single['type'] === 'definition') ? $single['excerpt']: ''; ?> <a href="/<?=$single['type']?>/<?=$single['slug']?>">keep reading... &rarr;</a>
+											<?php echo ($single['type'] === 'page') ? $single['excerpt']: ($single['type'] === 'definition') ? $single['excerpt']: ''; ?> <a href="/<?=$single['type']?>/<?=$single['slug']?>"> Keep reading... &rarr;</a>
 										</div>
 									<?php } ?> 
 									<?php elseif ($this->ion_auth->is_admin()): ?><blockquote>No connected topics...yet.<br /><button class="btn btn-success" data-toggle="modal" data-target="#pageeditor">Add Relationships</button></blockquote><?php endif; ?>
@@ -169,7 +169,7 @@ $excludearray = array(
 				<ul class="nav nav-tabs" id="offcanvastabs" role="tablist">
 					<li class="nav-item" role="presentation"><a class="nav-link active" id="editor-edit-tab" data-toggle="tab" href="#edit" role="tab" aria-controls="edit" aria-selected="true">Page</a></li> 
 					<li class="nav-item" role="presentation"><a class="nav-link" id="editor-img-tab" data-toggle="tab" href="#editimg" role="tab" aria-controls="editimg" aria-selected="false">Header Image</a></li> 
-					<li class="nav-item" role="presentation"><a class="nav-link" id="editor-new-tab" data-toggle="tab" href="#editnew" role="tab" aria-controls="editnew" aria-selected="false">+ New</a></li> 
+					<li class="nav-item" role="presentation"><a class="nav-link" id="editor-link-tab" data-toggle="tab" href="#editlink" role="tab" aria-controls="editlink" aria-selected="false">New Link</a></li> 
 				</ul>
 				<div class="tab-content" id="offcanvaspanes">
 					<div class="tab-pane fade show active" id="edit" role="tabpanel" aria-labelledby="editor-edit-tab">
@@ -243,10 +243,10 @@ $excludearray = array(
 					<div class="tab-pane fade" id="editimg" role="tabpanel" aria-labelledby="editor-img-tab">
 					<?php $this->load->view('helpers/editor-headerimage'); ?> 
 					</div>
-					<div class="tab-pane fade" id="editnew" role="tabpanel" aria-labelledby="editor-new-tab">
-					<!-- Start New Content Tab -->
-					<?php $this->load->view('helpers/editor-new'); ?> 
-					<!-- End New Content Tab -->
+					<div class="tab-pane fade" id="editlink" role="tabpanel" aria-labelledby="editor-link-tab">
+					<!-- Start New Link Tab -->
+					<?php $this->load->view('helpers/editor-link'); ?> 
+					<!-- End New Link Tab -->
 					</div>
 				</div>
 			</nav>

@@ -694,6 +694,7 @@ class shared extends CI_Model {
 					'hosttype' => $post['hosttype'],
 					'hostid' => $post['hostid'],
 					'excerpt' => $post['excerpt'],
+					'caption' => $post['caption'],
 					'title' => $post['title'],
 					'unique' => sha1('cas-'.microtime()),
 					'timestamp' => time(),
@@ -1637,7 +1638,7 @@ class shared extends CI_Model {
 			$return .=  '<div class="card-columns card-columns-3 grid-filter">';
 			foreach ($links as $link) { 
 				$return .=   '<div class="cas-embed card" data-searchval="'.str_replace('"', '', ($link['title'].' '.$link['excerpt'])).'">
-				<blockquote class="embedly-card" data-card-key="74435e49e8fa468eb2602ea062017ceb" data-card-controls="0"><h4><a href="'.$link['uri'].'">'.$link['title'].'</a></h4><p>'.$link['excerpt'].'</p></blockquote><div class="feed-footer"><address data-toggle="tooltip" data-title="'.$link['excerpt'].'">Description</address>';
+				<blockquote class="embedly-card" data-card-key="74435e49e8fa468eb2602ea062017ceb" data-card-controls="0"><h4><a href="'.$link['uri'].'">'.$link['title'].'</a></h4><p>'.$link['excerpt'].'</p></blockquote><div class="feed-footer"><i class="far fa-comment-dots"></i> '.$link['caption'].'<br><address data-toggle="tooltip" data-title="'.$link['excerpt'].'">Description</address>';
 				if ($this->ion_auth->is_admin()) $return .=   ' | <a href="/api/remove/link/'.$link['id'].'/refresh" data-toggle="tooltip" data-title="Are you sure?"><i class="fas fa-trash"></i></a>'; 
 				$return .=   '</div></div><!-- /CAS Embed -->';
 			}

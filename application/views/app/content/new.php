@@ -38,11 +38,11 @@
 					<aside class="col-sm-10 float-right">
 						<nav id="themenav" class="pilltabs">
 							<ul class="nav nav-tabs" role="tablist">
-								<li class="nav-item d-block" role="presentation"><a class="nav-link active" id="new-all-tab" data-toggle="tab" href="#newall" role="tab" aria-controls="newall" aria-selected="true">Quick Create <i class="fas fa-plus"></i></a></li> 
-								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="new-tax-tab" data-toggle="tab" href="#newtax" role="tab" aria-controls="newtax" aria-selected="false">Theme/Collection <i class="fas fa-th-large"></i></a></li> 
-								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="new-def-tab" data-toggle="tab" href="#newdef" role="tab" aria-controls="newdef" aria-selected="false">Article <i class="fas fa-scroll"></i></a></li> 
-								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="new-page-tab" data-toggle="tab" href="#newpage" role="tab" aria-controls="newpage" aria-selected="false">Page <i class="far fa-file-alt"></i></a></li> 
-								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="new-link-tab" data-toggle="tab" href="#newlink" role="tab" aria-controls="newlink" aria-selected="false">Link/Feed Item <i class="fas fa-link"></i></a></li> 
+								<li class="nav-item d-block" role="presentation"><a class="nav-link active" id="new-all-tab" data-toggle="tab" href="#newall" role="tab" aria-controls="newall" aria-selected="true"><i class="fas fa-plus"></i> Quick Create</a></li> 
+								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="new-tax-tab" data-toggle="tab" href="#newtax" role="tab" aria-controls="newtax" aria-selected="false"><i class="fas fa-th-large"></i> Theme/Collection</a></li> 
+								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="new-def-tab" data-toggle="tab" href="#newdef" role="tab" aria-controls="newdef" aria-selected="false"><i class="fas fa-scroll"></i> Article</a></li> 
+								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="new-page-tab" data-toggle="tab" href="#newpage" role="tab" aria-controls="newpage" aria-selected="false"><i class="far fa-file-alt"></i> Page</a></li> 
+								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="new-link-tab" data-toggle="tab" href="#newlink" role="tab" aria-controls="newlink" aria-selected="false"><i class="fas fa-link"></i> Link/Feed Item</a></li> 
 							</ul>
 						</nav>
 					</aside>
@@ -54,6 +54,66 @@
 							<div id="simplesuccess" class="alert alert-success " style="display: none;" role="alert">Done, loading.</div>
 							<div id="simpleloading" class="alert alert-info progress-bar progress-bar-striped active" style="display: block; width: 100%; display: none;" role="alert">wait!...</div>
 						<!-- new all -->
+							<h2>Link for a Theme</h2>
+							<form id="formlink" >
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<div class="input-group-text" aria-hidden="true" data-toggle="popover" data-trigger="hover" title="Creating Links"  data-content="Start by entering the URL for the website or element you want to embed/add to this page. When you are done, click go and we will get details which you can edit.">Link URI, start here... <i class="fas fa-info-circle"></i></div>
+									</div>
+									<input type="text" class="form-control" id="cas-link-uri" name="payload[uri]" placeholder="http://youtube.com/watch?v=123abc456">
+									<div class="input-group-append">
+										<button class="btn btn-outline-secondary" id="cas-link-embed-trigger" type="button">Load &darr;</button>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="">Preview</label>
+									<a id="cas-link-embed-preview"></a>
+								</div>
+								<div class="form-label-group">
+									<input type="text" class="form-control" id="cas-link-title" placeholder="Link Title" required="" autocomplete="off" name="payload[title]">
+									<label for="payload[title]">Link Title</label>
+								</div>
+								<div class="form-label-group">
+									<textarea class="form-control" id="cas-link-excerpt" name="payload[excerpt]" placeholder="Excerpt"></textarea>
+									<label for="payload[excerpt]" class="">Excerpt</label>
+								</div>
+								<div class="form-label-group">
+									<textarea class="form-control" id="cas-link-caption" name="payload[caption]" placeholder="Caption"></textarea>
+									<label for="payload[caption]" class="">Caption</label>
+								</div>
+								<div class="form-label-group">
+									<select id="cas-link-type" name="payload[type]" class="form-control">
+										<option selected="selected" disabled="disabled">Link Type</option>
+										<option value="html" selected="selected">Webpage</option>
+										<option value="video">Video</option>
+										<option value="file">File</option>
+										<option value="paper">Paper</option>
+										<option value="book">Book</option>
+										<option value="profile">Profile</option>
+										<option value="other">Other</option>
+									</select>
+									<label for="payload[type]" class="">Link Type</label>
+								</div>
+								<?php $themes = $this->shared->get_related('taxonomy','34'); 
+								foreach ($themes as $i) { ?> 
+								<div class="custom-control custom-radio">
+									<input type="radio" id="tax-option-<?=$i['id']?>" name="payload[hostid]" value="<?=$i['id']?>" class="custom-control-input">
+									<label class="custom-control-label" for="tax-option-<?=$i['id']?>"><?=$i['title']?></label>
+								</div>
+								<?php } ?>
+								<p style="clear: both;">&nbsp;</p>
+								<input type="hidden" id="cas-link-hostid" name="payload[hosttype]" value="taxonomy" />
+								<div id="linkfail" class="alert alert-danger " style="display: none;" role="alert">Uh oh, the link didn't save, make sure everything above is filled and try again.</div>
+								<div id="linksuccess" class="alert alert-success " style="display: none;" role="alert">Great success, content posted.</div>
+								<div id="linkloading" class="alert alert-info progress-bar progress-bar-striped active" style="display: block; width: 100%; display: none;" role="alert">dancing...</div>
+								<div id="linkbuttons">
+									<button type="button" class="btn btn-primary tt" id="submitlink" data-toggle="tooltip" title="This is ">Add Link!</button>
+									<button type="reset" class="btn btn-default" >Reset</button>
+								</div>
+							</form>
+							<hr style="clear: both;">&nbsp;</hr>
+							
+							
 							<h2>Taxonomy, Collection, or Theme</h2>
 							<form id="simpletax" class="input-group clearfix">
 								<div class="input-group-prepend">
@@ -67,6 +127,8 @@
 								</div>
 							</form>
 							<p style="clear: both;">&nbsp;<br></p>
+							
+							
 							<h2>Definition or Article</h2>
 							<form class="input-group clearfix" id="simpledef">
 							<div class="input-group-prepend">
@@ -80,6 +142,8 @@
 							</div>
 							</form>
 							<p style="clear: both;">&nbsp;</p>
+							
+							
 							<h2>Page</h2>
 							<form class="input-group" id="simplepage">
 							<div class="input-group-prepend">
@@ -92,6 +156,7 @@
 								<button class="btn btn-outline-secondary" onclick="simple_create('#simplepage')" type="button">Add the page &rarr;</button>
 							</div>
 							</form>
+
 						<!-- /new all -->
 						</div>
 						<div class="tab-pane fade" id="newtax" role="tabpanel" aria-labelledby="new-tax-tab">
@@ -111,60 +176,7 @@
 						</div>
 						<div class="tab-pane fade" id="newlink" role="tabpanel" aria-labelledby="new-link-tab">
 						<!-- link -->
-						
-						<form id="formlink" >
-							<div class="form-group">
-								<div class="form-group input-group">
-									<label for="payload[title]" class="">Link URI <i>start here... <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-toggle="popover" data-trigger="hover" title="Creating Links"  data-content="Start by entering the URL for the website or element you want to embed/add to this page. When you are done, click go and we will get details which you can edit."> </i> </em></label>
-									<input type="text" class="form-control" id="cas-link-uri" name="payload[uri]" placeholder="http://youtube.com/watch?v=123abc456"><span class="input-group-btn"><a id="cas-link-embed-trigger" class="btn btn-default">Go!</a></span>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="">Preview</label>
-								<a id="cas-link-embed-preview"></a>
-							</div>
-							<div class="form-label-group">
-								<input type="text" class="form-control" id="cas-link-title" placeholder="Link Title" required="" autocomplete="off" name="payload[title]">
-								<label for="payload[title]">Link Title</label>
-							</div>
-							<div class="form-label-group">
-								<textarea class="form-control" id="cas-link-excerpt" name="payload[excerpt]" placeholder="Excerpt"></textarea>
-								<label for="payload[excerpt]" class="">Excerpt</label>
-							</div>
-							<div class="form-label-group">
-								<select id="cas-link-type" name="payload[type]" class="form-control">
-									<option selected="selected" disabled="disabled">Link Type</option>
-									<option value="html" selected="selected">Webpage</option>
-									<option value="video">Video</option>
-									<option value="file">File</option>
-									<option value="paper">Paper</option>
-									<option value="book">Book</option>
-									<option value="profile">Profile</option>
-									<option value="other">Other</option>
-								</select>
-								<label for="payload[type]" class="">Link Type</label>
-							</div>
-							<div class="custom-control custom-radio">
-								<input type="radio" id="customRadio1" name="customRadio" class="custom-control-input">
-								<label class="custom-control-label" for="customRadio1">Toggle this custom radio</label>
-							</div>
-							<div class="custom-control custom-radio">
-								<input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
-								<label class="custom-control-label" for="customRadio2">Or toggle this other custom radio</label>
-							</div>
-							<input type="hidden" id="cas-link-hostid" name="payload[hosttype]" value="" />
-							<input type="hidden" id="cas-link-hosttype" name="payload[hostid]" value="" />
-							<div class="modal-footer">
-								<div id="linkfail" class="alert alert-danger " style="display: none;" role="alert">Uh oh, the link didn't save, make sure everything above is filled and try again.</div>
-								<div id="linksuccess" class="alert alert-success " style="display: none;" role="alert">Great success, content posted.</div>
-								<div id="linkloading" class="alert alert-info progress-bar progress-bar-striped active" style="display: block; width: 100%; display: none;" role="alert">dancing...</div>
-								<div id="linkbuttons">
-									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-									<button type="reset" class="btn btn-default" >Reset</button>
-									<button type="button" class="btn btn-primary tt" id="submitlink" data-toggle="tooltip" title="This is ">Add Link!</button>
-								</div>
-							</div>
-						</form>
+						Use the link tool on the page you want it shown on or create a link associated to one of the main themes on the Quick Create tab.
 						<!-- /link -->
 						</div>
 					</div>
@@ -177,115 +189,9 @@
 	
 	
 	
-	<?php if ($this->ion_auth->logged_in()) { ?>
-	<!-- Off canvas -->
-	<div class="offcanvaspane">
-		<div class="container">
-			<!-- Main nav tabs in the bottom left corner -->
-			<nav id="editornav" class="inlinetabs">
-				<a class="sectiontitle" onclick="$('body').removeClass('offcanvas'); return false;">Editor</a>
-				<ul class="nav nav-tabs" id="offcanvastabs" role="tablist">
-					<li class="nav-item" role="presentation"><a class="nav-link active" id="editor-edit-tab" data-toggle="tab" href="#edit" role="tab" aria-controls="edit" aria-selected="true">Page</a></li> 
-					<li class="nav-item" role="presentation"><a class="nav-link" id="editor-img-tab" data-toggle="tab" href="#editimg" role="tab" aria-controls="editimg" aria-selected="false">Header Image</a></li> 
-					<li class="nav-item" role="presentation"><a class="nav-link" id="editor-new-tab" data-toggle="tab" href="#editnew" role="tab" aria-controls="editnew" aria-selected="false">+ New</a></li> 
-				</ul>
-				<div class="tab-content" id="offcanvaspanes">
-					<div class="tab-pane fade show active" id="edit" role="tabpanel" aria-labelledby="editor-edit-tab">
-					<!-- Start Page Editor Tab -->
-					<form id="formeditor" >
-						<div class="form-label-group">
-							<input type="text" class="form-control" placeholder="Page Title" required="" autocomplete="off" name="payload[title]" value="<?=$title?>">
-							<label for="payload[title]">Page Title</label>
-						</div>
-						<div class="form-label-group">
-							<textarea type="text" class="form-control" placeholder="Excerpt" required="" autocomplete="off" name="payload[excerpt]"><?=$excerpt?></textarea>
-							<label for="payload[excerpt]">Excerpt</label>
-						</div>
-						<div class="form-label-group">
-							<select name="payload[template]" class="form-control">
-								<?php foreach (get_filenames("./application/views/app/pages") as $pagetemplate) { $pagetemplate = str_replace('.php', '', $pagetemplate); ?>
-								<option value="<?php echo $pagetemplate; ?>"<?php if ($pagetemplate == $template) { ?> selected="selected"<?php } ?>><?php echo ucfirst($pagetemplate); ?></option>
-								<?php } ?>
-							</select>
-							<label for="payload[template]">Page Template</label>
-						</div>
-						<div class="form-label-group">
-							<select name="payload[pagetype]" class="form-control">
-								<?php foreach (array('page','blog') as $__pagetype) { ?>
-								<option value="<?php echo $__pagetype; ?>"<?php if ($__pagetype == $pagetype) { ?> selected="selected"<?php } ?>><?php echo ucfirst($__pagetype); ?></option>
-								<?php } ?>
-							</select>
-							<label for="payload[pagetype]">Page Type</label>
-						</div>
-						<div class="form-label-group">
-							<input type="text" class="form-control" placeholder="Page Title" required="" autocomplete="off" name="payload[blogtype]" value="<?=$blogtype?>">
-							<label for="payload[blogtype]">Blog Type</label>
-						</div>
-						<div class="form-label-group">
-							<input type="text" class="form-control" placeholder="Page Title" required="" autocomplete="off" name="payload[author]" value="<?=$author?>">
-							<label for="payload[author]">Author</label>
-						</div>
-						<div class="">
-							<label for="payload[relationships][definition][]">Definitions</label>
-							<select name="payload[relationships][definition][]" class="selectpicker form-control" data-width="100%" data-live-search="true" data-size="5" multiple data-selected-text-format="count > 4">
-							<?php // List definitions
-								$list = $this->shared->list_bytype('definition'); $relationships = array(); if ($set !== false) foreach ($set as $ss) $relationships[] = $ss['id'];
-								if ($list === false) { echo '<option disabled>No definitions to display.</option>'; } else {
-								foreach ($list as $a) { $selected = (in_array($a['id'],$relationships)) ? ' selected' : ''; echo '<option value="'.$a['id'].'"'.$selected.'>'.$a['title']."</option>\n"; }} ?> 
-							</select>
-						</div>
-						<div class="">
-							<label for="payload[relationships][taxonomy][]">Taxonomy</label>
-							<select name="payload[relationships][taxonomy][]" class="selectpicker form-control" data-width="100%" data-live-search="true" data-size="5" multiple data-selected-text-format="count > 4">
-							<?php // List taxonomy
-								$list = $this->shared->list_bytype('taxonomy');
-								if ($list === false) { echo '<option disabled>No taxonomy to display.</option>'; } else {
-								foreach ($list as $a) { $selected = (in_array($a['id'],$relationships)) ? ' selected' : ''; echo '<option value="'.$a['id'].'"'.$selected.'>'.$a['title']."</option>\n"; }} ?> 
-							</select>
-						</div>
-						<div class="">
-							<label for="payload[relationships][page][]">Pages</label>
-							<select name="payload[relationships][page][]" class="selectpicker form-control" data-width="100%" data-live-search="true" data-size="5" multiple data-selected-text-format="count > 4">
-							<?php // List taxonomy
-								$list = $this->shared->list_bytype('page');
-								if ($list === false) { echo '<option disabled>No pages to display.</option>'; } else {
-								foreach ($list as $a) { $selected = (in_array($a['id'],$relationships)) ? ' selected' : ''; echo '<option value="'.$a['id'].'"'.$selected.'>'.$a['title']."</option>\n"; }} ?> 
-							</select>
-						</div>
-						<br />
-						<hr>
-						<div id="editorfail" class="alert alert-danger " style="display: none;" role="alert">Uh oh, the <?php echo $type; ?> didn't save, make sure everything above is filled and try again.</div>
-						<div id="editorsuccess" class="alert alert-success " style="display: none;" role="alert">Great success, content posted.</div>
-						<div id="editorloading" class="alert alert-info progress-bar progress-bar-striped active" style="display: block; width: 100%; display: none;" role="alert">working...</div>
-						<div id="editorbuttons" class="offcanvasbuttons">
-							<a class="btn btn-danger pull-right" href="#" data-toggle="modal" data-target="#deletemodal">Delete</a>
-							<button type="button" class="btn btn-primary tt" id="submiteditor">Save</button>
-							<button type="reset" class="btn btn-default" >Reset</button>
-						</div>
-						<p>Body Content</p>
-						<div class=""><textarea type="text" class="cas-summernote" id="cas-def-body" name="payload[body]"><?php echo $body; ?></textarea></div>
-						<div class="form-label-group">
-							<input type="text" class="form-control" placeholder="Link/Slug" required="" autocomplete="off" name="payload[slug]" value="<?=$slug?>">
-							<label for="payload[slug]">Slug</label>
-						</div>
-					</form>
-					<!-- End Page Editor Tab -->
-					</div>
-					<div class="tab-pane fade" id="editnew" role="tabpanel" aria-labelledby="editor-new-tab">
-					<!-- Start New Content Tab -->
-					<?php $this->load->view('helpers/editor-new'); ?> 
-					<!-- End New Content Tab -->
-					</div>
-				</div>
-			</nav>
-			<!-- /main nav -->
-		</div>
-	</div>
-	<!-- /Off canvas -->
-	<?php } ?>
 	<?php if ($this->ion_auth->logged_in() && isset($loadjs['contenttools'])) { 
 		//$this->load->view("helpers/contenttools");
-		//$this->load->view("helpers/editor-scripts");
+		$this->load->view("helpers/editor-scripts");
 	} ?> 
 	<script>
 	function simple_create(whichform) {

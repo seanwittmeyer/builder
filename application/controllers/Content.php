@@ -81,10 +81,10 @@ class Content extends CI_Controller {
 		$this->load->view('app/builder/foot', $data);
 	
 	}
-	public function feed($type)
+	public function feed($type="")
 	{
 		$data['type'] = $type;
-		$data['pagetitle'] = ($type == 'html') ? 'Websites': ucfirst($type).'s';
+		$data['pagetitle'] = (empty($type)) ? 'The Feed' : ($type == 'html') ? 'Websites': ucfirst($type).'s';
 		$data['section'] = array('feed',$type);
 		$data['loadjs']['embedly'] = true;
 		$data['loadjs']['livesearch'] = true;

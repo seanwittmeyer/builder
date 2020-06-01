@@ -83,12 +83,13 @@ $route['field/(:any)'] = 'content/taxonomy/$1'; // flexible post titles are nice
 $route['theme/(:any)'] = 'content/taxonomy/$1'; // flexible post titles are nice
 $route['collection/(:any)'] = 'content/taxonomy/$1'; // flexible post titles are nice
 $route['topic/(:any)'] = 'content/taxonomy/$1'; // flexible post titles are nice
-$route['concept/(:any)'] = 'content/definition/$1'; // flexible post titles are nice
+$route['project/(:any)'] = 'content/definition/$1'; // flexible post titles are nice
 $route['term/(:any)'] = 'content/definition/$1'; // flexible post titles are nice
 $route['thinker/(:any)'] = 'content/definition/$1'; // flexible post titles are nice
 $route['article/(:any)'] = 'content/definition/$1'; // flexible post titles are nice
 
 $route['feed/(:any)'] = 'content/feed/$1'; // feed listing pages by type
+$route['feed'] = 'content/feed'; // feed listing pages by type
 
 $route['ski/(:any)/(:any)/(:any)/(:any)'] = 'ski/$1/$2/$3/$4'; // not sure we'll need this but oh well.
 $route['ski/(:any)/(:any)/(:any)'] = 'ski/$1/$2/$3'; // not sure we'll need this but oh well.

@@ -74,7 +74,7 @@
 				<ul class="nav nav-tabs" id="offcanvastabs" role="tablist">
 					<li class="nav-item" role="presentation"><a class="nav-link active" id="editor-edit-tab" data-toggle="tab" href="#edit" role="tab" aria-controls="edit" aria-selected="true">Page</a></li> 
 					<li class="nav-item" role="presentation"><a class="nav-link" id="editor-img-tab" data-toggle="tab" href="#editimg" role="tab" aria-controls="editimg" aria-selected="false">Header Image</a></li> 
-					<li class="nav-item" role="presentation"><a class="nav-link" id="editor-new-tab" data-toggle="tab" href="#editnew" role="tab" aria-controls="editnew" aria-selected="false">+ New</a></li> 
+					<li class="nav-item" role="presentation"><a class="nav-link" id="editor-link-tab" data-toggle="tab" href="#editlink" role="tab" aria-controls="editlink" aria-selected="false">New Link</a></li> 
 				</ul>
 				<div class="tab-content" id="offcanvaspanes">
 					<div class="tab-pane fade show active" id="edit" role="tabpanel" aria-labelledby="editor-edit-tab">
@@ -161,10 +161,10 @@
 					<div class="tab-pane fade" id="editimg" role="tabpanel" aria-labelledby="editor-img-tab">
 					<?php $this->load->view('helpers/editor-headerimage'); ?> 
 					</div>
-					<div class="tab-pane fade" id="editnew" role="tabpanel" aria-labelledby="editor-new-tab">
-					<!-- Start New Content Tab -->
-					<?php $this->load->view('helpers/editor-new'); ?> 
-					<!-- End New Content Tab -->
+					<div class="tab-pane fade" id="editlink" role="tabpanel" aria-labelledby="editor-link-tab">
+					<!-- Start New Link Tab -->
+					<?php $this->load->view('helpers/editor-link'); ?> 
+					<!-- End New Link Tab -->
 					</div>
 				</div>
 			</nav>

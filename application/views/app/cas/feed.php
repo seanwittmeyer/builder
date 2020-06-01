@@ -6,6 +6,16 @@
  * This is the listing view that shows feed items for a specified $type.
  * 
  */
+ $_icon = array(
+	 'html' => 'fas fa-globe',
+	 'video' => 'fas fa-tv',
+	 'book' => 'fas fa-book-open',
+	 'paper' => 'fas fa-file',
+	 'profile' => 'fas fa-id-badge',
+	 'file' => 'fas fa-newspaper-o',
+	 'other' => 'fas fa-tree',
+ );
+ 
  ?><!-- General Content Block --
 <div class="container-fluid build-wrapper">
 	<div class="row topbottom-somespace">
@@ -34,36 +44,49 @@
 		<div class="row">
 			<div class="col-sm-5 wrapper" style="background: none;">
 				<div class="subtitle">Notable and worth sharing</div>
-				<div class="title">The Feed &rarr; <?php echo ($type == 'html') ? 'Websites' : ucfirst($type.'s'); ?> 
+				<div class="title">The Feed &rarr; <?php echo (!empty($type)) ? ($type == 'html') ? 'Websites' : ucfirst($type.'s') : 'Everything'; ?> 
 				<!-- Field Notes section menu -->
-				<?php if ($this->ion_auth->logged_in()) { ?>
 				<div class="dropdown" style="display: inline-block;">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<a class="dropdown-item<?php if ($type == 'html') echo ' active'; ?>" href="/feed/html"><i class="fas fa-globe"></i> <span>Websites</span></a>
-						<a class="dropdown-item<?php if ($type == 'video') echo ' active'; ?>" href="/feed/video"><i class="fas fa-tv"></i> <span>Videos</span></a>
-						<a class="dropdown-item<?php if ($type == 'book') echo ' active'; ?>" href="/feed/book"><i class="fas fa-book-open"></i> <span>Books</span></a>
-						<a class="dropdown-item<?php if ($type == 'paper') echo ' active'; ?>" href="/feed/paper"><i class="fas fa-file"></i> <span>Papers</span></a>
-						<a class="dropdown-item<?php if ($type == 'profile') echo ' active'; ?>" href="/feed/profile"><i class="fas fa-id-badge"></i> <span>Profiles</span></a>
-						<a class="dropdown-item<?php if ($type == 'file') echo ' active'; ?>" href="/feed/file"><i class="fas fa-newspaper-o"></i> <span>Files</span></a>
-						<a class="dropdown-item<?php if ($type == 'other') echo ' active'; ?>" href="/feed/other"><i class="fas fa-tree"></i> <span>Other</span></a>
+						<span class="dropdown-header">The feed is a curated collection of <br>articles, videos, books, people, <br>and links related to my interests in <br>the built environment and technology.</span>
+						<a class="dropdown-item<?php if ($type == '') echo ' active'; ?>" href="/feed"><span>Everything &rarr;</span></a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item<?php if ($type == 'html') echo ' active'; ?>" href="/feed/html"><i class="<?=$_icon['html']?>"></i> <span>Websites</span></a>
+						<a class="dropdown-item<?php if ($type == 'video') echo ' active'; ?>" href="/feed/video"><i class="<?=$_icon['video']?>"></i> <span>Videos</span></a>
+						<a class="dropdown-item<?php if ($type == 'book') echo ' active'; ?>" href="/feed/book"><i class="<?=$_icon['book']?>"></i> <span>Books</span></a>
+						<a class="dropdown-item<?php if ($type == 'paper') echo ' active'; ?>" href="/feed/paper"><i class="<?=$_icon['paper']?>"></i> <span>Papers</span></a>
+						<a class="dropdown-item<?php if ($type == 'profile') echo ' active'; ?>" href="/feed/profile"><i class="<?=$_icon['profile']?>"></i> <span>Profiles</span></a>
+						<a class="dropdown-item<?php if ($type == 'file') echo ' active'; ?>" href="/feed/file"><i class="<?=$_icon['file']?>"></i> <span>Files</span></a>
+						<a class="dropdown-item<?php if ($type == 'other') echo ' active'; ?>" href="/feed/other"><i class="<?=$_icon['other']?>"></i> <span>Other</span></a>
+						<?php if ($this->ion_auth->logged_in()) { ?>
 						<div class="dropdown-divider"></div>
 						<span class="dropdown-header">Create New Content</span>
 						<a class="dropdown-item" onclick="openeditor();"><i class="fas fa-book"></i> New Definition</a>
 						<a class="dropdown-item" onclick="openeditor();"><i class="fas fa-box-open"></i> New Taxonomy (or collection)</a>
 						<a class="dropdown-item" onclick="openeditor();"><i class="far fa-file"></i> New Page</a>
+						<?php } ?> 
 					</div>
 				</div>
-				<?php } ?> 
 				<!-- /Field Notes menu -->
 				</div>
 			</div>
 			<div class="col-sm-7">
-				<div class="input-group naked align-bottom">
-					<div class="input-group-prepend">
+					<div class="input-group naked align-bottom">
+						<div class="input-group-prepend">
+						<div class="input-group-text"><i class="fas fa-filter"></i> &nbsp; Themes:</div>
+						<?php /* Get related themes */
+						$themes = $this->shared->get_related('taxonomy','34'); 
+						foreach ($themes as $i) { ?> 
+						<button class="btn" type="button" onclick="$('#livesearch').val('<?=$i['title']?>').trigger('keyup'); return false;" data-toggle="tooltip" data-title="<?=$i['title']?>"><img src="<?=$i['icon']?>"></button>
+						<?php } ?>
+						<div class="input-group-text"> | </div>
 						<div class="input-group-text"><i class="fas fa-search"></i></div>
 					</div>
 					<input type="text" class="form-control" id="livesearch" placeholder="search...">
+					<div class="input-group-append">
+						<button class="btn" type="button" onclick="$('#livesearch').val('').trigger('keyup');" data-toggle="tooltip" data-title="Show All"><i class="fas fa-times"></i></button>
+					</div>
 				</div>
 		</div>
 	</header>
@@ -72,12 +95,13 @@
 	<article class="article-article">
 		<div class="container-fluid">
 			<div class="card-columns grid-filter">
-				<?php $feeditems = $this->shared->get_data2('link',false,array('type'=>$type)); if ($feeditems) { ?>
+				<?php $_where = (empty($type)) ? false: array('type'=>$type);
+				$feeditems = $this->shared->get_data2('link',false,$_where); if ($feeditems) { ?>
 					<?php foreach ($feeditems as $link) { 
 						$__host = $this->shared->get_data($link['hosttype'],$link['hostid']); 
 					?> 
-					<div class="cas-embed card" data-searchval="<?php echo str_replace('"', '', ($link['title'].' '.$link['excerpt'])).' '.$__host['title']; ?>">
-						<blockquote class="embedly-card" data-card-key="74435e49e8fa468eb2602ea062017ceb" data-card-controls="0"><h4><a href="<?php echo $link['uri']; ?>"><?php echo $link['title']; ?></a></h4><p><?php echo $link['excerpt']; ?></p></blockquote><div class="feed-footer"><address data-toggle="tooltip" data-title="<?php echo $link['excerpt']; ?>">Description</address> | <i class="fas fa-link"></i> <a href="/<?php echo $link['hosttype']; ?>/<?php echo $__host['slug']; ?>"><?php echo $__host['title']; ?></a><?php if ($this->ion_auth->is_admin()) { ?> | <a href="/api/remove/link/<?php echo $link['id']; ?>/refresh" data-toggle="tooltip" data-title="Are you sure?"><i class="fas fa-trash"></i></a><?php } ?></div>
+					<div class="cas-embed card" data-searchval="<?php echo str_replace('"', '', ($link['title'].' '.$link['excerpt'].' '.$link['type'])).' '.$__host['title']; ?>">
+						<blockquote class="embedly-card" data-card-key="74435e49e8fa468eb2602ea062017ceb" data-card-controls="0"><h4><a href="<?php echo $link['uri']; ?>"><?php echo $link['title']; ?></a></h4><p><?php echo $link['excerpt']; ?></p></blockquote><div class="feed-footer"><i class="far fa-comment-dots"></i> <?=$link['caption']?><br><address data-toggle="tooltip" data-title="<?php echo $link['type']; ?>"><i class="<?=$_icon[$link['type']]?>"></i></address> | <address data-toggle="tooltip" data-title="<?php echo $link['excerpt']; ?>">Description</address> | <i class="fas fa-link"></i> <a href="/<?php echo $link['hosttype']; ?>/<?php echo $__host['slug']; ?>"><?php echo $__host['title']; ?></a><?php if ($this->ion_auth->is_admin()) { ?> | <a href="/api/remove/link/<?php echo $link['id']; ?>/refresh" data-toggle="tooltip" data-title="Are you sure?"><i class="fas fa-trash"></i></a><?php } ?></div>
 					</div><!-- /CAS Embed -->
 					<?php } ?>
 				<?php } else { ?>

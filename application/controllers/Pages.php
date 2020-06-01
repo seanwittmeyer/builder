@@ -56,6 +56,10 @@ class Pages extends CI_Controller {
 					case "trains":
 						$data['section'] = array('playground',$slug);
 					break;
+					case "home":
+					case "home_new":
+						$data['bodyclass'] = 'body-home';
+					break;
 					case "football":
 						$data['section'] = array('playground',$slug);
 					break;
