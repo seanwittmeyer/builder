@@ -101,6 +101,10 @@
 									<label class="custom-control-label" for="tax-option-<?=$i['id']?>"><?=$i['title']?></label>
 								</div>
 								<?php } ?>
+								<div class="custom-control custom-radio">
+									<input type="radio" id="tax-option-60" name="payload[hostid]" value="60" class="custom-control-input">
+									<label class="custom-control-label" for="tax-option-60">General Technology</label>
+								</div>
 								<p style="clear: both;">&nbsp;</p>
 								<input type="hidden" id="cas-link-hostid" name="payload[hosttype]" value="taxonomy" />
 								<div id="linkfail" class="alert alert-danger " style="display: none;" role="alert">Uh oh, the link didn't save, make sure everything above is filled and try again.</div>

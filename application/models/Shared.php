@@ -1431,7 +1431,7 @@ class shared extends CI_Model {
 		}
 		
 		//return "$difference $periods[$j] {$tense}";
-		return "$difference$periods[$j] {$tense}";
+		return "$difference{$periods[$j]} {$tense}";
 		
 		/*
 		$result = twitterdate($date);

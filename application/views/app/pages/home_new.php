@@ -10,6 +10,15 @@
 $t = date('G',time());
 $timeofday = ($t>18) ? 'Evening': ($t>12) ? 'Afternoon': 'Morning';
 $weather = $this->shared->weather($location=false,$source='ip',$formatted=false);
+ $_icon = array(
+	'html' => 'fas fa-globe',
+	'video' => 'fas fa-tv',
+	'book' => 'fas fa-book-open',
+	'paper' => 'fas fa-file',
+	'profile' => 'fas fa-id-badge',
+	'file' => 'fas fa-newspaper-o',
+	'other' => 'fas fa-tree',
+);
 
 
  ?> 
@@ -22,7 +31,7 @@ $weather = $this->shared->weather($location=false,$source='ip',$formatted=false)
 				<div class="col-sm-5 vh-100 intro">
 				<!-- Intro Column -->
 					<div class="subtitle"><?=date("g:ia",time())?> in <?=$weather['city']?>, <?=$weather['regionName']?></div>
-					<div class="title">Good <?=$timeofday?></div>
+					<div class="title">Good <?=$timeofday?>!</div>
 					<div class="body" data-editable="" data-name="payload[body]">
 						<?=$body?>
 					</div>
@@ -33,7 +42,7 @@ $weather = $this->shared->weather($location=false,$source='ip',$formatted=false)
 						<!-- Projects Column -->
 							<div class="col-sm-8 projects">
 								<div class="subtitle">Recent work</div>
-								<div class="title">Projects</div>
+								<div class="title"><a href="//sean.wittmeyer.io/">Projects</a></div>
 								<div class="row" style="padding-top:10px;">
 									<?php $p = $this->shared->get_data2('definition', 216); ?>
 									<div class="col-4 image align-self-center">
@@ -44,11 +53,11 @@ $weather = $this->shared->weather($location=false,$source='ip',$formatted=false)
 										<div class="excerpt"><?=$p['excerpt']?></div>
 									</div>
 								</div>
-								<div class="links"><strong>More:</strong> <a href="/project/architecture">Architectural Work</a> | <a href="/project/web">Web Development</a> | <a href="/resume">Resume</a></div>
+								<div class="links"><strong>More:</strong> Architecture (<a href="/project/architecture">Large</a> / <a href="/project/architecture">Small Scale</a>) | <a href="/project/web">Web Dev</a> | <a href="/resume">Resume</a></div>
 							</div>
 							<div class="col-sm-4 portfolio" onclick="window.location.assign('//sean.wittmeyer.io')">
 								<div class="subtitle">Portfolio</div>
-								<div class="title">Digi-Arch</div>
+								<div class="title" style="font-style: italic;">Digi-Arch</div>
 								<a href="//sean.wittmeyer.io/" target="_blank">sean.wittmeyer.io</a>
 							</div>
 						<!-- /Projects Row -->
@@ -57,7 +66,7 @@ $weather = $this->shared->weather($location=false,$source='ip',$formatted=false)
 						<!-- Projects Column -->
 							<div class="col-sm-8 notes">
 								<div class="subtitle">Observations &amp; ideas on the built environment</div>
-								<div class="title">Field Notes</div>
+								<div class="title"><a href="/notes">Field Notes</a> <?php $this->load->view('helpers/menu-fieldnotes');?></div>
 								<?php foreach (array('215','216') as $d) { ?> 
 								<div class="row article" style="padding-top:10px;">
 									<?php $p = $this->shared->get_data2('definition', $d); ?>
@@ -70,7 +79,7 @@ $weather = $this->shared->weather($location=false,$source='ip',$formatted=false)
 									</div>
 								</div>
 								<?php } ?>
-								<div class="links"><strong>More:</strong> <a href="/project/architecture">Architectural Work</a> | <a href="/project/web">Web Development</a> | <a href="/resume">Resume</a></div>
+								<div class="links"><strong>Visit the </strong> <a href="/notes">Field Notes Index</a> for all articles, ideas, and observations.</div>
 							</div>
 							<div class="col-sm-4">
 								<div class="subtitle">Themes</div>
@@ -84,7 +93,7 @@ $weather = $this->shared->weather($location=false,$source='ip',$formatted=false)
 								<ul class="article-home asidelist">
 									<?php /* Get related themes */
 									foreach ($themes as $i) { ?> 
-									<li><a href="<?=$i['slug']?>"><?=$i['title']?></a></li>
+									<li><a href="/theme/<?=$i['slug']?>"><?=$i['title']?></a></li>
 									<?php } ?>
 								</ul>
 							</div>
@@ -93,11 +102,39 @@ $weather = $this->shared->weather($location=false,$source='ip',$formatted=false)
 					<div class="row flex-1">
 						<!-- Projects Column -->
 							<div class="col-sm-8">
-								<div class="subtitle">Sustainable Architecture Knowledge Base</div>
-								<div class="title">Pylos</div>
+								<div class="subtitle">Notable and worth sharing</div>
+								<div class="title"><a href="/feed">The Feed</a> <?php $this->load->view('helpers/menu-feed',array('_icon'=>$_icon)); ?> <i class="fas fa-info-circle" data-toggle="tooltip" data-title="Card layouts and API from Embed.ly"></i></div>
+									<div class="card-columns card-columns-2 grid-filter">
+										<?php 
+										$feeditems = $this->shared->get_data2('link',false,false,false,false,10); if ($feeditems) { ?>
+											<?php foreach ($feeditems as $link) { 
+												$__host = $this->shared->get_data($link['hosttype'],$link['hostid']); 
+											?> 
+											<div class="cas-embed card" data-searchval="<?php echo str_replace('"', '', ($link['title'].' '.$link['excerpt'].' '.$link['type'])).' '.$__host['title']; ?>">
+												<blockquote class="embedly-card" data-card-key="74435e49e8fa468eb2602ea062017ceb" data-card-controls="0"><h4><a href="<?php echo $link['uri']; ?>"><?php echo $link['title']; ?></a></h4><p><?php echo $link['excerpt']; ?></p></blockquote><div class="feed-footer"><i class="far fa-comment-dots"></i> <?=$link['caption']?><br><address data-toggle="tooltip" data-title="<?php echo $link['type']; ?>"><i class="<?=$_icon[$link['type']]?>"></i></address> | <address data-toggle="tooltip" data-title="<?php echo $link['excerpt']; ?>">Description</address> | <i class="fas fa-link"></i> <a href="/<?php echo $link['hosttype']; ?>/<?php echo $__host['slug']; ?>"><?php echo $__host['title']; ?></a><?php if ($this->ion_auth->is_admin()) { ?> | <a href="/api/remove/link/<?php echo $link['id']; ?>/refresh" data-toggle="tooltip" data-title="Are you sure?"><i class="fas fa-trash"></i></a><?php } ?></div>
+											</div><!-- /CAS Embed -->
+											<?php } ?>
+										<?php } else { ?>
+										<div class="col-lg-5 col-sm-8">
+											<h3>Well shoot...</h3>
+											<p>The site is constantly evolving and it appears we don't have of this type of item in the feed. Check out the latest <a href="/feed/video">videos</a>, <a href="/feed/html">webpages</a> or one of the other types of items we have!</p>
+										</div>
+										<?php } ?>
+									</div>
+
 							</div>
 							<div class="col-sm-4">
-								<div class="subtitle">List of strategies</div>
+								<div class="subtitle">Types</div>
+								<p><br></p>
+								<ul class="article-home asidelist">
+									<li><li><a class="" href="/feed/html"><i class="fas fa-globe"></i><span>Websites</span></a></li>
+									<li><a class="" href="/feed/video"><i class="fas fa-television"></i><span>Videos</span></a></li>
+									<li><a class="" href="/feed/book"><i class="fas fa-book"></i><span>Books</span></a></li>
+									<li><a class="" href="/feed/paper"><i class="fas fa-file-text-o"></i><span>Papers</span></a></li>
+									<li><a class="" href="/feed/profile"><i class="fas fa-id-badge"></i><span>Profiles</span></a></li>
+									<li><a class="" href="/feed/file"><i class="fas fa-newspaper-o"></i><span>Files</span></a></li>
+									<li><a class="" href="/feed/other"><i class="fas fa-tree"></i><span>Other</span></a></li>
+								</ul>
 							</div>
 						<!-- /Projects Row -->
 					</div>
@@ -106,14 +143,54 @@ $weather = $this->shared->weather($location=false,$source='ip',$formatted=false)
 				<!-- Data Column -->
 					<div class="subtitle">Data</div>
 					<div class="title">Now</div>
+					<!-- blocks --
+					<div class="data-lg"></div>
+					<div class="data-md"></div>
+					<div class="data-sm"></div>
+					<div class="data-xs"></div>
+					<?=round($weather['weather']['currently']['temperature'])?>
+					<?=$weather['weather']['currently']['temperature']?>
+					<!-- /blocks -->
+					<div class="data-lg"><div class="floatinline"><img src="https://darksky.net/images/weather-icons/<?=$weather['weather']['currently']['icon']?>.png"></div> <?=round($weather['weather']['currently']['temperature'])?>&deg;F</div>
+					<div class="data-sm mb-2"><strong><?php if (isset($weather['weather']['minutely'])) echo $weather['weather']['minutely']['summary']; ?></strong></div>
+					<div class="data-sm"><?=$weather['weather']['currently']['precipProbability']?>% <?=$weather['weather']['daily']['data'][0]['precipType']?>&nbsp; &nbsp;<?=round($weather['weather']['currently']['windSpeed'])?>mph <span class="windarrow" style="display: inline-block; transform: rotateZ(<?=$weather['weather']['currently']['windBearing']?>deg);">&uarr;</span></div>
+					<div class="data-sm">&uarr; <?=date('g:i a', $weather['weather']['daily']['data'][0]['sunriseTime'])?> &darr; <?=date('g:i a',$weather['weather']['daily']['data'][0]['sunsetTime'])?></div>
+					<div class="data-sm mb-2"><i>in <?=$weather['city']?></i></div>
 					<hr>
-					<div class="subtitle">Weekend</div>
+					<div class="subtitle">Today</div>
+					<div class="data-md mb-2"><div class="floatinline"><img src="https://darksky.net/images/weather-icons/<?=$weather['weather']['daily']['data'][0]['icon']?>.png"></div><div class="floatinline"><?=round($weather['weather']['daily']['data'][0]['apparentTemperatureLow'])?>&deg;&rarr;<span><?=date('g:i a', $weather['weather']['daily']['data'][0]['apparentTemperatureLowTime'])?></span></div> <div class="floatinline"><strong><?=round($weather['weather']['daily']['data'][0]['apparentTemperatureHigh'])?>&deg;</strong><span><?=date('g:i a', $weather['weather']['daily']['data'][0]['apparentTemperatureHighTime'])?></span></div></div>
+					<div class="data-sm"><?=$weather['weather']['daily']['data'][0]['summary']?></div>
+					<hr>
+					<div class="subtitle">Tomorrow</div>
+					<div class="data-md mb-2"><div class="floatinline"><img src="https://darksky.net/images/weather-icons/<?=$weather['weather']['daily']['data'][1]['icon']?>.png"></div><div class="floatinline"><?=round($weather['weather']['daily']['data'][1]['apparentTemperatureLow'])?>&deg;&rarr;<span><?=date('g:i a', $weather['weather']['daily']['data'][1]['apparentTemperatureLowTime'])?></span></div> <div class="floatinline"><strong><?=round($weather['weather']['daily']['data'][1]['apparentTemperatureHigh'])?>&deg;</strong><span><?=date('g:i a', $weather['weather']['daily']['data'][1]['apparentTemperatureHighTime'])?></span></div></div>
+					<div class="data-sm mb-2"><?=$weather['weather']['daily']['data'][1]['summary']?></div>
+					<div class="data-sm">Data from DarkSky<br><a href="https://darksky.net/forecast/<?=$weather['lat']?>/<?=$weather['lon']?>/us12/en" target="_blank">Full Forecast &rarr;</a><br>
 
 					<hr>
-					<div class="subtitle">Snow</div>
-
+					<div class="subtitle">Sailing</div>
+					<div class="data-sm"><?=$weather['weather']['currently']['precipProbability']?>% <?=$weather['weather']['daily']['data'][0]['precipType']?>, max at <?=date('g:i a', $weather['weather']['daily']['data'][0]['precipIntensityMaxTime'])?></div>
+					<div class="data-sm"><span class="windarrow" style="display: inline-block; transform: rotateZ(<?=$weather['weather']['currently']['windBearing']?>deg);">&uarr;</span> <?=round($weather['weather']['currently']['windSpeed'])?>mph, <?=round($weather['weather']['daily']['data'][0]['windGust'])?> mph gusts<br>Highest winds at <?=date('g:i a', $weather['weather']['daily']['data'][0]['windGustTime'])?></div>
+					<div class="data-sm"><a href="https://www.windfinder.com/#9/<?=$weather['lat']?>/<?=$weather['lon']?>" target="_blank">Windfinder &rarr;</a><br>
+					
 					<hr>
-					<div class="subtitle">Feed</div>
+					<div class="subtitle">Tools</div>
+					<div class="data-md"><div class="custom-control custom-switch">
+					<input type="checkbox" class="custom-control-input" name="model[photorun]">
+					<label class="custom-control-label data-sm" value="true" data-toggle="tooltip" data-title="error: API Error: Daily api call limit reached (1000)" for="model[photorun]">Tag Model (Down)</label>
+					</div></div>
+					<div class="data-md"><div class="custom-control custom-switch">
+					<input type="checkbox" class="custom-control-input" checked name="cuzco[simpsonhouse][4]">
+					<label class="custom-control-label data-sm" data-toggle="tooltip" data-title="Sign in to access tools" for="cuzco[simpsonhouse][4]">Front Door</label>
+					</div></div>
+					<div class="data-md"><div class="custom-control custom-switch">
+					<input type="checkbox" class="custom-control-input" checked name="cuzco[simpsonhouse][12]">
+					<label class="custom-control-label data-sm" data-toggle="tooltip" data-title="Sign in to access tools" for="cuzco[simpsonhouse][12]">Garage</label>
+					</div></div>
+					<div class="data-md"><div class="custom-control custom-switch">
+					<input type="checkbox" class="custom-control-input" name="cuzco[simpsonhouse][2]">
+					<label class="custom-control-label data-sm" data-toggle="tooltip" data-title="Sign in to access tools" for="cuzco[simpsonhouse][2]">Roomba</label>
+					</div></div>
+
 				<!-- /Data Column -->
 				</div>
 			</div>

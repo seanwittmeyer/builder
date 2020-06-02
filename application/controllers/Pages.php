@@ -59,6 +59,7 @@ class Pages extends CI_Controller {
 					case "home":
 					case "home_new":
 						$data['bodyclass'] = 'body-home';
+						$data['loadjs']['embedly'] = true;
 					break;
 					case "football":
 						$data['section'] = array('playground',$slug);

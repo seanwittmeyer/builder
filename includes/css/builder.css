@@ -449,12 +449,19 @@ body.body-home #mainnav,
 body.body-home #mainnav a {
   color: white;
 }
+body.body-home #mainnav .dropdown-menu a {
+  color: #111;
+}
 
 .article-home .title {
   font-family: "IBM Plex Sans";
   font-weight: 700;
   font-size: 1.5rem;
   margin-top: -0.2rem;
+}
+.article-home .title i {
+  color: #bbb;
+  float: right;
 }
 .article-home .subtitle {
   font-family: "IBM Plex Mono";
@@ -469,6 +476,11 @@ body.body-home #mainnav a {
 .article-home .data {
   background: #fe7964;
   color: white;
+}
+.article-home .intro,
+.article-home .data,
+.article-home .content {
+  overflow-x: scroll;
 }
 .article-home .content .col-sm-8 {
   padding-top: 20px;
@@ -510,6 +522,10 @@ body.body-home #mainnav a {
   font-size: 0.8rem;
   padding: 0.5rem 0 20px;
 }
+.article-home .content .links a,
+.article-home .projects .links a {
+  text-decoration: underline;
+}
 .article-home .notes .row img {
   height: auto;
   width: 100%;
@@ -544,6 +560,9 @@ body.body-home #mainnav a {
 .article-home ul.asidelist li {
   margin: 0.6rem 0;
 }
+.article-home ul.asidelist li i {
+  width: 1.6rem;
+}
 .article-home .portfolio a {
   font-family: "IBM Plex Mono";
   font-size: 0.8rem;
@@ -572,6 +591,48 @@ body.body-home #mainnav a {
 .article-home .body p {
   padding-bottom: 1rem;
 }
+.data .data-lg,
+.data .data-md,
+.data .data-sm,
+.data .data-xs {
+  letter-spacing: -0.04rem;
+  font-family: "IBM Plex Mono";
+  font-weight: 200;
+}
+
+.data .data-lg {
+  font-family: "IBM Plex Sans";
+  font-size: 1.5rem;
+}
+.data .data-md {
+  font-size: 1.1rem;
+}
+.data .data-sm {
+  font-size: 0.7rem;
+}
+.data .data-xs {
+  font-size: 0.6rem;
+}
+.data .data-md span {
+  display: block;
+  font-size: 0.6rem;
+  margin-top: -0.4rem;
+}
+.data .floatinline {
+  display: inline-block;
+}
+.data img {
+  height: 1.3rem;
+  vertical-align: baseline;
+}
+.data strong {
+  font-weight: 700;
+}
+.data a {
+  font-weight: 400;
+  color: white;
+}
+
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {
   .article-home .body {
@@ -638,6 +699,13 @@ body.body-home #mainnav a {
 
 /* Masonry
 -------------------------------------------------- */
+.card-columns.card-columns-2 {
+  -webkit-column-count: 1;
+  -moz-column-count: 1;
+  column-count: 1 !important;
+  margin: 1em 0;
+}
+
 @media (min-width: 576px) {
   .card-columns {
     -webkit-column-count: 3;
@@ -660,6 +728,12 @@ body.body-home #mainnav a {
     padding-bottom: 100px;
   }
   .card-columns.card-columns-3 {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2 !important;
+    margin: 1em 0;
+  }
+  .card-columns.card-columns-2 {
     -webkit-column-count: 2;
     -moz-column-count: 2;
     column-count: 2 !important;
