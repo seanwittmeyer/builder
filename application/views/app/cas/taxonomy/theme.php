@@ -35,7 +35,7 @@ $excludearray = array(
 				<div class="col-md d-none d-lg-block"></div>
 				<div class="col-md-5 col-lg-4 text-right"><img class="themeicon" src="<?=$icon?>"></div>
 				<header class="col-md-7 col-lg-6">
-					<div class="subtitle"><p>Collection</p></div>
+					<div class="subtitle"><p>Theme</p></div>
 					<div data-editable="" data-name="payload[title]"><h1><?=$title?></h1></div><!-- (<?=$id?>)-->
 					<div class="excerpt" data-editable="" data-name="payload[subtitle]"><p><?=$this->shared->handlebar_links($subtitle)?></p></div>
 				</header>
@@ -47,8 +47,9 @@ $excludearray = array(
 					<aside class="col-sm-10 float-right">
 						<nav id="themenav" class="pilltabs">
 							<ul class="nav nav-tabs" role="tablist">
-								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="theme-body-tab" data-toggle="tab" href="#themebody" role="tab" aria-controls="themebody" aria-selected="false">Overview</a></li> 
-								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="theme-children-tab" data-toggle="tab" href="#themechildren" role="tab" aria-controls="themechildren" aria-selected="false">Related Articles and Projects</a></li> 
+								<li class="nav-item d-block" role="presentation"><a class="nav-link active" id="theme-intro-tab" data-toggle="tab" href="#themeintro" role="tab" aria-controls="themeintro" aria-selected="true">Introduction</a></li> 
+								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="theme-body-tab" data-toggle="tab" href="#themebody" role="tab" aria-controls="themebody" aria-selected="false">My Interest and Questions</a></li> 
+								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="theme-children-tab" data-toggle="tab" href="#themechildren" role="tab" aria-controls="themechildren" aria-selected="false">Articles and Projects</a></li> 
 								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="theme-feed-tab" data-toggle="tab" href="#themefeed" role="tab" aria-controls="themefeed" aria-selected="false">Interesting Links</a></li> 
 							</ul>
 						</nav>
@@ -67,13 +68,15 @@ $excludearray = array(
 				</div>
 				<div class="col-md-7 col-lg-6">
 					<div class="tab-content" id="offcanvaspanes">
-						<div class="tab-pane fade show active" id="themebody" role="tabpanel" aria-labelledby="theme-body-tab">
-							<!-- Introduction -->
+						<div class="tab-pane fade show active" id="themeintro" role="tabpanel" aria-labelledby="theme-intro-tab">
+						<!-- Introduction -->
 							<div class="body" data-editable="" data-name="payload[excerpt]">
 								<?=$excerpt?>
 							</div>
-							<!-- /Introduction -->
-							<!-- Body -->
+						<!-- /Introduction -->
+						</div>
+						<div class="tab-pane fade" id="themebody" role="tabpanel" aria-labelledby="theme-body-tab">
+						<!-- Body -->
 							<div class="body" data-editable="" data-name="payload[body]">
 								<?php echo $this->shared->handlebar_links($body); ?>
 							</div>
@@ -98,8 +101,10 @@ $excludearray = array(
 						<!-- Children -->
 							<div class="row">
 								<div class="col children">
+									<!--
 									<h2>Articles and Projects</h2>
 									<p>Explore <?php echo $title; ?> further in the articles, observations, and projects I've had the opportunity to work on.</p>
+									-->
 									<?php $set = $this->shared->get_related($type,$id,true); ?>
 									<?php if ($set !== false) : ?>
 									<?php foreach ($set as $single) { 

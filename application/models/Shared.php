@@ -1311,7 +1311,7 @@ class shared extends CI_Model {
 		$success = null;
 		//$filenames = $images['name'];
 		$config['upload_path'] = './upload/img/';
-		$config['allowed_types'] = 'gif|jpg|jpeg|png';
+		$config['allowed_types'] = 'gif|jpg|jpeg|png|svg';
 		$config['max_size']	= '10000';
 		$config['max_width']  = '4000';
 		$config['max_height']  = '4000';
@@ -1372,7 +1372,7 @@ class shared extends CI_Model {
 	
 		// fetch form data
 		$image = pathinfo($this->input->post('url'));
-		$check = array('jpg','png','jpeg','gif');
+		$check = array('jpg','png','jpeg','gif','svg');
 		if (in_array($image['extension'], $check)) {
 			$path = 'upload/img/'.$image['filename'].'.'.$image['extension'];
 			// get image from directory

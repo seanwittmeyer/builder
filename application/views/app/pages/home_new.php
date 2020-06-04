@@ -19,10 +19,10 @@ $weather = $this->shared->weather($location=false,$source='ip',$formatted=false)
 	'file' => 'fas fa-newspaper-o',
 	'other' => 'fas fa-tree',
 );
-
+foreach (array('article1','article2','project1') as $a) if (!isset($payload[$a])) $payload[$a] = '215';
 
  ?> 
-	<!--<pre><?php echo json_encode($weather); ?></pre>-->
+	
 
 	<!-- Article -->
 	<article class="article-home">
@@ -42,18 +42,18 @@ $weather = $this->shared->weather($location=false,$source='ip',$formatted=false)
 						<!-- Projects Column -->
 							<div class="col-sm-8 projects">
 								<div class="subtitle">Recent work</div>
-								<div class="title"><a href="//sean.wittmeyer.io/">Projects</a></div>
+								<div class="title"><a href="//sean.wittmeyer.io/">Projects</a>  <?php $this->load->view('helpers/menu-projects'); ?></div>
 								<div class="row" style="padding-top:10px;">
-									<?php $p = $this->shared->get_data2('definition', 216); ?>
+									<?php $p = $this->shared->get_data2('definition', $payload['project1']); ?>
 									<div class="col-4 image align-self-center">
-										<a href="/project/<?=$p['slug']?>"><img src="<?php $p['img'] = unserialize($p['img']); echo (isset($p['img']['header']) && !empty($p['img']['header'])) ? $p['img']['header']['url']: '/includes/test/assets/Moofushi_Kandu_fish.jpg'; ?>"></a>
+										<a href="/projects/<?=$p['slug']?>"><img src="<?php $p['img'] = unserialize($p['img']); echo (isset($p['img']['header']) && !empty($p['img']['header'])) ? $p['img']['header']['url']: '/includes/test/assets/Moofushi_Kandu_fish.jpg'; ?>"></a>
 									</div>
 									<div class="col-8">
-										<a href="/project/<?=$p['slug']?>"><div class="title"><?=$p['title']?></div></a>
+										<a href="/projects/<?=$p['slug']?>"><div class="title"><?=$p['title']?></div></a>
 										<div class="excerpt"><?=$p['excerpt']?></div>
 									</div>
 								</div>
-								<div class="links"><strong>More:</strong> Architecture (<a href="/project/architecture">Large</a> / <a href="/project/architecture">Small Scale</a>) | <a href="/project/web">Web Dev</a> | <a href="/resume">Resume</a></div>
+								<div class="links"><strong>More:</strong> <a href="/collection/urban">Urban</a> | <a href="/collection/large">Large</a> | <a href="/collection/small">Small</a> | <a href="/collection/web">Web Dev</a> | <a href="/resume"><i class="fas fa-file"></i> Resume</a></div>
 							</div>
 							<div class="col-sm-4 portfolio" onclick="window.location.assign('//sean.wittmeyer.io')">
 								<div class="subtitle">Portfolio</div>
@@ -67,14 +67,14 @@ $weather = $this->shared->weather($location=false,$source='ip',$formatted=false)
 							<div class="col-sm-8 notes">
 								<div class="subtitle">Observations &amp; ideas on the built environment</div>
 								<div class="title"><a href="/notes">Field Notes</a> <?php $this->load->view('helpers/menu-fieldnotes');?></div>
-								<?php foreach (array('215','216') as $d) { ?> 
+								<?php foreach (array($payload['article1'],$payload['article2']) as $d) { ?> 
 								<div class="row article" style="padding-top:10px;">
 									<?php $p = $this->shared->get_data2('definition', $d); ?>
 									<div class="col-4 image align-self-center">
-										<a href="/project/<?=$p['slug']?>"><img src="<?php $p['img'] = unserialize($p['img']); echo (isset($p['img']['header']) && !empty($p['img']['header'])) ? $p['img']['header']['url']: '/includes/test/assets/Moofushi_Kandu_fish.jpg'; ?>"></a>
+										<a href="/article/<?=$p['slug']?>"><img src="<?php $p['img'] = unserialize($p['img']); echo (isset($p['img']['header']) && !empty($p['img']['header'])) ? $p['img']['header']['url']: '/includes/test/assets/Moofushi_Kandu_fish.jpg'; ?>"></a>
 									</div>
 									<div class="col-8">
-										<a href="/project/<?=$p['slug']?>"><div class="title"><?=$p['title']?></div></a>
+										<a href="/article/<?=$p['slug']?>"><div class="title"><?=$p['title']?></div></a>
 										<div class="excerpt"><?=$p['excerpt']?></div>
 									</div>
 								</div>
@@ -277,6 +277,35 @@ $weather = $this->shared->weather($location=false,$source='ip',$formatted=false)
 								$list = $this->shared->list_bytype('page');
 								if ($list === false) { echo '<option disabled>No pages to display.</option>'; } else {
 								foreach ($list as $a) { $selected = (in_array($a['id'],$relationships)) ? ' selected' : ''; echo '<option value="'.$a['id'].'"'.$selected.'>'.$a['title']."</option>\n"; }} ?> 
+							</select>
+						</div>
+						<br>
+						<hr>
+						<div class="">
+							<label for="payload[payload][project1]">Project</label>
+							<select name="payload[payload][project1]" class="selectpicker form-control" data-width="100%" data-live-search="true" data-size="5">
+								<?php // List definitions
+								$list = $this->shared->list_bytype('definition');
+								if ($list === false) { echo '<option disabled>No definitions to display.</option>'; } else {
+								foreach ($list as $a) { $selected = ($a['id'] == $payload['project1']) ? ' selected' : ''; echo '<option value="'.$a['id'].'"'.$selected.'>'.$a['title']."</option>\n"; }} ?> 
+							</select>
+						</div>
+						<div class="">
+							<label for="payload[payload][article1]">Article 1</label>
+							<select name="payload[payload][article1]" class="selectpicker form-control" data-width="100%" data-live-search="true" data-size="5">
+								<?php // List definitions
+								$list = $this->shared->list_bytype('definition');
+								if ($list === false) { echo '<option disabled>No definitions to display.</option>'; } else {
+								foreach ($list as $a) { $selected = ($a['id'] == $payload['article1']) ? ' selected' : ''; echo '<option value="'.$a['id'].'"'.$selected.'>'.$a['title']."</option>\n"; }} ?> 
+							</select>
+						</div>
+						<div class="">
+							<label for="payload[payload][article2]">Article 2</label>
+							<select name="payload[payload][article2]" class="selectpicker form-control" data-width="100%" data-live-search="true" data-size="5">
+								<?php // List definitions
+								$list = $this->shared->list_bytype('definition');
+								if ($list === false) { echo '<option disabled>No definitions to display.</option>'; } else {
+								foreach ($list as $a) { $selected = ($a['id'] == $payload['article2']) ? ' selected' : ''; echo '<option value="'.$a['id'].'"'.$selected.'>'.$a['title']."</option>\n"; }} ?> 
 							</select>
 						</div>
 						<br />

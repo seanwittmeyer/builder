@@ -4,6 +4,14 @@ import 'typeahead.js';
 import 'pagemap';
 window.pagemap = require('pagemap');
 console.log('pagemap not initialized');
+import Zooming from 'zooming';
+document.addEventListener('DOMContentLoaded', function() {
+	const zooming = new Zooming({
+		// options...
+	});
+
+	zooming.listen('.body img');
+});
 
 console.log('builder ui assets loaded, dom instances not initialized');
 import 'bootstrap-fileinput/css/fileinput.css';

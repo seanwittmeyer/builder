@@ -1,7 +1,7 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /* 
- * Taxonomy - Article View
+ * Page - Field Notes Index
  *
  * This is a view used by single tax with the 'article' template set.
  * 
@@ -18,41 +18,36 @@ $excludearray = array(
 	<canvas id="pagemap" class="article"></canvas>
 	<!-- /pagemap -->
 	<!-- Header -->
-	<header class="article-header container-fluid" style="background-image: url('<?php echo (isset($img['header']) && !empty($img['header'])) ? $img['header']['url']: '/includes/test/assets/Moofushi_Kandu_fish.jpg'; ?>');">
+	<header class="article-fieldnotes container-fluid" style="background-image: url('<?php echo (isset($img['header']) && !empty($img['header'])) ? $img['header']['url']: '/includes/test/assets/Moofushi_Kandu_fish.jpg'; ?>');">
 		<div class="row">
-			<div class="col-sm-5 wrapper">
-				<div class="subtitle">A blog on the built environment</div>
-				<div class="title"><a href="/notes">Field Notes</a> &rarr; Themes <?php $this->load->view('helpers/menu-fieldnotes'); ?></div>
+			<div class="col-md d-none d-lg-block"></div>
+			<div class="col-sm-5 sectionheader text-center">
+				<div class="subtitle" data-editable="" data-name="payload[blogtype]"><p><?=$this->shared->handlebar_links($blogtype)?></p></div>
+				<div data-editable="" data-name="payload[title]"><h1><?=$title?></h1></div><!-- (<?=$id?>)-->
+				<div class="excerpt" data-editable="" data-name="payload[excerpt]"><p><?=$this->shared->handlebar_links($excerpt)?></p></div>
 			</div>
-			<div class="col-sm-7"></div>
+			<div class="col-md d-none d-lg-block"></div>
 		</div>
 	</header>
 	<!-- /Header -->
 	<!-- Article -->
-	<article class="article-theme">
+	<article class="article-theme article-fieldnotes">
 		<div class="container-fluid">
-			<div class="row ">
-				<div class="col-md d-none d-lg-block"></div>
-				<div class="col-md-5 col-lg-4 text-right"><img class="themeicon" src="<?=$icon?>"></div>
-				<header class="col-md-7 col-lg-6">
-					<div class="subtitle"><p>Collection</p></div>
-					<div data-editable="" data-name="payload[title]"><h1><?=$title?></h1></div><!-- (<?=$id?>)-->
-					<div class="excerpt" data-editable="" data-name="payload[subtitle]"><p><?=$this->shared->handlebar_links($subtitle)?></p></div>
-				</header>
-				<div class="d-none d-sm-block col-sm"></div>
-			</div>
 			<div class="row">
 				<div class="col-md d-none d-lg-block"></div>
 				<div class="col-md-5 col-lg-4 text-right ">
 					<aside class="col-sm-10 float-right">
+						<p class="meta">Field Notes by Theme</p>
 						<nav id="themenav" class="pilltabs">
 							<ul class="nav nav-tabs" role="tablist">
-								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="theme-body-tab" data-toggle="tab" href="#themebody" role="tab" aria-controls="themebody" aria-selected="false">Overview</a></li> 
-								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="theme-children-tab" data-toggle="tab" href="#themechildren" role="tab" aria-controls="themechildren" aria-selected="false">Related Articles and Projects</a></li> 
-								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="theme-feed-tab" data-toggle="tab" href="#themefeed" role="tab" aria-controls="themefeed" aria-selected="false">Interesting Links</a></li> 
+								<?php /* Get related themes */
+								$themes = $this->shared->get_related('taxonomy','34'); 
+								foreach ($themes as $i) { ?> 
+								<li class="nav-item d-block"><a class="nav-link"  style="background-image: url(<?=$i['icon']?>)" href="/theme/<?=$i['slug']?>"><?=$i['title']?></a></li> 
+								<?php } ?>
+								
 							</ul>
 						</nav>
-						<p class="meta">This article was last updated <br><?php echo $this->shared->twitterdate($timestamp, true); ?>.</p>
 						<ul class="articlethemes">
 						<?php /* Get related themes */
 						$themes = $this->shared->get_related('taxonomy','34'); 
@@ -66,87 +61,26 @@ $excludearray = array(
 					</aside>
 				</div>
 				<div class="col-md-7 col-lg-6">
-					<div class="tab-content" id="offcanvaspanes">
-						<div class="tab-pane fade show active" id="themebody" role="tabpanel" aria-labelledby="theme-body-tab">
-							<!-- Introduction -->
-							<div class="body" data-editable="" data-name="payload[excerpt]">
-								<?=$excerpt?>
-							</div>
-							<!-- /Introduction -->
-							<!-- Body -->
-							<div class="body" data-editable="" data-name="payload[body]">
-								<?php echo $this->shared->handlebar_links($body); ?>
-							</div>
-							<?php $this->shared->footer_photocitation($id,$img,$timestamp,$slug,$title); ?>
-						<!-- /Body -->
-						</div>
-						<div class="tab-pane fade" id="themefeed" role="tabpanel" aria-labelledby="theme-feed-tab">
-						<!-- Feed -->
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<div class="input-group-text"><i class="fas fa-search"></i></div>
+					<div class="row">
+						<div class="col children">
+							<!--
+							<h2>Articles and Projects</h2>
+							<p>Explore <?php echo $title; ?> further in the articles, observations, and projects I've had the opportunity to work on.</p>
+							-->
+							<p class="meta">Articles, Observations, and Ideas</p>
+							<?php $set = $this->shared->get_data2('definition', false, array('template'=>'article')); ?>
+							<?php if ($set !== false) : ?>
+							<?php foreach ($set as $single) { ?>
+								<div class="child-article">
+									<?php if (isset($single['blogtype'])) { ?><span class="subtitle"><?=$single['blogtype']?></span><?php } elseif (isset($single['subtitle'])) { ?><span class="subtitle"><?=$single['subtitle']?></span><?php } ?>
+									<a class="title t_list_<?=$single['id']?>" href="/article/<?=$single['slug']?>"><?=$single['title']?></a>
+									<?php echo $single['excerpt']; ?> <a href="/article/<?=$single['slug']?>"> Keep reading... &rarr;</a>
 								</div>
-								<input type="text" class="form-control" id="livesearch" placeholder="find a link...">
-								<div class="input-group-append">
-									<button class="btn btn-outline-secondary" type="button" data-toggle="modal" data-target="#createlink"><i class="fas fa-plus"></i> &nbsp; Add a link </button>
-								</div>
-							</div>
-							<?php echo $this->shared->related_html($type,$id); ?>
-						<!-- /Feed -->
-						</div>
-						<div class="tab-pane fade" id="themechildren" role="tabpanel" aria-labelledby="theme-children-tab">
-						<!-- Children -->
-							<div class="row">
-								<div class="col children">
-									<h2>Articles and Projects</h2>
-									<p>Explore <?php echo $title; ?> further in the articles, observations, and projects I've had the opportunity to work on.</p>
-									<?php $set = $this->shared->get_related($type,$id,true); ?>
-									<?php if ($set !== false) : ?>
-									<?php foreach ($set as $single) { 
-										if (in_array($single['id'], $excludearray[$single['type']])) continue; ?>
-										<div class="child-article">
-											<?php if (isset($single['blogtype'])) { ?><span class="subtitle"><?=$single['blogtype']?></span><?php } elseif (isset($single['subtitle'])) { ?><span class="subtitle"><?=$single['subtitle']?></span><?php } ?>
-											<a class="title t_list_<?=$single['id']?>" href="/<?=$single['type']?>/<?=$single['slug']?>"><?=$single['title']?></a>
-											<?php echo ($single['type'] === 'page') ? $single['excerpt']: ($single['type'] === 'definition') ? $single['excerpt']: ''; ?> <a href="/<?=$single['type']?>/<?=$single['slug']?>"> Keep reading... &rarr;</a>
-										</div>
-									<?php } ?> 
-									<?php elseif ($this->ion_auth->is_admin()): ?><blockquote>No connected topics...yet.<br /><button class="btn btn-success" data-toggle="modal" data-target="#pageeditor">Add Relationships</button></blockquote><?php endif; ?>
-									<hr>
-								</div>
-							</div>
-							<div class="row" style="display: none;">
-								<div class="col-md-6">
-									<h4><strong>Children</strong></h4>
-									<p>Explore <?php echo $title; ?> further in the topics and collections below.</p>
-									<?php $set = $this->shared->get_related($type,$id,true); ?>
-									<?php if ($set !== false) : ?>
-									<?php foreach ($set as $single) { 
-										if (in_array($single['id'], $excludearray[$single['type']])) continue; ?>
-										<h4><a class="t_list_<?php echo $single['id']; ?>" href="/<?php echo $single['type']; ?>/<?php echo $single['slug']; ?>"><?php echo $single['title']; ?></a></h4>
-										<!--<p><?php echo $single['excerpt']; ?> <a href="/<?php echo $single['type']; ?>/<?php echo $single['slug']; ?>">Learn More about <?php echo $single['title']; ?> &rarr;</a></p>-->
-									<?php } ?> 
-									<?php elseif ($this->ion_auth->is_admin()): ?><blockquote>No connected topics...yet.<br /><button class="btn btn-success" data-toggle="modal" data-target="#pageeditor">Add Relationships</button></blockquote><?php endif; ?>
-								</div>
-								<div class="col-md-6">
-									<h4><strong>Parents</strong></h4>
-									<p><?php echo $title; ?> is part of the following collections.</p>
-									<?php $set = $this->shared->get_related_parents($type,$id,true); ?>
-									<?php /* */ ?>
-									<?php if ($set !== false) : ?>
-									<?php foreach ($set as $single) { 
-										if (!isset($single['id'])) continue; 
-										if (in_array($single['id'], $excludearray[$single['type']])) continue; ?>
-										<h4><a class="t_list_<?php echo $single['id']; ?>" href="/<?php echo $single['type']; ?>/<?php echo $single['slug']; ?>"><?php echo $single['title']; ?></a></h4>
-										<!--<p><?php echo $single['excerpt']; ?> <a href="/<?php echo $single['type']; ?>/<?php echo $single['slug']; ?>">Learn More about <?php echo $single['title']; ?> &rarr;</a></p>-->
-									<?php } ?> 
-									<?php elseif ($this->ion_auth->is_admin()): ?><blockquote>No connected topics...yet.<br /><button class="btn btn-success" data-toggle="modal" data-target="#pageeditor">Add Relationships</button></blockquote><?php endif; ?>
-									<?php /**/ ?>
-								</div>
-							</div>
-						<!-- /Children -->
+							<?php } ?> 
+							<?php elseif ($this->ion_auth->is_admin()): ?><blockquote>No connected topics...yet.<br /><button class="btn btn-success" data-toggle="modal" data-target="#pageeditor">Add Relationships</button></blockquote><?php endif; ?>
+							<hr>
 						</div>
 					</div>
-
 				</div>
 				<div class="col-md d-none d-lg-block"></div>
 			</div>
@@ -177,12 +111,12 @@ $excludearray = array(
 							<label for="payload[title]">Page Title</label>
 						</div>
 						<div class="form-label-group">
-							<textarea type="text" class="form-control" placeholder="Subtitle" required="" autocomplete="off" name="payload[subtitle]"><?=$subtitle?></textarea>
-							<label for="payload[subtitle]">Subtitle</label>
+							<textarea type="text" class="form-control" placeholder="Subtitle" required="" autocomplete="off" name="payload[blogtype]"><?=$blogtype?></textarea>
+							<label for="payload[blogtype]">Subtitle</label>
 						</div>
 						<div class="form-label-group">
 							<select name="payload[template]" class="form-control">
-								<?php foreach (get_filenames("./application/views/app/cas/taxonomy") as $pagetemplate) { $pagetemplate = str_replace('.php', '', $pagetemplate); ?>
+								<?php foreach (get_filenames("./application/views/app/pages") as $pagetemplate) { $pagetemplate = str_replace('.php', '', $pagetemplate); ?>
 								<option value="<?php echo $pagetemplate; ?>"<?php if ($pagetemplate == $template) { ?> selected="selected"<?php } ?>><?php echo ucfirst($pagetemplate); ?></option>
 								<?php } ?>
 							</select>
