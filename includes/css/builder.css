@@ -411,6 +411,7 @@ article.article-theme header h1 {
 .body img {
 	max-width: 100% !important;
 	height: auto !important;
+	padding: 1rem 0 1.5rem;
 }
 /* Related links
 -------------------------------------------------- */

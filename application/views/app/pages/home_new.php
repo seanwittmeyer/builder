@@ -87,7 +87,7 @@ foreach (array('article1','article2','project1') as $a) if (!isset($payload[$a])
 									<?php /* Get related themes */
 									$themes = $this->shared->get_related('taxonomy','34'); 
 									foreach ($themes as $i) { ?> 
-									<div class="col-2" data-toggle="tooltip" data-title="<?=$i['title']?>"><a href="<?=$i['slug']?>"><img src="<?=$i['icon']?>"></a></div>
+									<div class="col-2" data-toggle="tooltip" data-title="<?=$i['title']?>"><a href="/theme/<?=$i['slug']?>"><img src="<?=$i['icon']?>"></a></div>
 									<?php } ?>
 								</div>
 								<ul class="article-home asidelist">
