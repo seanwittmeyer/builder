@@ -52,6 +52,8 @@
 						<label class="col-md-3 control-label" style="padding-top: 16px;">Type</label>
 						<div class="col-md-9" style="padding: 0 5px;">
 							<select name="payload[type]" class="selectpicker btn-sm" data-width="100%" data-live-search="true" data-size="5">
+								<option value="Coursework">Coursework</option>
+								<option value="Work Samples">Work Samples</option>
 								<option value="Lunch and Learn">Lunch and Learn Presentation</option>
 								<option value="Project Samples">Project Analysis / Diagram Samples</option>
 								<option value="Analysis">Raw Analysis/Data Output</option>

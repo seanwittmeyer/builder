@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 	if (!isset($loadjs)) $loadjs = array();
 	$uniquejsversion = '200601a'; // Set this to the date last edited or time() so that client js and css refreshes the cache
-	//$uniquejsversion = time(); // Set this to the date last edited or time() so that client js and css refreshes the cache
+	$uniquejsversion = time(); // Set this to the date last edited or time() so that client js and css refreshes the cache
 	?><!DOCTYPE html>
 <html lang="en">
 <head>

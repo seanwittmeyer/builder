@@ -16,7 +16,7 @@
 		<div class="row">
 			<div class="col-sm-5 wrapper">
 				<div class="subtitle">A blog on the built environment</div>
-				<div class="title"><a href="/notes">&larr; Field Notes</a> <?php $this->load->view('helpers/menu-fieldnotes'); ?></div>
+				<div class="title">&larr; <a href="/notes">Field Notes</a> <?php $this->load->view('helpers/menu-fieldnotes'); ?></div>
 			</div>
 			<div class="col-sm-7"></div>
 		</div>
@@ -191,8 +191,8 @@
 		pagemap(document.querySelector('#pagemap'), {
 			viewport: null,
 			styles: {
-				'.title,nav,p': 'rgba(0,0,0,0.08)',
-				'h1,a': 'rgba(0,0,0,0.10)',
+				'.title,nav,p,li': 'rgba(0,0,0,0.08)',
+				'h1,a,img': 'rgba(0,0,0,0.10)',
 				'h2,h3,h4': 'rgba(0,0,0,0.08)',
 			},
 			back: 'rgba(0,0,0,0.02)',

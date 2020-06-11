@@ -68,6 +68,9 @@ h2 {
 .flex-1 {
 	flex: 1;
 }
+.h-100 {
+	height: 100%;
+}
 a:link,
 a:visited {
 	color: #111;
@@ -79,6 +82,16 @@ a:hover {
 a:active {
 	font-weight: 700;
 	font-style: italic;
+}
+.body a:link, .body a:visited {
+	text-decoration: underline;
+}
+.body a:hover {
+	font-weight: 700;
+	text-decoration: underline;
+}
+.body a:active {
+	text-decoration: none;
 }
 /* Navs and Tabs 
 -------------------------------------------------- */
@@ -426,7 +439,15 @@ article.article-theme header h1 {
 	border-bottom: 1px solid #fe7964;
 	background-color: white;
 	padding: 1em;
+	cursor: pointer;
 }
+.children .child-article:hover {
+	background-color: rgba(250, 250, 250, 1);
+}
+.children .child-article:active {
+	background-color: rgba(245, 245, 245, 1);
+}
+
 .children .child-article:last-of-type {
 	border-bottom: none;
 }
@@ -443,6 +464,8 @@ article.article-theme header h1 {
 	font-weight: 700;
 	color: #111;
 	display: block;
+	line-height: 1.4rem;
+	margin: .4rem 0 .6rem;
 }
 
 .article-fieldnotes #themenav li a {
@@ -476,6 +499,12 @@ article.article-theme header h1 {
 	font-size: 1rem;
 	font-family: "IBM Plex Mono";
 }
+.article-fieldnotes .children .child-article a.img {
+	margin-bottom: 1rem;
+	background-position: center;
+	background-size: cover;
+	transition: height 0.5s;
+}
 .article-project .articlethemes {
 	text-align: left;
 	padding-left: 0;
@@ -486,7 +515,51 @@ article.article-theme header h1 {
 	background-position: left center;
 	background-size: 1.5rem;
 }
-
+.body-horiz {
+	margin-bottom: 0;
+}
+.wrapper.horiz {
+	overflow-y: hidden;
+	overflow-x: scroll;
+}
+.horiz article.article-fieldnotes {
+	margin-bottom: 90px;
+	overflow-y: hidden;
+}
+.children.horiz {
+	flex-wrap: nowrap;
+	overflow-x: scroll;
+	scroll-snap-type: y mandatory;
+	overflow-y: hidden;
+} 
+.children.horiz .child-article {
+	margin-right: 15px;
+	scroll-snap-align: start;
+} 
+.children.horiz .child-article p {
+	font-size: .9rem;
+	font-family: "IBM Plex Serif";
+} 
+.children.horiz .child-article a.img {
+	height: 20vh;
+	display: block;
+	margin-bottom: 1rem;
+	background-position: center;
+	background-size: cover;
+	transition: height 0.5s;
+} 
+.children.horiz .child-article:hover a.img {
+	height: 3vh;
+} 
+.children.horiz {
+	
+} 
+.children.horiz {
+	
+} 
+.children.horiz {
+	
+} 
 /* Ski
 -------------------------------------------------- */
 
@@ -554,18 +627,24 @@ body.body-home #mainnav .dropdown-menu a {
 	background-size: 60% auto;
 	background-repeat: no-repeat;
 }
+.article-home .portfolio:hover {
+	background-color: rgba(250, 250, 250, 1);
+}
+.article-home .portfolio:active {
+	background-color: rgba(245, 245, 245, 1);
+}
 .article-home .projects .row img {
 	height: auto;
 	width: 100%;
 }
 .article-home .projects .row .title {
 	font-family: "IBM Plex Serif";
-	font-size: 1.5rem;
+	font-size: 1.3rem;
 	font-style: italic;
 }
 .article-home .projects .row .excerpt {
 	font-family: "IBM Plex Serif";
-	font-size: 0.8rem;
+	font-size: 0.75rem;
 }
 .article-home .projects .links {
 	font-family: "IBM Plex Mono";
@@ -579,15 +658,18 @@ body.body-home #mainnav .dropdown-menu a {
 .article-home .notes .row img {
 	height: auto;
 	width: 100%;
+	
 }
 .article-home .notes .row .title {
 	font-family: "IBM Plex Serif";
-	font-size: 1.5rem;
+	font-size: 1.3rem;
 	font-style: italic;
+	line-height: 1.3rem;
+	margin: .4rem 0 .6rem;
 }
 .article-home .notes .row .excerpt {
 	font-family: "IBM Plex Serif";
-	font-size: 0.8rem;
+	font-size: 0.75rem;
 }
 .article-home .notes .links {
 	font-family: "IBM Plex Mono";
@@ -1021,6 +1103,15 @@ body.offcanvas .offcanvaspane .editorheaderimgpreview {
 		right: 20px;
 		width: 60px;
 		height: 100%;
+		z-index: 10000;
+	}
+	#pagemap-horiz {
+		position: fixed;
+		display: initial;
+		bottom: 20px;
+		right: 20px;
+		width: 100%;
+		height: 60px;
 		z-index: 10000;
 	}
 	#pagemap.article {

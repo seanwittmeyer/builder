@@ -27,7 +27,7 @@ class Content extends CI_Controller {
 		if ($data['payload'] != '') $data['payload'] = unserialize($data['payload']);
 		$data['type'] = 'definition';
 		$data['pagetitle'] = $data['title'];
-		$data['section'] = array('notes','definition');
+		$data['section'] = array(($data['template'] == 'project') ? 'projects': 'notes',$data['slug']);
 		$data['loadjs'][] = 'blank';
 		$data['loadjs']['contenttools'] = true;
 		$data['loadjs']['embedly'] = true;
@@ -50,7 +50,7 @@ class Content extends CI_Controller {
 		if ($data['img'] != '') $data['img'] = unserialize($data['img']);
 		if ($data['payload'] != '') $data['payload'] = unserialize($data['payload']);
 		$data['pagetitle'] = $data['title'];
-		$data['section'] = array('notes',$data['slug']);
+		$data['section'] = array(($data['template'] == 'project') ? 'projects': 'notes',$data['slug']);
 		$data['loadjs'][] = 'blank';
 		$data['loadjs']['contenttools'] = true;
 		$data['loadjs']['embedly'] = true;

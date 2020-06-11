@@ -42,18 +42,18 @@ foreach (array('article1','article2','project1') as $a) if (!isset($payload[$a])
 						<!-- Projects Column -->
 							<div class="col-sm-8 projects">
 								<div class="subtitle">Recent work</div>
-								<div class="title"><a href="//sean.wittmeyer.io/">Projects</a>  <?php $this->load->view('helpers/menu-projects'); ?></div>
+								<div class="title"><a href="/projects">Projects</a>  <?php $this->load->view('helpers/menu-projects'); ?></div>
 								<div class="row" style="padding-top:10px;">
 									<?php $p = $this->shared->get_data2('definition', $payload['project1']); ?>
-									<div class="col-4 image align-self-center">
+									<div class="col-3 image align-self-center">
 										<a href="/projects/<?=$p['slug']?>"><img src="<?php $p['img'] = unserialize($p['img']); echo (isset($p['img']['header']) && !empty($p['img']['header'])) ? $p['img']['header']['url']: '/includes/test/assets/Moofushi_Kandu_fish.jpg'; ?>"></a>
 									</div>
-									<div class="col-8">
+									<div class="col-9">
 										<a href="/projects/<?=$p['slug']?>"><div class="title"><?=$p['title']?></div></a>
 										<div class="excerpt"><?=$p['excerpt']?></div>
 									</div>
 								</div>
-								<div class="links"><strong>More:</strong> <a href="/collection/urban">Urban</a> | <a href="/collection/large">Large</a> | <a href="/collection/small">Small</a> | <a href="/collection/web">Web Dev</a> | <a href="/resume"><i class="fas fa-file"></i> Resume</a></div>
+								<div class="links"><strong>More:</strong> <a href="/projects?scale=urban">Urban</a> | <a href="/projects?scale=large">Large</a> | <a href="/projects?scale=small">Small</a> | <a href="/projects?scale=web">Web Dev</a> | <a href="/resume"><i class="fas fa-file"></i> Resume &nearr;</a></div>
 							</div>
 							<div class="col-sm-4 portfolio" onclick="window.location.assign('//sean.wittmeyer.io')">
 								<div class="subtitle">Portfolio</div>
@@ -70,10 +70,10 @@ foreach (array('article1','article2','project1') as $a) if (!isset($payload[$a])
 								<?php foreach (array($payload['article1'],$payload['article2']) as $d) { ?> 
 								<div class="row article" style="padding-top:10px;">
 									<?php $p = $this->shared->get_data2('definition', $d); ?>
-									<div class="col-4 image align-self-center">
+									<div class="col-3 image align-self-center d-none">
 										<a href="/article/<?=$p['slug']?>"><img src="<?php $p['img'] = unserialize($p['img']); echo (isset($p['img']['header']) && !empty($p['img']['header'])) ? $p['img']['header']['url']: '/includes/test/assets/Moofushi_Kandu_fish.jpg'; ?>"></a>
 									</div>
-									<div class="col-8">
+									<div class="col-9">
 										<a href="/article/<?=$p['slug']?>"><div class="title"><?=$p['title']?></div></a>
 										<div class="excerpt"><?=$p['excerpt']?></div>
 									</div>

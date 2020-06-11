@@ -60,12 +60,17 @@ class Pages extends CI_Controller {
 					case "home_new":
 						$data['bodyclass'] = 'body-home';
 						$data['loadjs']['embedly'] = true;
+						$data['section'] = array('home','home');
 					break;
 					case "football":
 						$data['section'] = array('playground',$slug);
 					break;
 					case "fieldnotes":
 						$data['section'] = array('notes',$slug);
+					break;
+					case "projects":
+						$data['bodyclass'] = 'body-horiz';
+						$data['section'] = array('projects',$slug);
 					break;
 					case "rsvp" :
 						$data['loadjs']['rsvp'] = true;

@@ -1,13 +1,13 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /* 
- * Page - Projects Index
+ * Page - Field Notes Index
  *
  * This is a view used by single tax with the 'article' template set.
  * 
  */
  
-$set = $this->shared->get_related($type,$id,true,true,array("order", "asc")); 
+$set = $this->shared->get_related($type,$id,true); 
 $excludearray = array(
 	'taxonomy' => array(),
 	'definition' => array(),
@@ -15,9 +15,8 @@ $excludearray = array(
 );
 ?> 
 <!-- Page map as a page nav in the top right corner -->
-	<canvas id="pagemap-horiz" class="article"></canvas>
+	<canvas id="pagemap" class="article"></canvas>
 	<!-- /pagemap -->
-<div class="wrapper horiz vh-100 flex-column" >		
 	<!-- Header -->
 	<header class="article-fieldnotes container-fluid" style="background-image: url('<?php echo (isset($img['header']) && !empty($img['header'])) ? $img['header']['url']: '/includes/test/assets/Moofushi_Kandu_fish.jpg'; ?>');">
 		<div class="row">
@@ -25,96 +24,56 @@ $excludearray = array(
 			<div class="col-sm-5 sectionheader text-center">
 				<div class="subtitle" data-editable="" data-name="payload[blogtype]"><p><?=$this->shared->handlebar_links($blogtype)?></p></div>
 				<div data-editable="" data-name="payload[title]"><h1><?=$title?></h1></div><!-- (<?=$id?>)-->
-				<div class="excerpt" data-editable="" data-name="payload[excerpt]"><p><?=$excerpt?></p></div>
+				<div class="excerpt" data-editable="" data-name="payload[excerpt]"><p><?=$this->shared->handlebar_links($excerpt)?></p></div>
 			</div>
 			<div class="col-md d-none d-lg-block"></div>
 		</div>
 	</header>
 	<!-- /Header -->
 	<!-- Article -->
-	<article class="article-theme article-fieldnotes flex-1">
-		<div class="container-fluid h-100">
-			<div class="row h-100">
-				<div class="col-md-3 text-right ">
-					<aside class="col float-right">
-						<p class="meta">Projects by Scale</p>
-						<nav id="themenav" class="pilltabs">
-							<ul class="nav nav-tabs" role="tablist">
-								<?php /* Get related themes */
-								$themes = $set; 
-								array_multisort(array_map(function($element) {
-									return $element['order'];
-								}, $themes), SORT_ASC, $themes);
-								
-								foreach ($themes as $i) { ?> 
-								<li class="nav-item d-block"><a class="nav-link" onclick="sortCards('<?=strtolower($i['title'])?>'); return false;" style="background-image: url(<?=$i['icon']?>)" href="/theme/<?=$i['slug']?>"><?=$i['title']?></a></li> 
-								<?php } ?>
-								<li onclick="sortCards('scale'); return false;" style="font-style: italic; font-size: .8rem; font-weight: 700; cursor: pointer;">Show all projects &rarr;</li>
-							</ul>
-						</nav>
-						<ul class="articlethemes">
-						<?php /* Get related themes */
-						$themes = $this->shared->get_related('taxonomy','34'); 
-						$_themes = array(); 
-						if (is_array($set) && !empty($set)) {
-						foreach ($themes as $i) $_themes[] = $i['id'];
-						foreach ($set as $s) if ($s['type']=='taxonomy' && in_array($s['id'],$_themes)) { ?>
-								<li style="background-image: url(<?=$s['icon']?>);"><a class="" href="/theme/<?=$s['slug']?>"><?=$s['title']?></a></li>
-						<?php } } ?> 
-						</ul>
+	<article class="article-theme article-fieldnotes">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md d-none d-lg-block"></div>
+				<div class="col-md-5 col-lg-4 text-right ">
+					<aside class="col-sm-10 float-right">
+						<div class="body" data-editable="" data-name="payload[body]"><?=$this->shared->handlebar_links($body)?></div>
 					</aside>
 				</div>
-				<div class="col-md-9 h-100">
+				<div class="col-md-7 col-lg-6">
 					<div class="row">
-						<p class="meta">Articles, Observations, and Ideas</p>
-					</div>
-					<div class="row children horiz h-100">
-						<?php $set = $this->shared->get_data2('definition', false, array('template'=>'project')); ?>
-						<?php if ($set !== false) : ?>
-						<?php foreach ($set as $single) { ?>
-							<div class="child-article col-md-3 <?=strtolower($single['subtitle'])?>" onclick="window.location.assign('/projects/<?=$single['slug']?>');">
-								<a href="/projects/<?=$single['slug']?>" class="img" style="background-image: url(<?php $single['img'] = unserialize($single['img']); echo (isset($single['img']['header']) && !empty($single['img']['header'])) ? $single['img']['header']['url']: '/includes/test/assets/Moofushi_Kandu_fish.jpg'; ?>);"></a>
-								<?php if (isset($single['blogtype'])) { ?><span class="subtitle"><?=$single['blogtype']?></span><?php } elseif (isset($single['subtitle'])) { ?><span class="subtitle"><?=$single['subtitle']?></span><?php } ?>
-								<a class="title t_list_<?=$single['id']?>" href="/projects/<?=$single['slug']?>"><?=$single['title']?></a>
-								<p><?php echo $single['excerpt']; ?> <br><a href="/projects/<?=$single['slug']?>"> Keep reading... &rarr;</a></p>
-							</div>
-						<?php } ?> 
-						<?php elseif ($this->ion_auth->is_admin()): ?><blockquote>No connected topics...yet.<br /><button class="btn btn-success" data-toggle="modal" data-target="#pageeditor">Add Relationships</button></blockquote><?php endif; ?>
+						<div class="col children">
+							<!--
+							<h2>Articles and Projects</h2>
+							<p>Explore <?php echo $title; ?> further in the articles, observations, and projects I've had the opportunity to work on.</p>
+							-->
+							<!--<p class="meta">Articles, Observations, and Ideas</p>-->
+							<?php //$set = $this->shared->get_data2('definition', false, array('template'=>'article')); ?>
+							<?php if ($set !== false) : ?>
+							<?php foreach ($set as $single) { ?>
+								<div class="child-article">
+									<div class="row">
+										<a href="/projects/<?=$single['slug']?>" class="img col-md-3" style="margin-left:15px; max-width: calc(25% - 15px); background-image: url(<?php $single['img'] = unserialize($single['img']); echo (isset($single['img']['header']) && !empty($single['img']['header'])) ? $single['img']['header']['url']: '/includes/test/assets/Moofushi_Kandu_fish.jpg'; ?>);"></a>
+										<div class="col-md-9">
+											<?php if (isset($single['blogtype'])) { ?><span class="subtitle"><?=$single['blogtype']?></span><?php } elseif (isset($single['subtitle'])) { ?><span class="subtitle"><?=$single['subtitle']?></span><?php } ?>
+											<a class="title t_list_<?=$single['id']?>" href="/article/<?=$single['slug']?>"><?=$single['title']?></a>
+											<?php echo $single['excerpt']; ?> <a href="/article/<?=$single['slug']?>"> Keep reading... &rarr;</a>
+										</div>
+									</div>
+								</div>
+							<?php } ?> 
+							<?php elseif ($this->ion_auth->is_admin()): ?><blockquote>No connected topics...yet.<br /><button class="btn btn-success" data-toggle="modal" data-target="#pageeditor">Add Relationships</button></blockquote><?php endif; ?>
+							<hr>
+						</div>
 					</div>
 				</div>
+				<div class="col-md d-none d-lg-block"></div>
 			</div>
 		</div>
 	</article>
 	<!-- /Article -->
-</div>
-<script>
-
-function sortCards(a) {
-	$('.children .child-article').fadeOut(200);
-	var _a = '.children .child-article.' + a; 
-	setTimeout($(_a).fadeIn(200),200);
-}
-<?php 
-$_section = $this->input->get('scale');
-if ($_section) { ?>
-$(document).ready(function(){
-	$('.children .child-article').fadeOut(200);
-	setTimeout($('.children .child-article.<?=$_section?>').fadeIn(200),200);
-});
-<?php } ?>
-const target = document.querySelector('.children.horiz')
-const targetparent = document.querySelector('body')
-
-targetparent.addEventListener('wheel', event => {
-  const toLeft  = event.deltaY < 0 && target.scrollLeft > 0
-  const toRight = event.deltaY > 0 && target.scrollLeft < target.scrollWidth - target.clientWidth
-
-  if (toLeft || toRight) {
-    event.preventDefault()
-    target.scrollLeft += event.deltaY
-  }
-})
-</script>
+	
+	
 	
 	<?php if ($this->ion_auth->logged_in()) { ?>
 	<!-- Off canvas -->
@@ -296,8 +255,8 @@ targetparent.addEventListener('wheel', event => {
 	} ?> 
 	<script>
 		//pagemap(document.querySelector('#pagemap'));
-		pagemap(document.querySelector('#pagemap-horiz'), {
-			viewport: document.querySelector('.children'),
+		pagemap(document.querySelector('#pagemap'), {
+			viewport: null,
 			styles: {
 				'.title,nav,p,.card': 'rgba(0,0,0,0.08)',
 				'h1,a': 'rgba(0,0,0,0.10)',

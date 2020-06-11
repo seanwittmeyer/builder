@@ -18,10 +18,7 @@
 			<a class="dropdown-item" data-toggle="modal" data-target="#createpage" href="#"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> New Page</a>
 			<div class="dropdown-divider"></div>
 			<span class="dropdown-header">Content Pages</span>
-			<a class="dropdown-item" href="/topic/principles">Governing Principles</a>
-			<a class="dropdown-item" href="/topic/key-concepts">Key Concepts</a>
-			<a class="dropdown-item" href="/topic/terms">Terms</a>
-			<a class="dropdown-item" href="/topic/key-thinkers">Key Thinkers</a>
+			<a class="dropdown-item" href="/theme/themes">Themes</a>
 			<div class="dropdown-divider"></div>
 			<a class="dropdown-item" href="/pages">View all Pages</a>
 			<a class="dropdown-item" href="/taxonomy">View all Taxonomy/Categories/Collections</a>
@@ -42,8 +39,8 @@
 	</div>
 	<ul class="nav nav-tabs" id="mainnavtabs" role="tablist">
 		<li class="nav-item" role="presentation">
-			<a class="nav-link<?php $section = (isset($section)) ? $section: array('',''); if ($section[0] == 'projects') echo ' active'; ?>" href="//sean.wittmeyer.io/">Projects</a>
-			<!--<a class="nav-link" id="nav-projects-tab" data-toggle="tab" href="#projects" role="tab" aria-controls="home" aria-selected="true">Projects</a>-->
+			<!--<a class="nav-link<?php $section = (isset($section)) ? $section: array('',''); if ($section[0] == 'projects') echo ' active'; ?>" href="//sean.wittmeyer.io/">Projects</a>-->
+			<a class="nav-link<?php $section = (isset($section)) ? $section: array('',''); if ($section[0] == 'projects') echo ' active'; ?>" id="nav-projects-tab" data-toggle="tab" href="#projects" role="tab" aria-controls="home" aria-selected="true">Projects</a>
 		</li>
 		<li class="nav-item" role="presentation">
 			<a class="nav-link<?php if ($section[0] == 'notes') echo ' active'; ?>" id="nav-fieldnotes-tab" data-toggle="tab" href="#fieldnotes" role="tab" aria-controls="profile" aria-selected="false">Field Notes</a>
@@ -70,10 +67,11 @@
 		</div>
 		<div class="tab-pane fade<?php if ($section[0] == 'projects') echo ' show active'; ?>" id="projects" role="tabpanel" aria-labelledby="nav-projects-tab">
 			<ul>
-				<li><a href="/projects/architecture">Architecture</a></li>
-				<li><a href="/projects/designbuild">Design Build</a></li>
-				<li><a href="/projects/theoretical">Theoretical</a></li>
-				<li><a href="/projects/digital">Digital</a></li>
+				<li><a href="/projects">All</a></li>
+				<li><a href="/projects?scale=urban">Urban</a></li>
+				<li><a href="/projects?scale=large">Large</a></li>
+				<li><a href="/projects?scale=small">Small</a></li>
+				<li><a href="/projects?scale=web">Web</a></li>
 				<li><a href="//sean.wittmeyer.io">Portfolio &nearr;</a></li>
 				<li><a href="/resume">Resume &nearr;</a></li>
 			</ul>
@@ -106,12 +104,11 @@
 		</div>
 		<div class="tab-pane fade<?php if ($section[0] == 'feed') echo ' show active'; ?>" id="feed" role="tabpanel" aria-labelledby="nav-feed-tab">
 			<ul>
+				<li><a <?php if ($section[0] == 'feed' && $section[1] == 'everything') echo 'class="active" '; ?>href="/feed">Everything</a></li>
 				<li><a <?php if ($section[0] == 'feed' && $section[1] == 'video') echo 'class="active" '; ?>href="/feed/video">Videos</a></li>
 				<li><a <?php if ($section[0] == 'feed' && $section[1] == 'html') echo 'class="active" '; ?>href="/feed/html">Webpages</a></li>
 				<li><a <?php if ($section[0] == 'feed' && $section[1] == 'paper') echo 'class="active" '; ?>href="/feed/paper">Papers</a></li>
 				<li><a <?php if ($section[0] == 'feed' && $section[1] == 'book') echo 'class="active" '; ?>href="/feed/book">Books</a></li>
-				<li><a <?php if ($section[0] == 'feed' && $section[1] == 'profile') echo 'class="active" '; ?>href="/feed/profile">Profiles</a></li>
-				<li><a <?php if ($section[0] == 'feed' && $section[1] == 'other') echo 'class="active" '; ?>href="/feed/other">Other</a></li>
 			</ul>
 		</div>
 		<div class="tab-pane fade<?php if ($section[0] == 'playground') echo ' show active'; ?>" id="playground" role="tabpanel" aria-labelledby="nav-playground-tab">

@@ -17,7 +17,7 @@ $set = $this->shared->get_related_parents($type,$id,true); ?>
 				<!-- Nav -->
 					<header>
 						<div class="subtitle">Recent work</div>
-						<div class="title"><a href="/projects">Projects</a> <?php $this->load->view('helpers/menu-projects'); ?></div>
+						<div class="title">&larr; <a href="/projects">Projects</a> <?php $this->load->view('helpers/menu-projects'); ?></div>
 					</header>
 					<summary>
 						<div class="subtitle" data-editable="" data-name="payload[subtitle]"><p><?=$subtitle?></p></div>

@@ -5,7 +5,6 @@
 	<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 		<span class="dropdown-header">Field Notes, a blog on the built environment</span>
 		<a class="dropdown-item" href="/notes">Index - Start here</a>
-		<a class="dropdown-item" href="/primers">Primers - Quick deep dives</a>
 		<a class="dropdown-item" href="/feed/books">The Feed - What I'm reading</a>
 		<div class="dropdown-divider"></div>
 		<span class="dropdown-header">General Themes</span>
@@ -14,17 +13,8 @@
 		<div class="dropdown-divider"></div>
 		<span class="dropdown-header">Manage This Page</span>
 		<a class="dropdown-item" onclick="openeditor();">Edit this Page</a>
+		<a class="dropdown-item" href="/new">+ New</a>
 		<?php if (isset($id)) { ?><a class="dropdown-item" data-toggle="modal" data-target="#createlink" href="#"><span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span> Add a feed item</a><?php } ?>
-		<span class="dropdown-header">Create New Content</span>
-		<a class="dropdown-item" data-toggle="modal" data-target="#createdefinition"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> New Definition</a>
-		<a class="dropdown-item" data-toggle="modal" data-target="#createtaxonomy" href="#"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> New Taxonomy (or collection)</a>
-		<a class="dropdown-item" data-toggle="modal" data-target="#createpage" href="#"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> New Page</a>
-		<div class="dropdown-divider"></div>
-		<span class="dropdown-header">Content Pages</span>
-		<a class="dropdown-item" href="/topic/principles">Governing Principles</a>
-		<a class="dropdown-item" href="/topic/key-concepts">Key Concepts</a>
-		<a class="dropdown-item" href="/topic/terms">Terms</a>
-		<a class="dropdown-item" href="/topic/key-thinkers">Key Thinkers</a>
 		<div class="dropdown-divider"></div>
 		<a class="dropdown-item" href="/pages">View all Pages</a>
 		<a class="dropdown-item" href="/taxonomy">View all Taxonomy/Categories/Collections</a>
