@@ -40,7 +40,7 @@
 							<ul class="nav nav-tabs" role="tablist">
 								<li class="nav-item d-block" role="presentation"><a class="nav-link active" id="new-all-tab" data-toggle="tab" href="#newall" role="tab" aria-controls="newall" aria-selected="true"><i class="fas fa-plus"></i> Quick Create</a></li> 
 								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="new-tax-tab" data-toggle="tab" href="#newtax" role="tab" aria-controls="newtax" aria-selected="false"><i class="fas fa-th-large"></i> Theme/Collection</a></li> 
-								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="new-def-tab" data-toggle="tab" href="#newdef" role="tab" aria-controls="newdef" aria-selected="false"><i class="fas fa-scroll"></i> Article</a></li> 
+								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="new-def-tab" data-toggle="tab" href="#newdef" role="tab" aria-controls="newdef" aria-selected="false"><i class="fas fa-scroll"></i> Article/Project</a></li> 
 								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="new-page-tab" data-toggle="tab" href="#newpage" role="tab" aria-controls="newpage" aria-selected="false"><i class="far fa-file-alt"></i> Page</a></li> 
 								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="new-link-tab" data-toggle="tab" href="#newlink" role="tab" aria-controls="newlink" aria-selected="false"><i class="fas fa-link"></i> Link/Feed Item</a></li> 
 							</ul>
@@ -84,11 +84,12 @@
 								<div class="form-label-group">
 									<select id="cas-link-type" name="payload[type]" class="form-control">
 										<option selected="selected" disabled="disabled">Link Type</option>
-										<option value="html" selected="selected">Webpage</option>
+										<option value="html">Webpage</option>
 										<option value="video">Video</option>
 										<option value="file">File</option>
 										<option value="paper">Paper</option>
-										<option value="book">Book</option>
+										<option value="data">Data</option>
+										<option value="book" selected="selected">Book</option>
 										<option value="profile">Profile</option>
 										<option value="other">Other</option>
 									</select>
@@ -101,6 +102,7 @@
 									<label class="custom-control-label" for="tax-option-<?=$i['id']?>"><?=$i['title']?></label>
 								</div>
 								<?php } ?>
+								<hr>
 								<div class="custom-control custom-radio">
 									<input type="radio" id="tax-option-60" name="payload[hostid]" value="60" class="custom-control-input">
 									<label class="custom-control-label" for="tax-option-60">General Technology</label>
@@ -112,6 +114,14 @@
 								<div class="custom-control custom-radio">
 									<input type="radio" id="tax-option-62" name="payload[hostid]" value="62" class="custom-control-input">
 									<label class="custom-control-label" for="tax-option-62">Mapping</label>
+								</div>
+								<div class="custom-control custom-radio">
+									<input type="radio" id="tax-option-67" name="payload[hostid]" value="67" class="custom-control-input">
+									<label class="custom-control-label" for="tax-option-67">Architectural Practice</label>
+								</div>
+								<div class="custom-control custom-radio">
+									<input type="radio" id="tax-option-68" name="payload[hostid]" value="68" class="custom-control-input">
+									<label class="custom-control-label" for="tax-option-68">Architectural Theory</label>
 								</div>
 								<p style="clear: both;">&nbsp;</p>
 								<input type="hidden" id="cas-link-hostid" name="payload[hosttype]" value="taxonomy" />
@@ -126,7 +136,7 @@
 							<hr style="clear: both;">&nbsp;</hr>
 							
 							
-							<h2>Taxonomy, Collection, or Theme</h2>
+							<h2>Collection or Theme</h2>
 							<form id="simpletax" class="input-group clearfix">
 								<div class="input-group-prepend">
 									<div class="input-group-text"><i class="fas fa-th-large"></i></div>
@@ -135,13 +145,13 @@
 								<input type="text" class="form-control" placeholder="choose a slug" name="slug">
 								<input type="hidden" value="taxonomy" name="template">
 								<div class="input-group-append">
-									<button class="btn btn-outline-secondary" onclick="simple_create('#simpletax')" type="button">Add the taxonomy &rarr;</button>
+									<button class="btn btn-outline-secondary" onclick="simple_create('#simpletax')" type="button">Add the collection &rarr;</button>
 								</div>
 							</form>
 							<p style="clear: both;">&nbsp;<br></p>
 							
 							
-							<h2>Definition or Article</h2>
+							<h2>Project or Article</h2>
 							<form class="input-group clearfix" id="simpledef">
 							<div class="input-group-prepend">
 								<div class="input-group-text"><i class="fas fa-scroll"></i></div>
@@ -150,7 +160,7 @@
 							<input type="text" class="form-control" placeholder="choose a slug" name="slug">
 							<input type="hidden" value="definition" name="template">
 							<div class="input-group-append">
-								<button class="btn btn-outline-secondary" onclick="simple_create('#simpledef')" type="button">Add the definition &rarr;</button>
+								<button class="btn btn-outline-secondary" onclick="simple_create('#simpledef')" type="button">Add the article &rarr;</button>
 							</div>
 							</form>
 							<p style="clear: both;">&nbsp;</p>

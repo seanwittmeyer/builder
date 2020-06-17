@@ -9,7 +9,7 @@
 						<a class="dropdown-item<?php if ($type == 'video') echo ' active'; ?>" href="/feed/video"><i class="<?=$_icon['video']?>"></i> <span>Videos</span></a>
 						<a class="dropdown-item<?php if ($type == 'book') echo ' active'; ?>" href="/feed/book"><i class="<?=$_icon['book']?>"></i> <span>Books</span></a>
 						<a class="dropdown-item<?php if ($type == 'paper') echo ' active'; ?>" href="/feed/paper"><i class="<?=$_icon['paper']?>"></i> <span>Papers</span></a>
-						<a class="dropdown-item<?php if ($type == 'profile') echo ' active'; ?>" href="/feed/profile"><i class="<?=$_icon['profile']?>"></i> <span>Profiles</span></a>
+						<a class="dropdown-item<?php if ($type == 'data') echo ' active'; ?>" href="/feed/profile"><i class="<?=$_icon['data']?>"></i> <span>Data</span></a>
 						<a class="dropdown-item<?php if ($type == 'file') echo ' active'; ?>" href="/feed/file"><i class="<?=$_icon['file']?>"></i> <span>Files</span></a>
 						<a class="dropdown-item<?php if ($type == 'other') echo ' active'; ?>" href="/feed/other"><i class="<?=$_icon['other']?>"></i> <span>Other</span></a>
 						<?php if ($this->ion_auth->logged_in()) { ?>

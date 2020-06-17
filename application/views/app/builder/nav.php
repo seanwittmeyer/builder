@@ -107,7 +107,7 @@
 				<li><a <?php if ($section[0] == 'feed' && $section[1] == 'everything') echo 'class="active" '; ?>href="/feed">Everything</a></li>
 				<li><a <?php if ($section[0] == 'feed' && $section[1] == 'video') echo 'class="active" '; ?>href="/feed/video">Videos</a></li>
 				<li><a <?php if ($section[0] == 'feed' && $section[1] == 'html') echo 'class="active" '; ?>href="/feed/html">Webpages</a></li>
-				<li><a <?php if ($section[0] == 'feed' && $section[1] == 'paper') echo 'class="active" '; ?>href="/feed/paper">Papers</a></li>
+				<li><a <?php if ($section[0] == 'feed' && $section[1] == 'data') echo 'class="data" '; ?>href="/feed/paper">Data</a></li>
 				<li><a <?php if ($section[0] == 'feed' && $section[1] == 'book') echo 'class="active" '; ?>href="/feed/book">Books</a></li>
 			</ul>
 		</div>

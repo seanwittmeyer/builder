@@ -94,7 +94,7 @@ module.exports = {
 		maps: './src/maps.js',
 		viz: './src/viz.js',
 		fa: './src/fontawesome.js',
-		//editor: './src/contenttools.js',
+		editor: './src/contenttools.js',
 	},
 	output: {
 		filename: 'dist/[name].bundle.js',

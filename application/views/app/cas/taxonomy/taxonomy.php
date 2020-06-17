@@ -104,7 +104,7 @@ $excludearray = array(
 									<?php if ($set !== false) : ?>
 									<?php foreach ($set as $single) { 
 										if (in_array($single['id'], $excludearray[$single['type']])) continue; ?>
-										<div class="child-article">
+										<div class="child-article" onclick="window.location.assign('/<?=$single['type']?>/<?=$single['slug']?>');">
 											<?php if (isset($single['blogtype'])) { ?><span class="subtitle"><?=$single['blogtype']?></span><?php } elseif (isset($single['subtitle'])) { ?><span class="subtitle"><?=$single['subtitle']?></span><?php } ?>
 											<a class="title t_list_<?=$single['id']?>" href="/<?=$single['type']?>/<?=$single['slug']?>"><?=$single['title']?></a>
 											<?php echo ($single['type'] === 'page') ? $single['excerpt']: ($single['type'] === 'definition') ? $single['excerpt']: ''; ?> <a href="/<?=$single['type']?>/<?=$single['slug']?>"> Keep reading... &rarr;</a>

@@ -16,6 +16,7 @@ $weather = $this->shared->weather($location=false,$source='ip',$formatted=false)
 	'book' => 'fas fa-book-open',
 	'paper' => 'fas fa-file',
 	'profile' => 'fas fa-id-badge',
+	'data' => 'fas pie-chart',
 	'file' => 'fas fa-newspaper-o',
 	'other' => 'fas fa-tree',
 );
@@ -79,7 +80,8 @@ foreach (array('article1','article2','project1') as $a) if (!isset($payload[$a])
 									</div>
 								</div>
 								<?php } ?>
-								<div class="links"><strong>Visit the </strong> <a href="/notes">Field Notes Index</a> for all articles, ideas, and observations.</div>
+								<div class="p-3"></div>
+								<div class="links d-none"><strong>Visit the </strong> <a href="/notes">Field Notes Index</a> for all articles, ideas, and observations.</div>
 							</div>
 							<div class="col-sm-4">
 								<div class="subtitle">Themes</div>

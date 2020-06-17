@@ -477,8 +477,8 @@ article.article-theme header h1 {
 
 .article-fieldnotes .sectionheader {
 	background: white;
-	margin: 3rem 0;
-	padding: 2rem 1rem;
+	margin: 1rem 0;
+	padding: 1.5rem 1rem;
 }
 .article-fieldnotes .sectionheader h1 {
 	font-size: 3rem;
@@ -641,6 +641,7 @@ body.body-home #mainnav .dropdown-menu a {
 	font-family: "IBM Plex Serif";
 	font-size: 1.3rem;
 	font-style: italic;
+	font-weight: 400;
 }
 .article-home .projects .row .excerpt {
 	font-family: "IBM Plex Serif";
@@ -666,6 +667,7 @@ body.body-home #mainnav .dropdown-menu a {
 	font-style: italic;
 	line-height: 1.3rem;
 	margin: .4rem 0 .6rem;
+	font-weight: 400;
 }
 .article-home .notes .row .excerpt {
 	font-family: "IBM Plex Serif";

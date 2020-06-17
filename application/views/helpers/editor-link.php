@@ -34,7 +34,7 @@
 			<option value="file">File</option>
 			<option value="paper">Paper</option>
 			<option value="book">Book</option>
-			<option value="profile">Profile</option>
+			<option value="data">Data</option>
 			<option value="other">Other</option>
 		</select>
 		<label for="payload[type]" class="">Link Type</label>

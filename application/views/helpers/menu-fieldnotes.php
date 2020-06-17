@@ -5,7 +5,7 @@
 	<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 		<span class="dropdown-header">Field Notes, a blog on the built environment</span>
 		<a class="dropdown-item" href="/notes">Index - Start here</a>
-		<a class="dropdown-item" href="/feed/books">The Feed - What I'm reading</a>
+		<a class="dropdown-item" href="/feed/book">The Feed - What I'm reading</a>
 		<div class="dropdown-divider"></div>
 		<span class="dropdown-header">General Themes</span>
 		<?php foreach ($this->shared->get_related('taxonomy','34') as $i) { ?><a class="dropdown-item" href="/theme/<?php echo $i['slug']; ?>"><?php echo $i['title']; ?></a><?php } ?> 

@@ -82,7 +82,7 @@
       <body>
             <?php echo form_open("auth/forgot_password",array('class' => 'form-signin', '_lpchecked' => '1'));?> 
                   <div class="text-center mb-4">
-                        <img class="mb-4" src="https://freight.cargo.site/t/original/i/892082e55e8ddf9bf649d7f73fc6500f2803c6779a6a893fe3817387deea366c/7.png" alt="" width="" height="72">
+                        <img class="mb-4" src="/includes/img/imov.png" alt="" width="" height="72">
                   </div>
                   <div id="infoMessage" class="mt-5 mb-3 text-muted text-center"><?php echo $message;?></div>
                   <div class="form-label-group">

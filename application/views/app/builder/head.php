@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 	if (!isset($loadjs)) $loadjs = array();
-	$uniquejsversion = '200601a'; // Set this to the date last edited or time() so that client js and css refreshes the cache
-	$uniquejsversion = time(); // Set this to the date last edited or time() so that client js and css refreshes the cache
+	$uniquejsversion = '200615a'; // Set this to the date last edited or time() so that client js and css refreshes the cache
+	//$uniquejsversion = time(); // Set this to the date last edited or time() so that client js and css refreshes the cache
 	?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,13 +26,12 @@
 	<?php if (isset($loadjs['builder_viz'])) { ?><script src="/dist/viz.bundle.js?<?=$uniquejsversion?>"></script><?php } ?> 
 	<?php if (isset($loadjs['contenttools'])) { ?>
 	<script src="/dist/editor.bundle.js?<?=$uniquejsversion?>"></script>
-	<link href="/includes/css/content-tools.min.css" rel="stylesheet" />
 	<?php } ?> 
 	<?php if (isset($loadjs['builder_maps'])) { ?><script src="/dist/maps.bundle.js?<?=$uniquejsversion?>"></script>
 	<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.45.0/mapbox-gl.js'></script>
 	<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.45.0/mapbox-gl.css' rel='stylesheet' />
 	<?php } ?> 
-	<?php if (isset($loadjs['contenttools'])) { ?> 
+	<?php if (isset($loadjs['contenttoolsx'])) { ?> 
 	<link href='/includes/css/content-tools.min.css' rel='stylesheet' />
 	<!--<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.8/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />-->
 	<?php } ?> 

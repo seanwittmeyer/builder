@@ -31,9 +31,10 @@ class Ski extends CI_Controller {
 		$data['resorts'] = $this->shared->get_data2('ski_resorts');
 		$data['pagetitle'] = 'Ski'; // Capitalize the first letter
 		$data['section'] = 'ski';
-		$this->load->view('app/builder/templates/header', $data);
+		$this->load->view('app/builder/head', $data);
+		$this->load->view('app/builder/nav', $data);
 		$this->load->view('app/ski/index', $data);
-		$this->load->view('app/builder/templates/footer', $data);
+		$this->load->view('app/builder/foot', $data);
 	}
 
 
@@ -73,9 +74,10 @@ class Ski extends CI_Controller {
 		$data['pagetitle'] = 'Upload Design Explorer Data Set'; // Capitalize the first letter
 		$data['contenttitle'] = 'Add a Design Explorer Dataset';
 		$data['section'] = 'pylos';
-		$this->load->view('app/builder/templates/header', $data);
+		$this->load->view('app/builder/head', $data);
+		$this->load->view('app/builder/nav', $data);
 		$this->load->view('app/ski/ski-create', $data);
-		$this->load->view('app/builder/templates/footer', $data);
+		$this->load->view('app/builder/foot', $data);
 	}
 
 	public function createresort($snocountryid=false,$slug='notitle')
@@ -94,9 +96,10 @@ class Ski extends CI_Controller {
 				redirect('ski/resorts/'.$slug.'?import=true', 'refresh');
 			}
 		}
-		$this->load->view('app/builder/templates/header', $data);
+		$this->load->view('app/builder/head', $data);
+		$this->load->view('app/builder/nav', $data);
 		$this->load->view('app/ski/ski-create-resort', $data);
-		$this->load->view('app/builder/templates/footer', $data);
+		$this->load->view('app/builder/foot', $data);
 	}
 
 	public function days($dayid=false)
@@ -108,15 +111,18 @@ class Ski extends CI_Controller {
 		//$data['loadjs']['chartjs'] = true;
 		$data['loadjs']['nvd3'] = true;
 		$data['loadjs']['skimaponload'] = true;
+		$data['loadjs']['builder_viz'] = true;
+		$data['loadjs']['builder_maps'] = true;
 		$data['track'] = $this->shared->get_data2('ski_days',false,array('dayid'=>$dayid));
 		$data['nodes'] = $this->shared->get_data2('ski_nodes',false,array('parentid'=>$dayid),array("time","asc"));
-		$this->load->view('app/builder/templates/header', $data);
+		$this->load->view('app/builder/head', $data);
+		$this->load->view('app/builder/nav', $data);
 		if ($dayid) {
 			$this->load->view('app/ski/ski-view', $data);
 		} else {
 			$this->load->view('app/ski/ski-days', $data);
 		}
-		$this->load->view('app/builder/templates/footer', $data);
+		$this->load->view('app/builder/foot', $data);
 	}
 	
 	public function resorts($resortslug=false)
@@ -130,9 +136,10 @@ class Ski extends CI_Controller {
 		$data['loadjs']['skimaponload'] = true;
 		$data['resort'] = $this->shared->get_data2('ski_resorts',false,array('slug'=>$resortslug));
 		//$data['nodes'] = $this->shared->get_data2('ski_nodes',false,array('parentid'=>$id),array("time","asc"));
-		$this->load->view('app/builder/templates/header', $data);
+		$this->load->view('app/builder/head', $data);
+		$this->load->view('app/builder/nav', $data);
 		$this->load->view('app/ski/ski-resorts-single', $data);
-		$this->load->view('app/builder/templates/footer', $data);
+		$this->load->view('app/builder/foot', $data);
 	}
 
 	public function days_chart($dayid=false)

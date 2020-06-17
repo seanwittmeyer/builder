@@ -1,10 +1,7 @@
-import 'ContentTools';
-window.ContentTools = require('ContentTools');
+//import 'ContentTools';
+import './css/content-tools.min.css';
+//import './css/icons.woff';
+//import './js/content-tools.js';
+window.ContentTools = require('./js/content-tools.js');
 
 console.log('editor.bundle loaded');
-
-import 'bootstrap-fileinput/css/fileinput.css';
-import 'bootstrap-fileinput/js/plugins/piexif.min.js';
-import 'bootstrap-fileinput/js/plugins/sortable.min.js';
-import 'bootstrap-fileinput/js/plugins/purify.min.js';
-//import 'bootstrap-fileinput/themes/fa/theme.js';

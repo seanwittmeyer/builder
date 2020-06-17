@@ -12,6 +12,7 @@
 	 'book' => 'fas fa-book-open',
 	 'paper' => 'fas fa-file',
 	 'profile' => 'fas fa-id-badge',
+	 'data' => 'fas fa-chart-pie',
 	 'file' => 'fas fa-newspaper-o',
 	 'other' => 'fas fa-tree',
  );
@@ -25,7 +26,7 @@
 				<a class="<?php if ($type == 'video') echo ' active'; ?>" href="/feed/video"><i class="fas fa-television"></i><span>Videos</span></a>
 				<a class="<?php if ($type == 'book') echo ' active'; ?>" href="/feed/book"><i class="fas fa-book"></i><span>Books</span></a>
 				<a class="<?php if ($type == 'paper') echo ' active'; ?>" href="/feed/paper"><i class="fas fa-file-text-o"></i><span>Papers</span></a>
-				<a class="<?php if ($type == 'profile') echo ' active'; ?>" href="/feed/profile"><i class="fas fa-id-badge"></i><span>Profiles</span></a>
+				<a class="<?php if ($type == 'data') echo ' active'; ?>" href="/feed/profile"><i class="fas fa-id-badge"></i><span>Profiles</span></a>
 				<a class="<?php if ($type == 'file') echo ' active'; ?>" href="/feed/file"><i class="fas fa-newspaper-o"></i><span>Files</span></a>
 				<a class="<?php if ($type == 'other') echo ' active'; ?>" href="/feed/other"><i class="fas fa-tree"></i><span>Other</span></a>
 			</div>

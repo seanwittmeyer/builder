@@ -1401,7 +1401,7 @@ class shared extends CI_Model {
 		}
 	
 		//$periods = array("second", "minute", "hour", "day", "week", "month", "year", "decade");
-		$periods = ($full) ? array(" second", " minute", " hour", " day", "week", " month", " year", " decade"): array("s", "m", "h", "d", "w", " month", " year", " decade");
+		$periods = ($full) ? array(" second", " minute", " hour", " day", " week", " month", " year", " decade"): array("s", "m", "h", "d", "w", " month", " year", " decade");
 		$lengths = array("60","60","24","7","4.35","12","10");
 		
 		$now = time();

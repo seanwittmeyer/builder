@@ -49,7 +49,7 @@ $excludearray = array(
 								foreach ($themes as $i) { ?> 
 								<li class="nav-item d-block"><a class="nav-link" onclick="sortCards('<?=strtolower($i['title'])?>'); return false;" style="background-image: url(<?=$i['icon']?>)" href="/theme/<?=$i['slug']?>"><?=$i['title']?></a></li> 
 								<?php } ?>
-								<li onclick="sortCards('scale'); return false;" style="font-style: italic; font-size: .8rem; font-weight: 700; cursor: pointer;">Show all projects &rarr;</li>
+								<li onclick="sortCards('scale'); return false;" style="font-style: italic; font-size: .8rem; font-weight: 700; cursor: pointer; border: 1px solid white; padding: .7rem;">Show all projects &rarr;</li>
 							</ul>
 						</nav>
 						<ul class="articlethemes">
@@ -65,10 +65,10 @@ $excludearray = array(
 					</aside>
 				</div>
 				<div class="col-md-9 h-100">
-					<div class="row">
-						<p class="meta">Articles, Observations, and Ideas</p>
+					<div class="row" style="padding-top: 4px;">
+						<p class="meta">Projects</p>
 					</div>
-					<div class="row children horiz h-100">
+					<div class="row children horiz h-100" style="padding-top: 0px;">
 						<?php $set = $this->shared->get_data2('definition', false, array('template'=>'project')); ?>
 						<?php if ($set !== false) : ?>
 						<?php foreach ($set as $single) { ?>

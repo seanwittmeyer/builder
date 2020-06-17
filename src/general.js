@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	const zooming = new Zooming({
 		// options...
 	});
-
 	zooming.listen('.body img');
 });
 
