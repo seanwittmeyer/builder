@@ -515,6 +515,17 @@ article.article-theme header h1 {
 	background-position: left center;
 	background-size: 1.5rem;
 }
+.article-theme aside.primers {
+	border-right: 1px solid white;
+	padding: 4px 30px 0 0;
+}
+
+.article-theme aside.primers .children {
+	padding-top: 0;
+}
+.article-theme aside.primers .children .child-article {
+	font-size: .8rem;
+}
 .body-horiz {
 	margin-bottom: 0;
 }

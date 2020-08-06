@@ -25,7 +25,7 @@ $set = $this->shared->get_related_parents($type,$id,true); ?>
 						<div class="excerpt" data-editable="" data-name="payload[excerpt]"><p><?=$this->shared->handlebar_links($excerpt)?></p></div>
 					</summary>
 					<aside>
-						<p class="meta">This project was last updated <br><?php echo $this->shared->twitterdate($timestamp, true); ?>.</p>
+						<p class="meta">This project was posted <br><?php echo $this->shared->twitterdate($date, true); ?>.</p>
 						<ul class="articlethemes">
 							<?php /* Get related themes */
 							$themes = $this->shared->get_related('taxonomy','34'); 
@@ -134,6 +134,10 @@ $set = $this->shared->get_related_parents($type,$id,true); ?>
 							<div class="form-label-group">
 								<input type="text" class="form-control" placeholder="Link/Slug" required="" autocomplete="off" name="payload[slug]" value="<?=$slug?>">
 								<label for="payload[slug]">Slug</label>
+							</div>
+							<div class="form-label-group">
+								<input type="date" class="form-control" placeholder="Date Posted" required="" autocomplete="off" name="payload[date]" value="<?=date('Y-m-d',$date)?>">
+								<label for="payload[date]">Date Posted</label>
 							</div>
 						</form>
 						<!-- End Page Editor Tab -->

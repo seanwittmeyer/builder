@@ -81,14 +81,19 @@ class Auth extends CI_Controller
 				//if the login is successful
 				//redirect them back to the home page
 				$this->session->set_flashdata('message', $this->ion_auth->messages());
-				redirect('/', 'refresh');
+				if (isset($_GET["return"])) {
+					redirect('/'.$_GET["return"], 'refresh');
+				} else {
+					redirect('/', 'refresh');
+				}
 			}
 			else
 			{
 				// if the login was un-successful
 				// redirect them back to the login page
 				$this->session->set_flashdata('message', $this->ion_auth->errors());
-				redirect('auth/login', 'refresh'); // use redirects instead of loading views for compatibility with MY_Controller libraries
+				$return = (isset($_GET["return"])) ? '?return='.$_GET["return"]: '';
+				redirect("auth/login$return", 'refresh'); // use redirects instead of loading views for compatibility with MY_Controller libraries
 			}
 		}
 		else
@@ -911,8 +916,13 @@ class Auth extends CI_Controller
 	// simple login
 	function saml_simplelogin()
 	{
+		if (isset($_GET["return"])) {
+			$return = $_GET["return"];
+		} else {
+			$return = null;
+		}
 		$this->load->library('saml_auth');
-	    $this->saml_auth->simplelogin();
+	    $this->saml_auth->simplelogin($return);
 	}
 
 	// integrated login

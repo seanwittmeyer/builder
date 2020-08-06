@@ -45,7 +45,7 @@
 		<div class="row">
 			<div class="col-sm-5 wrapper" style="background: none;">
 				<div class="subtitle">Notable and worth sharing</div>
-				<div class="title">The Feed &rarr; <?php echo (!empty($type)) ? ($type == 'html') ? 'Websites' : ucfirst($type.'s') : 'Everything'; ?> 
+				<div class="title"><a href="/feed">The Feed</a> &rarr; <?php echo (!empty($type)) ? ($type == 'html') ? 'Websites' : ucfirst($type.'s') : 'Everything'; ?> 
 				<?php $this->load->view('helpers/menu-feed',array('_icon'=>$_icon)); ?>
 				</div>
 			</div>

@@ -31,9 +31,9 @@
 			<a class="dropdown-item" href="/auth/logout" onclick="$(this).text(\'See ya later...\');">I'm done, Sign Out &rarr;</a>
 			<?php } else { ?>
 			<span class="dropdown-header">Builder has a number of interactive <br> elements across the site you can access <br> by signing in. You will need to reach out <br>for an account.</span>
-			<a href="/auth/facebook" class="btn btn-sm btn-warning" onclick="$(this).text('signing you in...');">Sign in via Facebook &rarr;</a>
-			<a href="/auth/saml/login/" class="btn btn-sm btn-warning" onclick="$(this).text('signing you in...');">Sign in via SAML &rarr;</a>
-        	<a href="/auth/login" class="btn btn-sm btn-none">Sign in with Email/Pass &rarr;</a>
+			<a href="/auth/facebook?return=<?=uri_string()?>" class="btn btn-sm btn-warning" onclick="$(this).text('signing you in...');">Sign in via Facebook &rarr;</a>
+			<a href="/auth/saml/login?return=<?=uri_string()?>" class="btn btn-sm btn-warning" onclick="$(this).text('signing you in...');">Sign in via SAML &rarr;</a>
+        	<a href="/auth/login?return=<?=uri_string()?>" class="btn btn-sm btn-none">Sign in with Email/Pass &rarr;</a>
 			<?php } ?> 
 		</div>
 	</div>

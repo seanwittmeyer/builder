@@ -132,7 +132,8 @@ foreach (array('article1','article2','project1') as $a) if (!isset($payload[$a])
 									<li><li><a class="" href="/feed/html"><i class="fas fa-globe"></i><span>Websites</span></a></li>
 									<li><a class="" href="/feed/video"><i class="fas fa-television"></i><span>Videos</span></a></li>
 									<li><a class="" href="/feed/book"><i class="fas fa-book"></i><span>Books</span></a></li>
-									<li><a class="" href="/feed/paper"><i class="fas fa-file-text-o"></i><span>Papers</span></a></li>
+									<li><a class="" href="/feed/paper"><i class="fas fa-file"></i><span>Papers</span></a></li>
+									<li><a class="" href="/feed/data"><i class="fas fa-pie-chart"></i><span>Data</span></a></li>
 									<li><a class="" href="/feed/profile"><i class="fas fa-id-badge"></i><span>Profiles</span></a></li>
 									<li><a class="" href="/feed/file"><i class="fas fa-newspaper-o"></i><span>Files</span></a></li>
 									<li><a class="" href="/feed/other"><i class="fas fa-tree"></i><span>Other</span></a></li>
@@ -155,7 +156,7 @@ foreach (array('article1','article2','project1') as $a) if (!isset($payload[$a])
 					<!-- /blocks -->
 					<div class="data-lg"><div class="floatinline"><img src="https://darksky.net/images/weather-icons/<?=$weather['weather']['currently']['icon']?>.png"></div> <?=round($weather['weather']['currently']['temperature'])?>&deg;F</div>
 					<div class="data-sm mb-2"><strong><?php if (isset($weather['weather']['minutely'])) echo $weather['weather']['minutely']['summary']; ?></strong></div>
-					<div class="data-sm"><?=$weather['weather']['currently']['precipProbability']?>% <?=$weather['weather']['daily']['data'][0]['precipType']?>&nbsp; &nbsp;<?=round($weather['weather']['currently']['windSpeed'])?>mph <span class="windarrow" style="display: inline-block; transform: rotateZ(<?=$weather['weather']['currently']['windBearing']?>deg);">&uarr;</span></div>
+					<div class="data-sm"><?=$weather['weather']['currently']['precipProbability']?>% <?php echo (isset($weather['weather']['daily']['data'][0]['precipType'])) ? $weather['weather']['daily']['data'][0]['precipType']: "rain"; ?>&nbsp; &nbsp;<?=round($weather['weather']['currently']['windSpeed'])?>mph <span class="windarrow" style="display: inline-block; transform: rotateZ(<?=$weather['weather']['currently']['windBearing']?>deg);">&uarr;</span></div>
 					<div class="data-sm">&uarr; <?=date('g:i a', $weather['weather']['daily']['data'][0]['sunriseTime'])?> &darr; <?=date('g:i a',$weather['weather']['daily']['data'][0]['sunsetTime'])?></div>
 					<div class="data-sm mb-2"><i>in <?=$weather['city']?></i></div>
 					<hr>
@@ -170,7 +171,7 @@ foreach (array('article1','article2','project1') as $a) if (!isset($payload[$a])
 
 					<hr>
 					<div class="subtitle">Sailing</div>
-					<div class="data-sm"><?=$weather['weather']['currently']['precipProbability']?>% <?=$weather['weather']['daily']['data'][0]['precipType']?>, max at <?=date('g:i a', $weather['weather']['daily']['data'][0]['precipIntensityMaxTime'])?></div>
+					<div class="data-sm"><?=$weather['weather']['currently']['precipProbability']?>% <?php echo (isset($weather['weather']['daily']['data'][0]['precipType'])) ? $weather['weather']['daily']['data'][0]['precipType']: "rain"; ?>, max at <?=date('g:i a', $weather['weather']['daily']['data'][0]['precipIntensityMaxTime'])?></div>
 					<div class="data-sm"><span class="windarrow" style="display: inline-block; transform: rotateZ(<?=$weather['weather']['currently']['windBearing']?>deg);">&uarr;</span> <?=round($weather['weather']['currently']['windSpeed'])?>mph, <?=round($weather['weather']['daily']['data'][0]['windGust'])?> mph gusts<br>Highest winds at <?=date('g:i a', $weather['weather']['daily']['data'][0]['windGustTime'])?></div>
 					<div class="data-sm"><a href="https://www.windfinder.com/#9/<?=$weather['lat']?>/<?=$weather['lon']?>" target="_blank">Windfinder &rarr;</a><br>
 					

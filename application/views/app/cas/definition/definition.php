@@ -206,6 +206,10 @@
 						<input type="text" class="form-control" placeholder="Link/Slug" required="" autocomplete="off" name="payload[slug]" value="<?=$slug?>">
 						<label for="payload[slug]">Slug</label>
 					</div>
+					<div class="form-label-group">
+						<input type="date" class="form-control" placeholder="Date Posted" required="" autocomplete="off" name="payload[date]" value="<?=date('Y-m-d',$date)?>">
+						<label for="payload[date]">Date Posted</label>
+					</div>
 				</form>
 				<!-- End Page Editor Tab -->
 				</div>

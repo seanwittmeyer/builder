@@ -80,7 +80,8 @@
 		</style>
 	</head>
 	<body>
-		<?php echo form_open("auth/login",array('class' => 'form-signin', '_lpchecked' => '1'));?> 
+		<?php $return = (isset($_GET["return"])) ? '?return='.$_GET["return"]: '';
+		echo form_open("auth/login$return",array('class' => 'form-signin', '_lpchecked' => '1'));?> 
 			<div class="text-center mb-4">
 				<img class="mb-4" src="/includes/img/imov.png" alt="" width="" height="72">
 			</div>

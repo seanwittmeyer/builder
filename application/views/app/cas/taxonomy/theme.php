@@ -1,7 +1,7 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /* 
- * Taxonomy - Article View
+ * Taxonomy - Theme View
  *
  * This is a view used by single tax with the 'article' template set.
  * 
@@ -13,6 +13,18 @@ $excludearray = array(
 	'definition' => array(),
 	'page' => array(),
 );
+$hasprimers = false;
+if ($set !== false) {
+	foreach ($set as $single) {
+		if (isset($single['blogtype']) and strtolower($single['blogtype']) == 'primer') {
+			$hasprimers = true;
+			$primers[] = $single;
+		} elseif (isset($single['subtitle']) and strtolower($single['subtitle']) == 'primer') {
+			$hasprimers = true;
+			$primers[] = $single;
+		}
+	}
+}
 ?> 
 <!-- Page map as a page nav in the top right corner -->
 	<canvas id="pagemap" class="article"></canvas>
@@ -31,19 +43,36 @@ $excludearray = array(
 	<!-- Article -->
 	<article class="article-theme">
 		<div class="container-fluid">
-			<div class="row ">
-				<div class="col-md d-none d-lg-block"></div>
-				<div class="col-md-5 col-lg-4 text-right"><img class="themeicon" src="<?=$icon?>"></div>
-				<header class="col-md-7 col-lg-6">
-					<div class="subtitle"><p>Theme</p></div>
-					<div data-editable="" data-name="payload[title]"><h1><?=$title?></h1></div><!-- (<?=$id?>)-->
-					<div class="excerpt" data-editable="" data-name="payload[subtitle]"><p><?=$this->shared->handlebar_links($subtitle)?></p></div>
-				</header>
-				<div class="d-none d-sm-block col-sm"></div>
-			</div>
 			<div class="row">
 				<div class="col-md d-none d-lg-block"></div>
-				<div class="col-md-5 col-lg-4 text-right ">
+				<div class="<?php if ($hasprimers) { ?>col-md-3 <?php } else { ?>col-md-5 col-lg-4 <?php } ?>text-right"><img class="themeicon" src="<?=$icon?>"></div>
+				<header class="<?php if ($hasprimers) { ?>col-md-8 <?php } else { ?>col-md-7 col-lg-6 <?php } ?>">
+					<div class="subtitle"><p>Theme</p></div>
+					<div data-editable="" data-name="payload[title]"><h1><?=$title?></h1></div><!-- (<?=$id?>)-->
+					<div class="excerpt<?php if ($hasprimers) { ?> col-md-10 <?php } ?>" data-editable="" data-name="payload[subtitle]"><p><?=$this->shared->handlebar_links($subtitle)?></p></div>
+				</header>
+				<div class="col-md d-none d-lg-block"></div>
+			</div>
+			<div class="row">
+				<div class="col-lg d-none d-lg-block"></div>
+				<?php if ($hasprimers) { ?>
+				<aside class="col-md-2 d-none d-lg-block primers">
+					<div class="row">
+						<div class="col children">
+						<?php foreach ($primers as $single) { 
+							if (in_array($single['id'], $excludearray[$single['type']])) continue; ?>
+							<div class="child-article" onclick="window.location.assign('/<?=$single['type']?>/<?=$single['slug']?>');">
+							<?php if (isset($single['blogtype'])) { ?><span class="subtitle"><?=$single['blogtype']?></span><?php } elseif (isset($single['subtitle'])) { ?><span class="subtitle"><?=$single['subtitle']?></span><?php } ?>
+							<a class="title t_list_<?=$single['id']?>" href="/<?=$single['type']?>/<?=$single['slug']?>"><?=$single['title']?></a>
+							<?php echo ($single['type'] === 'page') ? $single['excerpt']: ($single['type'] === 'definition') ? $single['excerpt']: ''; ?> <a href="/<?=$single['type']?>/<?=$single['slug']?>"> Keep reading... &rarr;</a>
+							</div>
+						<?php } ?> 
+						<a href="/primers" style="display: block; font-size: .8rem; cursor: pointer; border: 1px solid white; padding: .7rem;">I've written a number of primers as a way to advance my understanding of some topics.<br><strong><i>See all primers →</i></strong></a>
+						</div>
+					</div>
+				</aside>
+				<?php } // end $hasprimers ?>
+				<div class="<?php if ($hasprimers) { ?>col-md-3 <?php } else { ?>col-md-5 col-lg-4 <?php } ?>text-right ">
 					<aside class="col-sm-10 float-right">
 						<nav id="themenav" class="pilltabs">
 							<ul class="nav nav-tabs" role="tablist">
@@ -53,7 +82,7 @@ $excludearray = array(
 								<li class="nav-item d-block" role="presentation"><a class="nav-link" id="theme-feed-tab" data-toggle="tab" href="#themefeed" role="tab" aria-controls="themefeed" aria-selected="false">Interesting Links</a></li> 
 							</ul>
 						</nav>
-						<p class="meta">This article was last updated <br><?php echo $this->shared->twitterdate($timestamp, true); ?>.</p>
+						<p class="meta">This theme was last updated <br><?php echo $this->shared->twitterdate($timestamp, true); ?>.</p>
 						<ul class="articlethemes">
 						<?php /* Get related themes */
 						$themes = $this->shared->get_related('taxonomy','34'); 
@@ -66,7 +95,7 @@ $excludearray = array(
 						</ul>
 					</aside>
 				</div>
-				<div class="col-md-7 col-lg-6">
+				<div class="<?php if ($hasprimers) { ?>col-md-9 col-lg-6<?php } else { ?>col-md-7 col-lg-6<?php } ?>">
 					<div class="tab-content" id="offcanvaspanes">
 						<div class="tab-pane fade show active" id="themeintro" role="tabpanel" aria-labelledby="theme-intro-tab">
 						<!-- Introduction -->
@@ -105,7 +134,6 @@ $excludearray = array(
 									<h2>Articles and Projects</h2>
 									<p>Explore <?php echo $title; ?> further in the articles, observations, and projects I've had the opportunity to work on.</p>
 									-->
-									<?php $set = $this->shared->get_related($type,$id,true); ?>
 									<?php if ($set !== false) : ?>
 									<?php foreach ($set as $single) { 
 										if (in_array($single['id'], $excludearray[$single['type']])) continue; ?>
@@ -123,7 +151,6 @@ $excludearray = array(
 								<div class="col-md-6">
 									<h4><strong>Children</strong></h4>
 									<p>Explore <?php echo $title; ?> further in the topics and collections below.</p>
-									<?php $set = $this->shared->get_related($type,$id,true); ?>
 									<?php if ($set !== false) : ?>
 									<?php foreach ($set as $single) { 
 										if (in_array($single['id'], $excludearray[$single['type']])) continue; ?>
@@ -153,7 +180,7 @@ $excludearray = array(
 					</div>
 
 				</div>
-				<div class="col-md d-none d-lg-block"></div>
+				<div class="col-lg d-none d-lg-block"></div>
 			</div>
 		</div>
 	</article>

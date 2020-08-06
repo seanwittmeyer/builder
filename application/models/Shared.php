@@ -560,6 +560,7 @@ class shared extends CI_Model {
 
 				$insert = array(
 					'timestamp' => time(),
+					'date' => time(),
 					'title' => $post['title'],
 					'user' => $user->id
 				);
@@ -573,6 +574,7 @@ class shared extends CI_Model {
 
 				$insert = array(
 					'timestamp' => time(),
+					'date' => time(),
 					'type' => $post['type'],
 					'typeid' => $post['typeid'],
 					'url' => $post['url'],
@@ -598,6 +600,7 @@ class shared extends CI_Model {
 
 				$insert = array(
 					'timestamp' => time(),
+					'date' => time(),
 					'content' => (isset($post['content'])) ? $post['content']: '',
 					'value' => $post['value'],
 					'type' => $post['type'],
@@ -613,6 +616,7 @@ class shared extends CI_Model {
 
 				$insert = array(
 					'slug' => $this->slug($post['title'],$type,'slug'),
+					'date' => time(),
 					'timestamp' => time(),
 					'unique' => sha1('cas-'.microtime()),
 					'body' => $post['body'],
@@ -655,6 +659,7 @@ class shared extends CI_Model {
 					'unique' => sha1('cas-'.microtime()),
 					'subtitle' => $post['subtitle'],
 					'timestamp' => time(),
+					'date' => time(),
 					'payload' => serialize($post['payload']),
 					'definition' => (isset($post['definition'])) ? $post['definition']: '-',
 					'link' => (isset($post['link'])) ? $post['link']: '-',
@@ -715,6 +720,7 @@ class shared extends CI_Model {
 					'title' => $post['title'],
 					'template' => $post['template'],
 					'timestamp' => time(),
+					'date' => time(),
 					'pagetype' => $post['pagetype'],
 					'payload' => serialize($post['payload']),
 					'author' => $post['author'],
@@ -909,6 +915,7 @@ class shared extends CI_Model {
 				$insert = array(
 					'slug' => ($slug) ? $this->slug($slug,$type,'slug'): $this->slug('untitled',$type,'slug'),
 					'timestamp' => time(),
+					'date' => time(),
 					'unique' => sha1('cas-'.microtime()),
 					'body' => '<p>This is the body of your new definition, edit with good fortune</p>',
 					'subtitle' => 'This is the subtitle',
@@ -931,6 +938,7 @@ class shared extends CI_Model {
 					'unique' => sha1('cas-'.microtime()),
 					'subtitle' => 'This is the subtitle',
 					'timestamp' => time(),
+					'date' => time(),
 					'payload' => serialize(array()),
 					'definition' => 0,
 					'link' => 0,
@@ -966,6 +974,7 @@ class shared extends CI_Model {
 					'title' => 'Untitled',
 					'template' => 'article',
 					'timestamp' => time(),
+					'date' => time(),
 					'pagetype' => 'page',
 					'payload' => serialize(array()),
 					'author' => 'Sean Wittmeyer',
@@ -981,6 +990,7 @@ class shared extends CI_Model {
 					'excerpt' => 'This is the excerpt',
 					'title' => 'Untitled',
 					'timestamp' => time(),
+					'date' => time(),
 					'type' => $post['type'],
 					'uri' => $post['uri'],
 					//'storage' => $image,
@@ -1071,6 +1081,7 @@ class shared extends CI_Model {
 						'subtitle' => $post['subtitle'],
 						'template' => $post['template'],
 						'author' => (isset($post['author'])) ? $post['author']:'Sean Wittmeyer',
+						'date' => (isset($post['date'])) ? strtotime($post['date']): time(),
 						'excerpt' => $post['excerpt'],
 						'payload' => (isset($post['payload'])) ? serialize($post['payload']) : '',
 					);
@@ -1128,6 +1139,7 @@ class shared extends CI_Model {
 						'title' => $post['title'],
 						'subtitle' => $post['subtitle'],
 						'template' => $post['template'],
+						'date' => (isset($post['date'])) ? strtotime($post['date']): time(),
 						'timestamp' => time(),
 						'payload' => (isset($post['payload'])) ? serialize($post['payload']) : '',
 					);
@@ -1185,6 +1197,7 @@ class shared extends CI_Model {
 						'template' => $post['template'],
 						'blogtype' => $post['blogtype'],
 						'pagetype' => $post['pagetype'],
+						'date' => (isset($post['date'])) ? strtotime($post['date']): time(),
 						'timestamp' => time(),
 						'author' => (isset($post['author'])) ? $post['author']:'Sean Wittmeyer',);
 					if (!empty($post['payload'])) $update['payload'] = serialize($post['payload']);
@@ -1297,7 +1310,6 @@ class shared extends CI_Model {
 	// Image Upload
 	public function storeimage($return=false)
 	{
-
 		if (empty($_FILES['userfile'])) {
 		    echo json_encode(array('error'=>'No files found for upload.')); 
 		    // or you can throw an exception 
@@ -1466,7 +1478,14 @@ class shared extends CI_Model {
 	public function q($string) {
 		return htmlspecialchars($string);
 	}
-
+	
+	// echo variable if set
+	public function e($string) {
+		if (isset($string)) {
+			echo $string;
+		}
+	}
+	
 	// curl get
 	public function get_curl($url=false, $decode=false, $ua=false) {
 		if ($ua === false) $ua = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36";

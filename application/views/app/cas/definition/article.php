@@ -38,7 +38,7 @@
 				<div class="col-md d-none d-lg-block"></div>
 				<div class="col-md-5 col-lg-4 text-right ">
 					<aside>
-						<p class="meta">This article was last updated <br><?php echo $this->shared->twitterdate($timestamp, true); ?> by <?php echo $author; ?>.</p>
+						<p class="meta">This article was shared <br><?php echo $this->shared->twitterdate($date, true); ?> by <?php echo $author; ?>.</p>
 						<ul class="articlethemes">
 						<?php /* Get related themes */
 						$themes = $this->shared->get_related('taxonomy','34'); 
@@ -147,6 +147,10 @@
 						<div class="form-label-group">
 							<input type="text" class="form-control" placeholder="Link/Slug" required="" autocomplete="off" name="payload[slug]" value="<?=$slug?>">
 							<label for="payload[slug]">Slug</label>
+						</div>
+						<div class="form-label-group">
+							<input type="date" class="form-control" placeholder="Date Posted" required="" autocomplete="off" name="payload[date]" value="<?=date('Y-m-d',$date)?>">
+							<label for="payload[date]">Date Posted</label>
 						</div>
 					</form>
 					<!-- End Page Editor Tab -->
