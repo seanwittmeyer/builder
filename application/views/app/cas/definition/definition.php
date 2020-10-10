@@ -103,18 +103,18 @@
 					</div>
 					<?php $this->shared->footer_photocitation($id,$img,$timestamp,$slug,$title); ?>
 
-<!-- Feed -->
-	<div class="input-group">
-		<div class="input-group-prepend">
-			<div class="input-group-text"><i class="fas fa-search"></i></div>
-		</div>
-		<input type="text" class="form-control" id="livesearch" placeholder="find a link...">
-		<div class="input-group-append">
-			<button class="btn btn-outline-secondary" type="button" data-toggle="modal" data-target="#createlink"><i class="fas fa-plus"></i> &nbsp; Add a link </button>
-		</div>
-	</div>
-	<?php echo $this->shared->related_html($type,$id); ?>
-<!-- /Feed -->
+					<!-- Feed -->
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text"><i class="fas fa-search"></i></div>
+							</div>
+							<input type="text" class="form-control" id="livesearch" placeholder="find a link...">
+							<div class="input-group-append">
+								<button class="btn btn-outline-secondary" type="button" data-toggle="modal" data-target="#createlink"><i class="fas fa-plus"></i> &nbsp; Add a link </button>
+							</div>
+						</div>
+						<?php echo $this->shared->related_html($type,$id); ?>
+					<!-- /Feed -->
 
 				</div>
 				<!-- /Body -->
